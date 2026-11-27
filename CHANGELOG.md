@@ -1,5 +1,41 @@
 # 变更记录
 
+## 0.9.70 — 2026-11-27（接入敌方美术包：20 套 × 5 帧，敌我风格统一）
+
+### 素材
+`敌方老鼠_五路线_动画试接包_v4.zip` → 解到 `art/incoming/enemy-integration-v4/`，
+整理成 **`art/frames/foe-<类型>-<阶>/`**（类型 crate/shell/thief/boss/glue × 1–4 阶 = **20 套 × 5 帧 = 100 张**）：
+
+```
+idle-1 → idle1.png   idle-2 → idle2.png   action-windup → windup.png
+action-strike → strike.png   hop-air → hop.png
+```
+
+### 接入
+- `tools/compose.mjs` 本来就扫 `art/frames/**`，所以敌方帧**自动注入** `window.UNIT_FRAMES`
+  （现在共 **35 套** = 我方 15 + 敌方 20）；
+- `tools/rpg.js` 新增 `foeFrameName()`：**蓄力 `windup` → 出手 `strike`（160ms）→ 移动 `hop` → 待机 idle1/idle2（400ms 交替）**；
+- `unitArtImg()` 对敌人先试 `foe-<type>-<tier>` 的动画帧，取不到再退回静态贴图；
+- **引信鼠（blast）**暂无专属美术，继续借 `foe-shell-<阶>` 的帧（有专属图后自动优先）。
+
+### 观感
+- 敌方现在是**灰毛红眼的鼠**，与我方暖色仓鼠一眼区分；出手前会"蓄力"，移动时切跳跃帧；
+- 我方向右、敌方向左的朝向在包里已处理好，不再需要镜像。
+
+### 体积
+| 项 | 值 |
+|---|---|
+| 新增帧数据 | +197 KB |
+| `dist/index.html` | 694 KB → **907 KB**（仍远小于 4 MB 微信上限） |
+
+### 验证
+| 检查 | 结果 |
+|---|---|
+| `UNIT_FRAMES` | 35 套，其中敌方 **20 套**（`foe-boss-1/2/3…`）✓ |
+| 战斗截图 | 5 只我方 + 4 只敌方全部用新美术，敌我风格统一 |
+| `detcheck` | 100% 胜率、均伤 554、stuck 0 |
+| `eselftest` | 破箱/穿透/偷钱/撤离/超载/治疗 **六项全绿** |
+
 ## 0.9.69 — 2026-11-27（L6 精配：8 局样本 + 发现一个真 bug）
 
 ### 先说 bug：随机事件的倍率会**覆盖**关卡倍率

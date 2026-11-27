@@ -1,0 +1,275 @@
+{
+  "version": "试接-v4",
+  "dimensions": [
+    64,
+    64
+  ],
+  "alpha": "0 or 255",
+  "hop_landing": "idle-1.png",
+  "roles": [
+    {
+      "id": "foe-crate-1",
+      "category": "crate",
+      "directory": "crate/foe-crate-1",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-crate-2",
+      "category": "crate",
+      "directory": "crate/foe-crate-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-crate-3",
+      "category": "crate",
+      "directory": "crate/foe-crate-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-crate-4",
+      "category": "crate",
+      "directory": "crate/foe-crate-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-shell-1",
+      "category": "shell",
+      "directory": "shell/foe-shell-1",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-shell-2",
+      "category": "shell",
+      "directory": "shell/foe-shell-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-shell-3",
+      "category": "shell",
+      "directory": "shell/foe-shell-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-shell-4",
+      "category": "shell",
+      "directory": "shell/foe-shell-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-thief-1",
+      "category": "thief",
+      "directory": "thief/foe-thief-1",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-thief-2",
+      "category": "thief",
+      "directory": "thief/foe-thief-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-thief-3",
+      "category": "thief",
+      "directory": "thief/foe-thief-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-thief-4",
+      "category": "thief",
+      "directory": "thief/foe-thief-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-boss-1",
+      "category": "boss",
+      "directory": "boss/foe-boss-1",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-boss-2",
+      "category": "boss",
+      "directory": "boss/foe-boss-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-boss-3",
+      "category": "boss",
+      "directory": "boss/foe-boss-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-boss-4",
+      "category": "boss",
+      "directory": "boss/foe-boss-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-glue-1",
+      "category": "glue",
+      "directory": "glue/foe-glue-1",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-glue-2",
+      "category": "glue",
+      "directory": "glue/foe-glue-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-glue-3",
+      "category": "glue",
+      "directory": "glue/foe-glue-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "id": "foe-glue-4",
+      "category": "glue",
+      "directory": "glue/foe-glue-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    }
+  ],
+  "overrides": [
+    "foe-shell-4",
+    "foe-boss-4"
+  ]
+}

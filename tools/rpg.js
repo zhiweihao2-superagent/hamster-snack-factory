@@ -1185,6 +1185,7 @@ function foeAct(foe){
   foe.charge = 0;
   foe.timerMs = 0;
   foe.actFlash = performance.now() + 260;
+  foe.animStrike = performance.now();   /* 出手帧 */
   if (foe.atk > 0) hurtTeam(foe.atk, foe.pierce);
   if (foe.steal > 0) stealCells(foe.steal, foe);
   sfx(foe.atk > 0 ? 'invalid' : 'reshuffle');
@@ -2766,6 +2767,15 @@ function iconImg(id){
 /* ---------- 多帧动画（新美术包） ----------
    待机 idle1/idle2 每 400ms 交替；出手前 200ms 进 windup；出手后 140ms 显示 strike；
    在本帧里位移过就用 hop（跳跃）。找不到帧就退回静态贴图。 */
+/* 敌方也用同一套 5 帧：待机交替、蓄力、出手、移动 */
+function foeFrameName(o, now){
+  if (!o) return null;
+  if (o.animStrike && now - o.animStrike < 160) return 'strike';
+  if (o.windup && o.windup > 0) return 'windup';
+  if (o.movedAt && now - o.movedAt < 180) return 'hop';
+  return (Math.floor(now / 400) % 2 === 0) ? 'idle1' : 'idle2';
+}
+
 function unitFrameName(u, isFoe, now){
   if (isFoe || !u) return null;
   if (u.animStrike && now - u.animStrike < 140) return 'strike';
@@ -2800,6 +2810,17 @@ function unitArtImg(key, isFoe, o, now){
     var fr = unitFrameName(o, isFoe, t);
     var img = fr ? unitFrameImg(key, fr) : null;
     if (img) return img;
+  }
+  if (isFoe){
+    var fk = 'foe-' + ((o && o.type) || key.split('-')[0]) + '-' + ((o && o.tier) || 1);
+    var fr2 = foeFrameName(o, t);
+    var fim = fr2 ? unitFrameImg(fk, fr2) : null;
+    if (fim) return fim;
+    /* 新原型（blast）暂无美术：借同类 */
+    if (o && o.type === 'blast'){
+      var fim2 = fr2 ? unitFrameImg('foe-shell-' + (o.tier || 1), fr2) : null;
+      if (fim2) return fim2;
+    }
   }
   var map = unitArtMap();
   return artFromMap(map, isFoe ? foeArtKeys(o || { cls: key.split('-')[0], tier: 1 }) : [key]);
