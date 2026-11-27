@@ -1251,7 +1251,7 @@ function drawRatDetail(){
   }
 
   var tx = ax + box + 14;
-  if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, W - pad - 26, cardY + 30, 32);
+  if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, W - pad - 30, cardY + 28, 36);
   txt(st.name, tx, cardY + 30, Math.round(W * 0.045), C.ink, "left", true);
   txt(ratLineLabel(rat) + (onSquad ? " · 上场中" : ""), tx, cardY + 50,
       Math.max(10, Math.round(W * 0.026)), onSquad ? "#79c98a" : C.muted, "left");
@@ -2482,7 +2482,7 @@ function drawOfferCard(x, y, w, h, o, idx){
 function drawRatStats(x, y, w){
   var ratIconOwner = SHOP.rats[SHOP.sel];
   if (ratIconOwner && ratIconOwner.line && ratIconOwner.line !== 'none'){
-    drawClassIcon(ratIconOwner.line, x + 12, y + 20, 26);
+    drawClassIcon(ratIconOwner.line, x + 14, y + 20, 32);
   }
   var rat = SHOP.rats[SHOP.sel];
   if (!rat) return;
@@ -2619,9 +2619,7 @@ function drawRatCard(x, y, w, h, idx){
   var name = ratLabel(rat);
   if (name.length > 4) name = name.slice(0, 4);
   txt(name, tx, y + Math.round(h * 0.30), nameFs, C.ink, 'left', true);
-  var lineX = tx;
-  if (rat.line && rat.line !== 'none' && drawClassIcon(rat.line, tx + 8, y + Math.round(h * 0.52) - 4, 15)) lineX = tx + 18;
-  txt(ratLineLabel(rat), lineX, y + Math.round(h * 0.52), subFs, C.muted, 'left');
+  txt(ratLineLabel(rat), tx, y + Math.round(h * 0.52), subFs, C.muted, 'left');
 
   var ts = rat.talents || [];
   var roman = ['Ⅰ', 'Ⅱ', 'Ⅲ'];

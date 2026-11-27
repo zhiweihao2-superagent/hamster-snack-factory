@@ -1,15 +1,12 @@
 """
-职业图标（用 64 原画的头部窗口，32×32 显示）
+职业图标：从 64 原画裁头部窗口，输出**两档原生尺寸**，避免任何非整数缩放。
 
-    python tools/iconfromart.py --size 32
+    python tools/iconfromart32.py
 
-- 从 64 原画裁 32×32 的"头 + 武器"窗口（不缩放，1:1 像素）；
-- 存盘时放大 2× 成 64×64（@4x 约定），游戏里按 32 逻辑像素绘制 → 正好 1:1，清晰不糊；
-- 脸与游戏里完全一致，所以一定"像仓鼠"。
+- `class-<line>@4x.png`   ← 32×32 头部窗口（详情页按 32 绘制）
+- `class-<line>-s@4x.png` ← 同一窗口 2:1 降到 16×16（卡片按 16 绘制）
 
-窗口偏移按职业调，把武器带进画面：
-  tank 盾在左 → dx -3 ；blade 刀在右 → dx +3 ；shot 弩在右上 → dx +3, dy -2
-  hex 帽子在上、法杖在右 → dx +2, dy -3 ；care 药箱在右下 → dx +2, dy +1
+以前卡片把 32px 资源画到 20px（0.63 倍），所以看着糊；现在两档都是 1:1 整数，像素不会被揉。
 """
 from PIL import Image, ImageDraw
 import os, sys
@@ -22,8 +19,9 @@ os.makedirs(OUT, exist_ok=True)
 os.makedirs(REVIEW, exist_ok=True)
 
 WIN = 32
-LINES = ['tank', 'blade', 'shot', 'hex', 'care']
 TIER = 2
+LINES = ['tank', 'blade', 'shot', 'hex', 'care']
+# 窗口偏移：把各职业的武器带进画面
 OFFSET = {
     'tank': (-3, 0),
     'blade': (3, 0),
@@ -52,29 +50,30 @@ def main():
             sys.exit(1)
         big = Image.open(src).convert('RGBA')
         dx, dy = OFFSET[line]
-        win = head_window(big, dx, dy)                 # 32×32
+        win = head_window(big, dx, dy)                     # 32×32 原生
+        small = win.resize((16, 16), Image.NEAREST)        # 2:1 整数
         win.save(os.path.join(OUT, 'class-%s.png' % line))
-        win.resize((64, 64), Image.NEAREST).save(os.path.join(OUT, 'class-%s@4x.png' % line))
-        made.append((line, win))
+        win.save(os.path.join(OUT, 'class-%s@4x.png' % line))
+        small.save(os.path.join(OUT, 'class-%s-s.png' % line))
+        small.save(os.path.join(OUT, 'class-%s-s@4x.png' % line))
+        made.append((line, win, small))
 
     cell, pad = 96, 10
     W = pad + len(made) * (cell + pad)
     H = 30 + 2 * (cell + pad)
     sheet = Image.new('RGBA', (W, H), (26, 21, 34, 255))
     d = ImageDraw.Draw(sheet)
-    d.text((pad, 6), '32x32 head window (native pixels) / below: at 32px and 24px on screen',
+    d.text((pad, 6), 'top = 32px asset drawn at 32 / bottom = 16px asset drawn at 16 (crisp)',
            fill=(232, 172, 80, 255))
-    for i, (line, im) in enumerate(made):
+    for i, (line, win, small) in enumerate(made):
         x = pad + i * (cell + pad)
-        sheet.alpha_composite(im.resize((64, 64), Image.NEAREST), (x + 8, 24))
-        d.text((x + 8, 92), line, fill=(232, 172, 80, 255))
+        sheet.alpha_composite(win.resize((64, 64), Image.NEAREST), (x + 10, 22))
+        d.text((x + 10, 92), line + ' 32', fill=(232, 172, 80, 255))
         y2 = 30 + cell + pad
-        sheet.alpha_composite(im, (x + 8, y2))
-        d.text((x + 8, y2 + 36), '32px', fill=(120, 110, 140, 255))
-        sheet.alpha_composite(im.resize((24, 24), Image.NEAREST), (x + 52, y2 + 4))
-        d.text((x + 52, y2 + 36), '24px', fill=(120, 110, 140, 255))
-    sheet.save(os.path.join(REVIEW, 'fromart32.png'))
-    print('saved', os.path.join(REVIEW, 'fromart32.png'))
+        sheet.alpha_composite(small.resize((64, 64), Image.NEAREST), (x + 10, y2))
+        d.text((x + 10, y2 + 70), line + ' 16', fill=(120, 110, 140, 255))
+    sheet.save(os.path.join(REVIEW, 'sizes.png'))
+    print('saved', os.path.join(REVIEW, 'sizes.png'))
 
 
 if __name__ == '__main__':
