@@ -211,13 +211,8 @@ function ratGachaApply(forceTier2){
     /* 队伍满了：直接折碎片，别让玩家白抽 */
     result.shard = shardValueOf(rat);
     addShard(result.shard);
-  } else if (SHOP.rats.length < rosterCap()){
-    SHOP.rats.push(rat);
-    SHOP.sel = SHOP.rats.length - 1;
-    markFresh(SHOP.sel);
-    result.index = SHOP.sel;
   } else {
-    /* 仓鼠栏满：进仓鼠盒（盒子也满了才折碎片） */
+    /* 抽到的一律先进仓鼠盒：由玩家决定搬哪只进栏（栏满以前是自动进栏，容易把栏塞满） */
     var bi = boxAdd(rat);
     if (bi >= 0){
       result.boxed = true;
@@ -1216,6 +1211,9 @@ function drawSkillBlock(x, y, w, rat){
 
 }
 
+/* ================= 仓鼠详情（页签式，一屏放得下） =================
+   原来把天赋 / 技能 / 转职证 / 能力全堆在一屏，手机上会被裁掉且无法下拉。
+   现在拆成四个页签，每页只画一块内容，底部操作固定。 */
 function drawRatDetail(){
   HITS = [];
   var pad = L.pad;
@@ -1223,171 +1221,225 @@ function drawRatDetail(){
   var rat = SHOP.rats[idx];
   ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
 
-  txt('仓鼠详情', pad, 44, Math.round(W * 0.05), C.ink, 'left', true);
+  txt("仓鼠详情", pad, 40, Math.round(W * 0.045), C.ink, "left", true);
   gachaBackBtn(pad);
 
   if (!rat){
-    txt('这只仓鼠不在了（可能被分解 / 合成了）', W / 2, H * 0.4,
-        Math.max(11, Math.round(W * 0.032)), C.muted, 'center');
+    txt("这只仓鼠不在了（可能被分解 / 合成了）", W / 2, H * 0.4,
+        Math.max(11, Math.round(W * 0.032)), C.muted, "center");
     return;
   }
 
   var st = ratStats(rat);
   var onSquad = SHOP.squad.indexOf(idx) >= 0;
 
-  /* 顶部：大立绘 + 名字/职业/阶 */
-  var cardY = 62, cardH = 138;
+  /* ---------- 顶部：立绘 + 概要 ---------- */
+  var cardY = 56, cardH = 120;
   rr(pad, cardY, W - pad * 2, cardH, 14);
   ctx.fillStyle = C.panel; ctx.fill();
-  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(232,172,80,.35)'; ctx.stroke();
+  ctx.lineWidth = 1; ctx.strokeStyle = "rgba(232,172,80,.35)"; ctx.stroke();
 
-  var art = (typeof artFromMap === 'function')
-    ? artFromMap(unitArtMap(), [(rat.line || 'none') + '-' + (rat.tier || 1)]) : null;
-  var artBox = 104, ax = pad + 14, ay = cardY + 17;
-  rr(ax, ay, artBox, artBox, 12);
-  ctx.fillStyle = 'rgba(255,255,255,.03)'; ctx.fill();
+  var art = (typeof artFromMap === "function")
+    ? artFromMap(unitArtMap(), [(rat.line || "none") + "-" + (rat.tier || 1)]) : null;
+  var box = 92, ax = pad + 12, ay = cardY + 14;
+  rr(ax, ay, box, box, 12);
+  ctx.fillStyle = "rgba(255,255,255,.03)"; ctx.fill();
   if (art){
-    ctx.save();
-    ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(art, ax + 4, ay + 4, artBox - 8, artBox - 8);
+    ctx.save(); ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(art, ax + 4, ay + 4, box - 8, box - 8);
     ctx.restore();
   }
 
-  var tx = ax + artBox + 16;
-  txt(st.name, tx, cardY + 34, Math.round(W * 0.048), C.ink, 'left', true);
-  txt(ratLineLabel(rat) + (onSquad ? ' · 上场中' : ''),
-      tx, cardY + 56, Math.max(10, Math.round(W * 0.028)), onSquad ? '#79c98a' : C.muted, 'left', true);
-  txt('天赋 ' + st.talents.length + '/3', tx, cardY + 78,
-      Math.max(10, Math.round(W * 0.028)), '#ffd98a', 'left');
-  txt('生命 ' + st.hp + ' · 出手 ' + (st.atkMs ? (st.atkMs / 1000).toFixed(1) + 's' : '不攻击'),
-      tx, cardY + 100, Math.max(9, Math.round(W * 0.025)), C.muted, 'left');
-  txt('基础 ' + st.baseDmg + ' · 强化 ' + st.act + (st.actKind === 'heal' ? '(修复)' : '') +
-      (st.need ? ' · 阈值 ' + st.need : ''), tx, cardY + 118,
-      Math.max(9, Math.round(W * 0.025)), C.muted, 'left');
+  var tx = ax + box + 14;
+  if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, W - pad - 24, cardY + 26, 20);
+  txt(st.name, tx, cardY + 30, Math.round(W * 0.045), C.ink, "left", true);
+  txt(ratLineLabel(rat) + (onSquad ? " · 上场中" : ""), tx, cardY + 50,
+      Math.max(10, Math.round(W * 0.026)), onSquad ? "#79c98a" : C.muted, "left");
+  txt("★" + ratScore(rat) + "  ·  天赋 " + (rat.talents || []).length + "/3  ·  技能 " + (rat.skills || []).length,
+      tx, cardY + 70, Math.max(9, Math.round(W * 0.024)), "#ffd98a", "left");
+  txt("生命 " + st.hp + " · 出手 " + (st.atkMs ? (st.atkMs / 1000).toFixed(1) + "s" : "不攻击") +
+      " · 法强 " + (typeof unitMag === "function" ? unitMag(makeUnit(ratId(rat), 0)) : "-"),
+      tx, cardY + 90, Math.max(9, Math.round(W * 0.023)), C.muted, "left");
 
-  /* 天赋三格 */
-  var ty = cardY + cardH + 14;
-  txt('天赋', pad, ty, Math.max(10, Math.round(W * 0.03)), C.amber, 'left', true);
-  var slotH = 50;
-  for (var i = 0; i < 3; i++){
-    var t = st.talents[i];
-    var sy = ty + 12 + i * (slotH + 8);
-    rr(pad, sy, W - pad * 2, slotH, 10);
-    ctx.fillStyle = t ? 'rgba(232,172,80,.07)' : 'rgba(255,255,255,.02)';
-    ctx.fill();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = t ? 'rgba(232,172,80,.45)' : C.line;
-    ctx.stroke();
-    txt('槽' + (i + 1), pad + 10, sy + 18, 9, C.muted, 'left', true);
-    if (!t){
-      txt(i === 0 ? '本职业天赋（转职后觉醒）' : '未开启（抽卡有概率携带）',
-          pad + 44, sy + 18, Math.max(9, Math.round(W * 0.025)), '#5b5374', 'left');
-      continue;
+  /* ---------- 页签 ---------- */
+  var tabs = ["天赋", "技能", "转职证", "能力"];
+  var tabY = cardY + cardH + 8, tabH = 26;
+  var tw = Math.floor((W - pad * 2 - 3 * 6) / 4);
+  SHOP.detailTab = Math.max(0, Math.min(3, SHOP.detailTab | 0));
+  for (var i = 0; i < tabs.length; i++){
+    var bx = pad + i * (tw + 6);
+    var on = (SHOP.detailTab | 0) === i;
+    rr(bx, tabY, tw, tabH, 13);
+    ctx.fillStyle = on ? C.amber : C.panel2; ctx.fill();
+    txt(tabs[i], bx + tw / 2, tabY + 18, Math.max(10, Math.round(W * 0.026)),
+        on ? "#241d2e" : C.ink, "center", true);
+    (function(k){
+      shopHit(bx, tabY, tw, tabH, function(){ SHOP.detailTab = k; sfx("tap"); });
+    })(i);
+  }
+
+  var cy0 = tabY + tabH + 10;
+  var chAvail = H - 150 - cy0;
+
+  /* ---------- 页签内容 ---------- */
+  if ((SHOP.detailTab | 0) === 0){
+    var slotH = 52, sy = cy0;
+    for (var t = 0; t < 3; t++){
+      var tal = (rat.talents || [])[t];
+      var y = sy + t * (slotH + 8);
+      rr(pad, y, W - pad * 2, slotH, 10);
+      ctx.fillStyle = tal ? "rgba(232,172,80,.07)" : "rgba(255,255,255,.02)"; ctx.fill();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = tal ? "rgba(232,172,80,.45)" : C.line; ctx.stroke();
+      txt("槽" + (t + 1), pad + 10, y + 17, 9, C.muted, "left", true);
+      if (!tal){
+        txt(t === 0 ? "本职业天赋（转职后觉醒）" : "未开启（抽卡有概率携带）",
+            pad + 44, y + 18, Math.max(9, Math.round(W * 0.024)), "#5b5374", "left");
+        continue;
+      }
+      var def = TALENT_DEF[tal.id] || {};
+      var roman = ["Ⅰ", "Ⅱ", "Ⅲ"];
+      txt((def.name || tal.id) + " " + (roman[(tal.lv || 1) - 1] || ""),
+          pad + 44, y + 20, Math.max(12, Math.round(W * 0.032)), "#ffd98a", "left", true);
+      txt(talentEffectText(tal.id, tal.lv || 1), pad + 44, y + 38,
+          Math.max(8, Math.round(W * 0.022)), C.ink, "left");
+      var rbw = 44, rbh = 20, rbx = W - pad - rbw - 8, rby = y + slotH - 26;
+      var armed = REROLL_ARM === (idx + ":" + t);
+      var canR = (SHOP.shard | 0) >= REROLL_COST;
+      rr(rbx, rby, rbw, rbh, 10);
+      ctx.fillStyle = armed ? "rgba(217,109,85,.55)" : (canR ? "rgba(199,182,255,.16)" : "#241d2e"); ctx.fill();
+      ctx.strokeStyle = armed ? "#d96d55" : (canR ? "rgba(199,182,255,.7)" : "#332b45");
+      ctx.lineWidth = 1; ctx.stroke();
+      txt(armed ? "确认?" : ("洗 " + REROLL_COST), rbx + rbw / 2, rby + 14,
+          Math.max(8, Math.round(W * 0.022)), armed ? "#fff" : (canR ? "#c7b6ff" : "#5b5374"), "center", true);
+      (function(slotIndex){
+        shopHit(rbx, rby, rbw, rbh, function(){
+          if ((SHOP.shard | 0) < REROLL_COST){ sfx("invalid"); return; }
+          var key = idx + ":" + slotIndex;
+          if (REROLL_ARM !== key){ REROLL_ARM = key; sfx("tap"); return; }
+          REROLL_ARM = "";
+          var res = rerollTalent(idx, slotIndex);
+          if (res) floatText("洗练 " + ["Ⅰ","Ⅱ","Ⅲ"][res.from - 1] + "→" + ["Ⅰ","Ⅱ","Ⅲ"][res.to - 1],
+                              W / 2, Math.round(H * 0.33), res.to > res.from ? "#ffd98a" : "#d96d55", true);
+        });
+      })(t);
     }
-    var def = TALENT_DEF[t.id] || {};
-    var roman = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
-    txt((def.name || t.id) + ' ' + (roman[(t.lv || 1) - 1] || ''),
-        pad + 44, sy + 20, Math.max(12, Math.round(W * 0.034)), '#ffd98a', 'left', true);
-    txt(talentEffectText(t.id, t.lv || 1), pad + 44, sy + 38,
-        Math.max(8, Math.round(W * 0.023)), C.ink, 'left');
-    txt((LINE_NAME[t.id] || '') + '线', W - pad - 10, sy + 20,
-        Math.max(8, Math.round(W * 0.023)), C.muted, 'right');
-
-    /* 洗练按钮（两段确认） */
-    var rbw = 46, rbh = 20, rbx = W - pad - rbw - 8, rby = sy + slotH - 26;
-    var armed = REROLL_ARM === (idx + ':' + i);
-    var canR = (SHOP.shard | 0) >= REROLL_COST;
-    rr(rbx, rby, rbw, rbh, 10);
-    ctx.fillStyle = armed ? 'rgba(217,109,85,.55)' : (canR ? 'rgba(199,182,255,.16)' : '#241d2e');
-    ctx.fill();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = armed ? '#d96d55' : (canR ? 'rgba(199,182,255,.7)' : '#332b45');
-    ctx.stroke();
-    txt(armed ? '确认?' : ('洗 ' + REROLL_COST), rbx + rbw / 2, rby + 14,
-        Math.max(8, Math.round(W * 0.023)), armed ? '#fff' : (canR ? '#c7b6ff' : '#5b5374'), 'center', true);
-    (function(ri, si){
-      shopHit(rbx, rby, rbw, rbh, function(){
-        if ((SHOP.shard | 0) < REROLL_COST){ sfx('invalid'); return; }
-        var key = ri + ':' + si;
-        if (REROLL_ARM !== key){ REROLL_ARM = key; sfx('tap'); return; }
-        REROLL_ARM = '';
-        var res = rerollTalent(ri, si);
-        if (res) floatText('洗练 Ⅰ→Ⅱ'.replace('Ⅰ', ['Ⅰ','Ⅱ','Ⅲ'][res.from - 1]).replace('Ⅱ', ['Ⅰ','Ⅱ','Ⅲ'][res.to - 1]),
-                           W / 2, Math.round(H * 0.33), res.to > res.from ? '#ffd98a' : '#d96d55', true);
-      });
-    })(idx, i);
-  }
-
-  /* 可用转职证 */
-  var gbY = ty + 12 + 3 * (slotH + 8) + 4;
-  drawGearBag(pad, gbY, W - pad * 2, rat, idx);
-  var skY = gbY + 26 + Math.max(1, gearOptionsFor(rat).length) * 28 + 10;
-  drawSkillBlock(pad, skY, W - pad * 2, rat);
-
-  /* 操作按钮 */
-  var by = ty + 12 + 3 * (slotH + 8) + 10;
-  by = skY + 26 + Math.min(3, Math.max(1, (rat.skills || []).length)) * 26 + 14;
-  var bw = Math.round((W - pad * 2 - 16) / 3), bh = 40;
-  function actBtn(i, label, enabled, onTap, color){
-    var bx = pad + i * (bw + 8);
-    rr(bx, by, bw, bh, 18);
-    ctx.fillStyle = enabled ? (color || C.amber) : '#241d2e';
-    ctx.fill();
-    txt(label, bx + bw / 2, by + 26, Math.max(10, Math.round(W * 0.03)),
-        enabled ? '#241d2e' : '#5b5374', 'center', true);
-    shopHit(bx, by, bw, bh, onTap);
-  }
-  actBtn(0, onSquad ? '下场' : '上场', true, function(){
-    if (onSquad){
-      var k = SHOP.squad.indexOf(idx);
-      if (k >= 0) SHOP.squad[k] = -1;
+    txt("洗练 " + REROLL_COST + " 碎片 · 概率 Ⅰ62% / Ⅱ30% / Ⅲ8%", pad, sy + 3 * (slotH + 8) + 6,
+        Math.max(8, Math.round(W * 0.022)), "#8f86a6", "left");
+  } else if ((SHOP.detailTab | 0) === 1){
+    var sk = rat.skills || [];
+    if (!sk.length){
+      txt("还没有技能 —— 抽卡有概率携带（物理 / 魔法 / 增益），炼妖可以继续堆",
+          W / 2, cy0 + 40, Math.max(10, Math.round(W * 0.026)), C.muted, "center");
     } else {
-      if (squadOnCount() >= squadSlots()){ sfx('invalid'); return; }
-      if (squadLineCount(rat.line) >= maxSameLine(rat.line)){ sfx('invalid'); return; }
+      var rowH = 40, roman2 = ["Ⅰ", "Ⅱ", "Ⅲ"];
+      for (var k2 = 0; k2 < sk.length && cy0 + k2 * rowH < H - 160; k2++){
+        var one = sk[k2];
+        var d2 = skillDefs()[one.id] || {};
+        var yy = cy0 + k2 * rowH;
+        rr(pad, yy, W - pad * 2, rowH - 6, 9);
+        ctx.fillStyle = "rgba(255,255,255,.03)"; ctx.fill();
+        var col = d2.kind === "mag" ? "#8fb8ff" : (d2.kind === "buff" ? "#79c98a" : "#ffb37a");
+        ctx.strokeStyle = col; ctx.globalAlpha = 0.35; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1;
+        txt((d2.name || one.id) + " " + (roman2[(one.lv || 1) - 1] || ""),
+            pad + 10, yy + 15, Math.max(10, Math.round(W * 0.027)), col, "left", true);
+        var tg = (d2.targets || [1,1,1])[(one.lv || 1) - 1] || 1;
+        var cd = Math.round(((d2.cd || [0,0,0])[(one.lv || 1) - 1] || 0) / 1000);
+        txt(skillKindLabel(d2.kind) + " · " + tg + " 目标 · " + cd + "s",
+            pad + 10, yy + 29, Math.max(8, Math.round(W * 0.022)), C.muted, "left");
+        txt(d2.desc || "", W - pad - 10, yy + 22, Math.max(8, Math.round(W * 0.021)), "#6a6480", "right");
+      }
+    }
+  } else if ((SHOP.detailTab | 0) === 2){
+    var opts = gearOptionsFor(rat);
+    txt("背包共 " + gearCountAll() + " 张证", pad, cy0 + 4,
+        Math.max(9, Math.round(W * 0.024)), C.muted, "left");
+    if (!opts.length){
+      txt(rat.tier >= 4 ? "已经满阶，用不上了" : "没有能用的证 —— 抽奖页道具池 / 补给站可获得",
+          W / 2, cy0 + 48, Math.max(10, Math.round(W * 0.024)), C.muted, "center");
+    } else {
+      for (var g2 = 0; g2 < opts.length && g2 < 4; g2++){
+        var o2 = opts[g2];
+        var by2 = cy0 + 20 + g2 * 34;
+        rr(pad, by2, W - pad * 2, 30, 15);
+        ctx.fillStyle = "rgba(232,172,80,.16)"; ctx.fill();
+        ctx.strokeStyle = "rgba(232,172,80,.6)"; ctx.lineWidth = 1; ctx.stroke();
+        txt("使用 " + (LINE_NAME[o2.line] || o2.line) + (TIER_LABEL[o2.tier] || "") + "证 ×" + o2.count,
+            pad + 10, by2 + 20, Math.max(10, Math.round(W * 0.026)), "#ffd98a", "left", true);
+        txt("→ " + (LINE_NAME[o2.line] || o2.line) + " · " + (TIER_LABEL[o2.tier] || ""),
+            W - pad - 10, by2 + 20, Math.max(9, Math.round(W * 0.023)), C.muted, "right");
+        (function(key){
+          shopHit(pad, by2, W - pad * 2, 30, function(){
+            if (gearUse(idx, key)) floatText("转职成功", W / 2, Math.round(H * 0.30), "#ffd98a", true);
+            else sfx("invalid");
+          });
+        })(o2.key);
+      }
+      txt("转职有 30% 概率随机失去 1 个技能", pad, cy0 + 20 + Math.min(4, opts.length) * 34 + 6,
+          Math.max(8, Math.round(W * 0.022)), "#8f86a6", "left");
+    }
+  } else {
+    var rpR = 54;
+    drawRatRadar(W / 2, cy0 + 92, rpR, rat);
+    txt("生命 " + st.hp + " · 基础 " + st.baseDmg + " · 强化 " + st.act, pad, H - 168,
+        Math.max(9, Math.round(W * 0.023)), C.muted, "left");
+  }
+
+  /* ---------- 底部操作 ---------- */
+  var bh = 40, byy = H - 96;
+  var bw = Math.round((W - pad * 2 - 16) / 3);
+  function act(i, label, enabled, color, onTap){
+    var bx = pad + i * (bw + 8);
+    rr(bx, byy, bw, bh, 20);
+    ctx.fillStyle = enabled ? color : "#241d2e"; ctx.fill();
+    txt(label, bx + bw / 2, byy + 26, Math.max(10, Math.round(W * 0.028)),
+        enabled ? "#241d2e" : "#5b5374", "center", true);
+    shopHit(bx, byy, bw, bh, onTap);
+  }
+  act(0, onSquad ? "下场" : "上场", true, onSquad ? "rgba(232,172,80,.75)" : C.amber, function(){
+    if (onSquad){
+      var kk = SHOP.squad.indexOf(idx);
+      if (kk >= 0) SHOP.squad[kk] = -1;
+    } else {
+      if (squadOnCount() >= squadSlots()){ sfx("invalid"); return; }
+      if (squadLineCount(rat.line) >= maxSameLine(rat.line)){ sfx("invalid"); return; }
       var slot = squadFirstEmpty();
       if (slot >= 0) SHOP.squad[slot] = idx;
     }
-    rebuildUnitsIfShop();
-    shopSave();
-    sfx('tap');
-  }, onSquad ? 'rgba(232,172,80,.75)' : C.amber);
-  actBtn(1, '炼妖', true, function(){
-    SHOP.page = 'fuse';
-    FUSE.main = idx; FUSE.sub = -1; FUSE.result = null;
-    sfx('tap');
-  }, 'rgba(199,182,255,.85)');
-  actBtn(2, '分解', !onSquad && SHOP.rats.length > 1, function(){
-    if (onSquad || SHOP.rats.length <= 1){ sfx('invalid'); return; }
+    rebuildUnitsIfShop(); shopSave(); sfx("tap");
+  });
+  act(1, "炼妖", true, "rgba(199,182,255,.85)", function(){
+    SHOP.page = "fuse"; FUSE.main = idx; FUSE.sub = -1; FUSE.result = null; sfx("tap");
+  });
+  act(2, "分解", !onSquad && SHOP.rats.length > 1, "rgba(217,109,85,.9)", function(){
+    if (onSquad || SHOP.rats.length <= 1){ sfx("invalid"); return; }
     var gain = decompRat(idx);
-    if (gain > 0){
-      SHOP.page = '';
-      floatText('碎片 +' + gain, W / 2, Math.round(H * 0.4), '#c7b6ff', true);
-    }
-  }, 'rgba(217,109,85,.9)');
-
-  txt('洗练：' + REROLL_COST + ' 碎片重掷该槽等级（62% Ⅰ / 30% Ⅱ / 8% Ⅲ）',
-      W / 2, by + bh + 50, Math.max(8, Math.round(W * 0.022)), '#8f86a6', 'center', true);
-  /* 四维雷达 */
-  var rpY = by + bh + 50;
-  rr(pad, rpY, W - pad * 2, 138, 12);
-  ctx.fillStyle = 'rgba(255,255,255,.03)'; ctx.fill();
-  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.07)'; ctx.stroke();
-  txt('能力面板', pad + 12, rpY + 20, Math.max(10, Math.round(W * 0.028)), C.amber, 'left', true);
-  drawRatRadar(W / 2, rpY + 76, 36, rat);
-
-  txt('槽1 跟职业线 · 槽2/3 靠抽卡（可跨职业）',
-      W / 2, by + bh + 18, Math.max(8, Math.round(W * 0.022)), '#6a6480', 'center');
-  txt('炼妖 = 主鼠槽1 固定，其余按概率继承',
-      W / 2, by + bh + 32, Math.max(8, Math.round(W * 0.022)), '#6a6480', 'center');
+    if (gain > 0){ SHOP.page = ""; floatText("碎片 +" + gain, W / 2, Math.round(H * 0.4), "#c7b6ff", true); }
+  });
+  txt("双击仓鼠卡也能进这里 · 四个页签看不同信息", W / 2, H - 44,
+      Math.max(8, Math.round(W * 0.021)), "#5b5374", "center");
 }
 
 /* 取某只鼠的像素贴图（没有就返回 null） */
+/* 职业图标（16×16 头像+武器，Tessera 生成）：用于卡片角标，一眼看出是什么职业 */
+function classIconImg(line){
+  if (!line || line === 'none') return null;
+  return (typeof artFromMap === 'function') ? artFromMap(unitArtMap(), ['class-' + line]) : null;
+}
+function drawClassIcon(line, cx, cy, size){
+  var img = classIconImg(line);
+  if (!img) return false;
+  ctx.save();
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(img, Math.round(cx - size / 2), Math.round(cy - size / 2), size, size);
+  ctx.restore();
+  return true;
+}
+
 function ratArtImg(rat){
   if (!rat) return null;
   var line = rat.line || 'none';
   var tier = rat.tier || 1;
-  /* 白板鼠（tier 1）没有分线贴图，统一用 none-1 的样子；
-     再兜一层到本线二级图，最后才让调用方退回矢量。 */
   var keys = [line + '-' + tier, 'none-1', line + '-2'];
   return (typeof artFromMap === 'function') ? artFromMap(unitArtMap(), keys) : null;
 }
@@ -1716,22 +1768,22 @@ function drawGachaReveal(){
   }
   var fy = H * 0.74;
   var msgParts = [];
-  if (joined) msgParts.push('进仓鼠栏 ' + joined + ' 只');
   if (boxedN) msgParts.push('进仓鼠盒 ' + boxedN + ' 只');
+  if (joined) msgParts.push('进仓鼠栏 ' + joined + ' 只');
   if (sharded) msgParts.push('折成 ' + sharded + ' 碎片');
-  var msg = msgParts.join(' · ') + '（栏 ' + SHOP.rats.length + '/' + rosterCap() +
-            ' · 盒 ' + boxList().length + '/' + boxCap() + '）';
+  var msg = msgParts.join(' · ') + '（盒 ' + boxList().length + '/' + boxCap() +
+            ' · 栏 ' + SHOP.rats.length + '/' + rosterCap() + '）';
   txt(msg, W / 2, fy, Math.max(10, Math.round(W * 0.028)), joined ? '#79c98a' : '#c7b6ff', 'center', true);
 
-  if (joined){
-    var gbW = 132, gbH = 34, gbX = W / 2 - gbW / 2, gbY = fy + 14;
+  if (boxedN || joined){
+    var gbW = 148, gbH = 34, gbX = W / 2 - gbW / 2, gbY = fy + 14;
     rr(gbX, gbY, gbW, gbH, 17);
     ctx.fillStyle = C.amber; ctx.fill();
-    txt('去编队 →', W / 2, gbY + 23, Math.max(11, Math.round(W * 0.03)), '#241d2e', 'center', true);
+    txt('去仓鼠盒挑人 →', W / 2, gbY + 23, Math.max(11, Math.round(W * 0.029)), '#241d2e', 'center', true);
     shopHit(gbX, gbY, gbW, gbH, function(){
       REVEAL.results = [];
-      SHOP.page = '';
-      if (typeof list[0].index === 'number') SHOP.sel = list[0].index;
+      SHOP.page = 'box';
+      BOX.sel = -1;
       sfx('tap');
     });
   }
@@ -1923,6 +1975,7 @@ function drawBoxPage(){
     ctx.lineWidth = sel ? 2 : 1;
     ctx.strokeStyle = sel ? C.amber : C.line; ctx.stroke();
     drawRatAt(rat, cx + cw / 2, cy + ch * 0.38, Math.min(46, ch * 0.52), 1);
+    if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, cx + cw - 14, cy + 26, 16);
     var name = ratLabel(rat); if (name.length > 4) name = name.slice(0, 4);
     txt(name, cx + cw / 2, cy + ch - 20, Math.max(9, Math.round(W * 0.026)), C.ink, 'center', true);
     var ts = rat.talents || [];
@@ -2017,6 +2070,19 @@ function drawFuse(){
     ctx.stroke();
     txt(isMain ? '主' : (isSub ? '副' : ''), cx + cw - 12, cy + 14,
         9, isMain ? C.amber : '#9fc6ff', 'right', true);
+    /* 上场状态 + 价值速览 */
+    if (SHOP.squad.indexOf(i) >= 0){
+      var obw = 18, obh = 12, obx = cx + 6, oby = cy + 6;
+      rr(obx, oby, obw, obh, 6);
+      ctx.fillStyle = 'rgba(121,201,138,.22)'; ctx.fill();
+      ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(121,201,138,.8)'; ctx.stroke();
+      txt('上', obx + obw / 2, oby + 9, 8, '#79c98a', 'center', true);
+    }
+    txt('★' + ratScore(r), cx + 8, cy + chh - 6, Math.max(8, Math.round(W * 0.022)),
+        '#ffd166', 'left', true);
+    txt('技' + ((r.skills || []).length), cx + cw - 8, cy + chh - 6,
+        Math.max(8, Math.round(W * 0.022)), '#8fb8ff', 'right');
+    if (r.line && r.line !== 'none') drawClassIcon(r.line, cx + cw - 14, cy + 26, 16);
     txt((LINE_NAME[r.line] || '白板'), cx + 8, cy + 20, Math.max(10, Math.round(W * 0.028)), C.ink, 'left', true);
     var tal = (r.talents || []).map(function(t){ return (TALENT_DEF[t.id] ? TALENT_DEF[t.id].name : t.id).slice(0,2) + t.lv; }).join(' ');
     txt(tal || '无天赋', cx + 8, cy + 38, Math.max(8, Math.round(W * 0.023)), '#ffd98a', 'left');
@@ -2037,7 +2103,7 @@ function drawFuse(){
   /* 预览 */
   var pv = (FUSE.main >= 0 && FUSE.sub >= 0) ? fusePreview(FUSE.main, FUSE.sub) : null;
   var py = top + 160;
-  rr(pad, py, W - pad * 2, pv ? 286 : 150, 12);
+  rr(pad, py, W - pad * 2, pv ? 340 : 150, 12);
   ctx.fillStyle = C.panel; ctx.fill();
   ctx.strokeStyle = 'rgba(232,172,80,.3)'; ctx.lineWidth = 1; ctx.stroke();
   txt('合成预览', pad + 12, py + 20, Math.max(10, Math.round(W * 0.03)), C.amber, 'left', true);
@@ -2073,12 +2139,33 @@ function drawFuse(){
       txt((ex.who === '主' ? '主' : '副') + ' · ' +
           (TALENT_DEF[ex.id] ? TALENT_DEF[ex.id].name : ex.id) + ' ' + ex.lv + '级' +
           ' → ' + Math.round(ex.chance * 100) + '% 保留',
-          pad + 12, py + 150 + e * 17, Math.max(9, Math.round(W * 0.024)), C.muted, 'left');
+          pad + 12, py + 148 + e * 16, Math.max(9, Math.round(W * 0.023)), C.muted, 'left');
     }
-    txt('消耗 ' + pv.cost + ' 金币 · 副鼠消失 · 一个额外天赋都没继承则返 ' + pv.refund + ' 碎片',
-        pad + 12, py + 224, Math.max(8, Math.round(W * 0.023)), '#8f86a6', 'left');
+    /* 双方属性 + 技能（压成两行，避免和下面挤） */
+    var aSt = ratStats(pv.main), bSt = ratStats(pv.sub);
+    txt('主 ' + aSt.name + ' ' + aSt.hp + '/' + aSt.baseDmg +
+        '　副 ' + bSt.name + ' ' + bSt.hp + '/' + bSt.baseDmg,
+        pad + 12, py + 198, Math.max(9, Math.round(W * 0.023)), '#8f86a6', 'left');
+    var romanS = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
+    function skLine(list){
+      var arr = list || [];
+      var out2 = arr.slice(0, 2).map(function(t){
+        return skillName(t.id) + (romanS[(t.lv || 1) - 1] || '');
+      }).join(' ');
+      if (arr.length > 2) out2 += ' +' + (arr.length - 2);
+      return out2 || '无';
+    }
+    txt('主技 ' + skLine(pv.skillsMain), pad + 12, py + 216,
+        Math.max(9, Math.round(W * 0.022)), '#ffb37a', 'left');
+    txt('副技 ' + skLine(pv.skillsSub), pad + 12, py + 232,
+        Math.max(9, Math.round(W * 0.022)), '#8fb8ff', 'left');
+
+    txt('新鼠随主鼠职业/阶，技能与天赋按概率继承',
+        pad + 12, py + 250, Math.max(9, Math.round(W * 0.021)), '#6a6480', 'left');
+    txt('消耗 ' + pv.cost + ' 金币 · 副鼠消失 · 没继承额外天赋返 ' + pv.refund + ' 碎片',
+        pad + 12, py + 266, Math.max(9, Math.round(W * 0.021)), '#8f86a6', 'left');
     var ok = SHOP.coins >= pv.cost;
-    var bw2 = W - pad * 2 - 24, bh2 = 40, bx2 = pad + 12, by2 = py + 230;
+    var bw2 = W - pad * 2 - 24, bh2 = 40, bx2 = pad + 12, by2 = py + 282;
     rr(bx2, by2, bw2, bh2, 20);
     ctx.fillStyle = ok ? C.amber : '#241d2e'; ctx.fill();
     txt('炼妖（' + pv.cost + ' 金币）', bx2 + bw2 / 2, by2 + 26,
@@ -2099,7 +2186,7 @@ function drawFuse(){
   }
 
   /* 规则卡 */
-  var rlY = py + (pv ? 296 : 162);
+  var rlY = py + (pv ? 350 : 162);
   rr(pad, rlY, W - pad * 2, 96, 12);
   ctx.fillStyle = 'rgba(255,255,255,.03)'; ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.07)'; ctx.stroke();
@@ -2474,6 +2561,29 @@ function drawRatStats(x, y, w){
   }
 }
 
+/* 仓鼠"价值"速览：天赋等级和 + 技能等级和，右上角显示成 ★N */
+function ratScore(rat){
+  if (!rat) return 0;
+  var n = 0;
+  var ts = rat.talents || [];
+  for (var i = 0; i < ts.length; i++) n += (ts[i].lv || 1);
+  var sk = rat.skills || [];
+  for (var j = 0; j < sk.length; j++) n += (sk[j].lv || 1);
+  return n;
+}
+/* 技能类型色点（物理橙 / 魔法蓝 / 增益绿），最多画 4 个 */
+function drawSkillDots(rat, x, y){
+  var sk = rat && rat.skills ? rat.skills : [];
+  if (!sk.length) return;
+  var defs = skillDefs();
+  for (var i = 0; i < sk.length && i < 4; i++){
+    var d = defs[sk[i].id] || {};
+    var col = d.kind === 'mag' ? '#8fb8ff' : (d.kind === 'buff' ? '#79c98a' : '#ffb37a');
+    ctx.fillStyle = col;
+    ctx.fillRect(x + i * 6, y, 4, 4);
+  }
+}
+
 function drawRatCard(x, y, w, h, idx){
   var rat = SHOP.rats[idx];
   if (!rat) return;
@@ -2506,6 +2616,7 @@ function drawRatCard(x, y, w, h, idx){
   /* 卡片只有 ~110px 宽：名字最多 4 个字，天赋只显示第一条 + "+n" */
   var name = ratLabel(rat);
   if (name.length > 4) name = name.slice(0, 4);
+  if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, x + w - 15, y + 26, 16);
   txt(name, tx, y + Math.round(h * 0.30), nameFs, C.ink, 'left', true);
   txt(ratLineLabel(rat), tx, y + Math.round(h * 0.52), subFs, C.muted, 'left');
 
@@ -2519,6 +2630,12 @@ function drawRatCard(x, y, w, h, idx){
     if (ts.length > 1) talText += '+' + (ts.length - 1);
   }
   txt(talText, tx, y + Math.round(h * 0.74), subFs + 1, '#ffd98a', 'left', true);
+
+  /* 价值速览：右上角 ★评分 + 技能类型色点 */
+  var score = ratScore(rat);
+  txt('★' + score, x + w - 8, y + h - 8, Math.max(9, Math.round(W * 0.024)),
+      score >= 8 ? '#ffd166' : (score >= 5 ? '#e8ac50' : '#8f86a6'), 'right', true);
+  drawSkillDots(rat, x + 8, y + h - 11);
 
   /* NEW 角标：刚抽到、还没看过 */
   if (isFresh(idx)){
@@ -2539,6 +2656,16 @@ function drawRatCard(x, y, w, h, idx){
   }
 
   shopHit(x, y, w, h, function(){
+    /* 双击（350ms 内点同一张）→ 直接进详情；单击仍是"选中 / 上下场" */
+    var tapNow = performance.now();
+    if (SHOP.lastTapIdx === idx && tapNow - (SHOP.lastTapAt || 0) < 350){
+      SHOP.lastTapIdx = -1; SHOP.lastTapAt = 0;
+      SHOP.detail = idx; SHOP.detailScroll = 0; clearFresh(idx);
+      SHOP.page = 'rat'; sfx('tap');
+      return;
+    }
+    SHOP.lastTapIdx = idx; SHOP.lastTapAt = tapNow;
+
     // 第一次点 = 选中（只选人，不动编队）；再点已选中的那只 = 上下场
     if (SHOP.sel !== idx){
       SHOP.sel = idx;
