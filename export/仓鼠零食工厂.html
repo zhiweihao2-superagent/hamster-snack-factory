@@ -9144,10 +9144,10 @@ function drawShop(){
         hot ? '#e4dcff' : '#c7b6ff', 'center', true);
     shopHit(ex, cby, ebw, ebh, onTap);
   }
-  entryBtn(e2x, '炼妖', function(){ SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap'); });
+  entryBtn(cbx - 2 * (ebw + 6), '炼妖', function(){ SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap'); });
     /* 仓鼠盒：盒里有东西就高亮，数字直接写在按钮上 */
   var boxN = boxList().length;
-  entryBtn(e3x, boxN ? ('盒' + boxN) : '仓鼠盒', function(){ SHOP.page = 'box'; sfx('tap'); }, boxN > 0);
+  entryBtn(cbx - ebw - 6, boxN ? ('盒' + boxN) : '仓鼠盒', function(){ SHOP.page = 'box'; sfx('tap'); }, boxN > 0);
   var cardX = pad, cardW = W - pad * 2;
   var ratsY = Math.round(H * 0.178);
   var onCount = squadOnCount();
