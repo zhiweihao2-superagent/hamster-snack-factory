@@ -1,0 +1,32 @@
+{
+  "description": "仓鼠零食工厂 — WeChat Mini Game exported by dsh-game-studio",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "enhance": false,
+    "minified": true,
+    "uglifyFileName": false,
+    "enhanceWithBabel": false
+  },
+  "compileType": "game",
+  "libVersion": "3.5.8",
+  "appid": "touristappid",
+  "projectname": "hamster-snack-factory",
+  "condition": {},
+  "packOptions": {
+    "ignore": [
+      {
+        "type": "file",
+        "value": ".studio-wx-manifest.json"
+      },
+      {
+        "type": "file",
+        "value": "WECHAT_SUBMISSION_DRAFT.md"
+      },
+      {
+        "type": "glob",
+        "value": "**/*.md"
+      }
+    ]
+  }
+}

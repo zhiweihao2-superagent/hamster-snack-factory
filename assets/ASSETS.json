@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "assets": {
+    "hamster": {
+      "slot": "hamster",
+      "file": "assets/hamster.svg",
+      "source": "template",
+      "appliedAt": "2026-11-22T09:02:11.350Z",
+      "license": "Project-drawn placeholder (code art is used until a real picture is applied)",
+      "sha256": "91a1011035a96dc4345f3613ad306f689f4c13fc6bf3f9ed1730a1dfd39c4522"
+    },
+    "snack_peanut": {
+      "slot": "snack_peanut",
+      "file": "assets/snack_peanut.svg",
+      "source": "template",
+      "appliedAt": "2026-11-22T09:02:11.351Z",
+      "license": "Project-drawn placeholder (code art is used until a real picture is applied)",
+      "sha256": "dffbf8362b0d2e7f1f6ad0757327c0835d7747c9fd162e1611ae712653dc8318"
+    },
+    "snack_cookie": {
+      "slot": "snack_cookie",
+      "file": "assets/snack_cookie.svg",
+      "source": "template",
+      "appliedAt": "2026-11-22T09:02:11.352Z",
+      "license": "Project-drawn placeholder (code art is used until a real picture is applied)",
+      "sha256": "6a3075cf09b3c90cf003af3b20c4bd004469c0590ee875cec3239f7ecde6c55a"
+    },
+    "snack_seed": {
+      "slot": "snack_seed",
+      "file": "assets/snack_seed.svg",
+      "source": "template",
+      "appliedAt": "2026-11-22T09:02:11.353Z",
+      "license": "Project-drawn placeholder (code art is used until a real picture is applied)",
+      "sha256": "fb37754a2a324986efeeaa3bf6c254c7ad2bf801f1e488973e829d82cbc1edda"
+    },
+    "stage_bg": {
+      "slot": "stage_bg",
+      "file": "assets/stage_bg.png",
+      "source": "edited",
+      "appliedAt": "2026-11-25T06:05:26.770Z",
+      "license": "Changed inside this project (by hand or by the agent) after it was recorded; its terms follow the project and whatever it was based on.",
+      "sha256": "dd9fba6126cfeb19a2abd2eda7d9eaae18eae36a0b014271312abb19dac476ae",
+      "basedOn": {
+        "source": "edited",
+        "file": "assets/stage_bg.png",
+        "license": "Changed inside this project (by hand or by the agent) after it was recorded; its terms follow the project and whatever it was based on."
+      }
+    }
+  }
+}

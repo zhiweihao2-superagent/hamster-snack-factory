@@ -1,0 +1,22 @@
+{
+  "crate-1": 4,
+  "crate-2": 4,
+  "crate-3": 4,
+  "crate-4": 3,
+  "shell-1": 4,
+  "shell-2": 3,
+  "shell-3": 4,
+  "shell-4": 6,
+  "thief-1": 4,
+  "thief-2": 4,
+  "thief-3": 2,
+  "thief-4": 3,
+  "boss-1": 4,
+  "boss-2": 2,
+  "boss-3": 3,
+  "boss-4": 4,
+  "glue-1": 4,
+  "glue-2": 3,
+  "glue-3": 2,
+  "glue-4": 3
+}

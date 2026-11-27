@@ -1,0 +1,4267 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data: blob:; media-src data: blob:; font-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; form-action 'none'">
+<title>仓鼠零食工厂</title>
+<style>html,body{margin:0;width:100%;height:100%;height:100dvh;overflow:hidden;background:#000;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}canvas{display:block;width:100vw;height:100vh;height:100dvh;touch-action:none;outline:none;-webkit-tap-highlight-color:transparent}</style></head><body><canvas id="game" tabindex="0"></canvas>
+<script>window.addEventListener("keydown",function(e){if(e.key==="Escape")try{parent.postMessage({type:"dsh-wall-escape"},"*")}catch(_){}});window.GAME={"title":"仓鼠零食工厂","rules":{"boardSize":5,"levels":[{"name":"工厂开张","steps":5,"target":40,"hint":"swap","tip":"滑动相邻的两颗零食，三个排成一线就能消除。"},{"name":"第一笔订单","steps":6,"target":74,"hint":"cascade","tip":"先消下面的，上面的零食掉下来还会继续消 —— 掉落连击不花步数。"},{"name":"零食试吃会","steps":6,"target":82,"tip":""},{"name":"挑食订单","steps":7,"target":118,"want":0,"need":6,"hint":"order","tip":"这关的订单要花生：只算真正消掉的花生，强化追加的通用进度不算。"},{"name":"零食节","steps":7,"target":132,"tip":""}],"tools":[{"name":"打包机","needsCell":true,"desc":"点它，再点盘上一格：那一整行和一整列都打掉"},{"name":"打包仓鼠","needsCell":false,"desc":"点它：仓鼠啃掉最多那种零食的 10 格"},{"name":"大礼盒","needsCell":true,"desc":"点它，再点盘上一格：那一片 5×5 全炸开"}],"sound":true,"save":true,"autoplay":true,"rpg":{"hp":100,"armorMax":45,"partsMax":18,"energyMax":100,"yieldPer":{"energy":4,"armor":2,"parts":1},"cascade":[1,1.5,2,3],"turret":{"cost":8,"dmg":7},"ult":{"cost":60,"dmg":22},"slots":3,"squad":["tin","cannon"],"tankRedirect":0.2,"tankReduce":0.3,"chapter":{"name":"工厂开张","onField":2,"tools":[1,1,1],"waves":[[{"type":"crate"}],[{"type":"crate"},{"type":"shell"}],[{"type":"crate"},{"type":"thief"}],[{"type":"shell"},{"type":"thief"}],[{"type":"boss"},{"type":"crate"}]]},"foes":{"crate":{"name":"纸箱鼠","hp":34,"chargeMs":4300,"atk":13,"box":1},"shell":{"name":"抛壳鼠","hp":42,"chargeMs":4500,"atk":14,"pierce":1},"thief":{"name":"拾荒鼠","hp":26,"chargeMs":7000,"atk":0,"steal":3},"boss":{"name":"质检机","hp":110,"chargeMs":5600,"atk":18,"boss":1}},"roster":{"cannon":{"need":6},"sniper":{"need":9}},"realtime":true,"armorStepCap":6,"graceMs":8000,"pickEveryN":2,"levels":[{"name":"工厂开张","onField":2,"tools":[1,1,1],"mod":{"note":""},"waves":[[{"type":"crate"}],[{"type":"crate"},{"type":"shell"}],[{"type":"crate"},{"type":"thief"}],[{"type":"shell"},{"type":"thief"}],[{"type":"boss"},{"type":"crate"}]]},{"name":"订单加急","onField":2,"tools":[1,1,1],"mod":{"chargeMul":0.75,"hpMul":0.9,"note":"加急单：敌人出手更快"},"waves":[[{"type":"crate"},{"type":"shell"}],[{"type":"shell"},{"type":"shell"}],[{"type":"thief"},{"type":"shell"}],[{"type":"boss"},{"type":"shell"}]]},{"name":"挑食订单","onField":2,"tools":[1,1,1],"mod":{"yieldMul":{"parts":0.4},"armorMaxDelta":-10,"note":"瓜子断供：零件产出腰斩"},"waves":[[{"type":"crate"}],[{"type":"crate"},{"type":"shell"}],[{"type":"shell"},{"type":"thief"}],[{"type":"crate"},{"type":"boss"}]]},{"name":"鼠海","onField":3,"tools":[1,1,1],"mod":{"hpMul":0.62,"atkMul":0.85,"note":"鼠海：更多，但更脆"},"waves":[[{"type":"crate"},{"type":"crate"},{"type":"shell"}],[{"type":"shell"},{"type":"shell"},{"type":"crate"}],[{"type":"crate"},{"type":"shell"},{"type":"thief"}],[{"type":"shell"},{"type":"thief"},{"type":"crate"}],[{"type":"crate"},{"type":"crate"},{"type":"shell"}],[{"type":"shell"},{"type":"crate"},{"type":"boss"}]]},{"name":"质检日","onField":2,"tools":[1,1,1],"mod":{"atkMul":1.1,"note":"质检日：第 2 波就来质检机"},"waves":[[{"type":"crate"}],[{"type":"boss"},{"type":"crate"}],[{"type":"shell"},{"type":"boss"}],[{"type":"boss"},{"type":"shell"}]]},{"name":"夜班","onField":2,"tools":[1,1,1],"mod":{"noUlt":true,"yieldMul":{"energy":0.45},"note":"停电：大招停用，能量腰斩"},"waves":[[{"type":"crate"},{"type":"shell"}],[{"type":"thief"},{"type":"crate"}],[{"type":"shell"},{"type":"shell"}],[{"type":"boss"},{"type":"boss"}]]}],"roundScale":1.15}},"slots":{"hamster":{"tile":false,"custom":false},"snack_peanut":{"tile":false,"custom":false},"snack_cookie":{"tile":false,"custom":false},"snack_seed":{"tile":false,"custom":false}},"assets":{"hamster":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiB2aWV3Qm94PSIwIDAgMjU2IDI1NiI+CiAgPCEtLSDku5PpvKDljaDkvY3lm77vvJrlj6/ooqsgQUkg55Sf5oiQ55qE5Zu+5pu/5o2i77yIZ2FtZV9zdHVkaW9fZ2VuZXJhdGVfYXNzZXQg4oaSIGFwcGx577yJIC0tPgogIDxnPgogICAgPGVsbGlwc2UgY3g9Ijc4IiBjeT0iNzIiIHJ4PSIzMCIgcnk9IjMwIiBmaWxsPSIjYzk4ZjVlIi8+CiAgICA8ZWxsaXBzZSBjeD0iMTc4IiBjeT0iNzIiIHJ4PSIzMCIgcnk9IjMwIiBmaWxsPSIjYzk4ZjVlIi8+CiAgICA8cmVjdCB4PSI0NiIgeT0iNjQiIHdpZHRoPSIxNjQiIGhlaWdodD0iMTUwIiByeD0iNTgiIGZpbGw9IiNlNWI5ODIiIHN0cm9rZT0iI2E5NzYyYyIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgICA8ZWxsaXBzZSBjeD0iMTI4IiBjeT0iMTY4IiByeD0iNTIiIHJ5PSI0MiIgZmlsbD0iI2Y0ZGNjMCIvPgogICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTMwIiByPSIxMiIgZmlsbD0iIzJhMjMzOCIvPgogICAgPGNpcmNsZSBjeD0iMTU2IiBjeT0iMTMwIiByPSIxMiIgZmlsbD0iIzJhMjMzOCIvPgogICAgPHJlY3QgeD0iMTA2IiB5PSIxODIiIHdpZHRoPSI0NCIgaGVpZ2h0PSI0MCIgcng9IjEwIiBmaWxsPSIjZThhYzUwIiBzdHJva2U9IiNhOTc2MmMiIHN0cm9rZS13aWR0aD0iMyIvPgogICAgPGVsbGlwc2UgY3g9IjEyOCIgY3k9IjE1MiIgcng9IjkiIHJ5PSI3IiBmaWxsPSIjOGQ1YzNjIi8+CiAgPC9nPgo8L3N2Zz4K","snack_peanut":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+CiAgPHJlY3QgeD0iNiIgeT0iNiIgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIHJ4PSI0OCIgZmlsbD0iI2U4YWM1MCIgc3Ryb2tlPSIjYTk3NjJjIiBzdHJva2Utd2lkdGg9IjQiLz4KICA8Y2lyY2xlIGN4PSI3NiIgY3k9Ijk2IiByPSIyNiIgZmlsbD0iI2E5NzYyYyIvPgogIDxjaXJjbGUgY3g9IjExNiIgY3k9Ijk2IiByPSIyNiIgZmlsbD0iI2E5NzYyYyIvPgo8L3N2Zz4K","snack_cookie":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+CiAgPHJlY3QgeD0iNiIgeT0iNiIgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIHJ4PSI0OCIgZmlsbD0iI2Q5NmQ1NSIgc3Ryb2tlPSIjYTM0ODM0IiBzdHJva2Utd2lkdGg9IjQiLz4KICA8Y2lyY2xlIGN4PSI5NiIgY3k9IjY0IiByPSIxOCIgZmlsbD0iI2EzNDgzNCIvPgogIDxjaXJjbGUgY3g9IjYyIiBjeT0iMTE2IiByPSIxOCIgZmlsbD0iI2EzNDgzNCIvPgogIDxjaXJjbGUgY3g9IjEzMCIgY3k9IjExNiIgcj0iMTgiIGZpbGw9IiNhMzQ4MzQiLz4KPC9zdmc+Cg==","snack_seed":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+CiAgPHJlY3QgeD0iNiIgeT0iNiIgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIHJ4PSI0OCIgZmlsbD0iIzY5YTY5YyIgc3Ryb2tlPSIjM2Y3MzY4IiBzdHJva2Utd2lkdGg9IjQiLz4KICA8ZWxsaXBzZSBjeD0iOTYiIGN5PSI5NiIgcng9IjI1IiByeT0iNDYiIGZpbGw9IiMzZjczNjgiIHRyYW5zZm9ybT0icm90YXRlKDI4IDk2IDk2KSIvPgo8L3N2Zz4K"}};</script>
+<script>(function(){
+'use strict';
+
+/* ============================================================
+   仓鼠零食工厂 · 第一版
+   规则按《仓鼠零食工厂_游戏策划与开发说明.md》实现，美术为方块占位。
+   逻辑与渲染分离：所有规则在 tick 之前同步算完，渲染只读状态。
+   ============================================================ */
+
+var N = 5;                       // 棋盘 5×5
+var canvas = document.getElementById('game');
+var ctx = canvas.getContext('2d');
+var DPR = 1, W = 390, H = 844, L = {};
+
+/* ---------- 微信小游戏安全区：状态栏 + 右上角胶囊 ---------- */
+var SAFE_TOP = 0, SAFE_BOT = 0;
+(function(){
+  try {
+    if (typeof wx === 'undefined' || !wx) return;
+    var sa = window.__wxSafeArea;
+    if (sa && sa.topHudY) SAFE_TOP = Math.round(sa.topHudY);
+    if (sa && sa.bottom && window.innerHeight) SAFE_BOT = Math.max(0, Math.round(window.innerHeight - sa.bottom));
+  } catch (e) {}
+})();
+
+/* ---------- 零食：三种，颜色与轮廓都不同 ---------- */
+var TYPES = [
+  { name:'花生', base:'#e8ac50', dark:'#a9762c', glyph:'peanut' },
+  { name:'饼干', base:'#d96d55', dark:'#a34834', glyph:'cookie' },
+  { name:'瓜子', base:'#69a69c', dark:'#3f7368', glyph:'seed'   }
+];
+
+/* ---------- 礼盒图案（先手工做三张） ---------- */
+var PATTERNS = [
+  { name:'笑脸', rows:[
+    '...........',
+    '..#######..',
+    '.#########.',
+    '###.###.###',
+    '###########',
+    '###########',
+    '###.....###',
+    '.####.####.',
+    '..#######..',
+    '...#####...',
+    '...........'
+  ]},
+  { name:'爱心', rows:[
+    '...........',
+    '..##...##..',
+    '.#########.',
+    '###########',
+    '###########',
+    '.#########.',
+    '..#######..',
+    '...#####...',
+    '....###....',
+    '.....#.....',
+    '...........'
+  ]},
+  { name:'快递箱', rows:[
+    '...........',
+    '..#######..',
+    '.#########.',
+    '###########',
+    '###########',
+    '#####.#####',
+    '#####.#####',
+    '#####.#####',
+    '#####.#####',
+    '###########',
+    '...........'
+  ]}
+];
+
+/* ---------- 五关（原型数值，未校准） ---------- */
+var LEVELS = [
+  { name:'工厂开张',   steps:5, target:40, hint:'swap',
+    tip:'滑动相邻的两颗零食，三个排成一线就能消除。' },
+  { name:'第一笔订单', steps:6, target:74, hint:'cascade',
+    tip:'先消下面的，上面的零食掉下来还会继续消 —— 掉落连击不花步数。' },
+  { name:'零食试吃会', steps:6, target:82,
+    tip:'' },
+  { name:'挑食订单',   steps:7, target:118, want:0, need:6, hint:'order',
+    tip:'这关的订单要花生：只算真正消掉的花生，强化追加的通用进度不算。' },
+  { name:'零食节',     steps:7, target:132,
+    tip:'' }
+];
+
+/* ---------- 礼盒里开出来的工具：主动技能，点一下再用一次，直接改棋盘 ---------- */
+/* needsCell：要先点盘上一格（打包机、大礼盒）；false 就是点一下立刻生效（仓鼠） */
+var TOOLS = [
+  { name:'打包机',   mark:'机', needsCell:true,
+    desc:'点它，再点盘上一格：那一整行和一整列都打掉',
+    tip:'点一格，整行整列一起打包出库' },
+  { name:'打包仓鼠', mark:'鼠', needsCell:false,
+    desc:'点它：仓鼠啃掉最多那种零食的 10 格',
+    tip:'仓鼠上手，最多那种零食啃掉 10 格' },
+  { name:'大礼盒',   mark:'礼', needsCell:true,
+    desc:'点它，再点盘上一格：那一片 5×5 全炸开',
+    tip:'点一格，周围 5×5 全炸' }
+];
+
+/* 每关通关后礼盒里开三样，挑一样带走（不是被动加成，是能点出来用的工具） */
+var PACKS = [
+  { tool:0, n:1, name:'打包机 ×1',   desc:'点它再点一格，整行整列一起打掉' },
+  { tool:1, n:2, name:'打包仓鼠 ×2', desc:'点一下，最多那种零食啃掉 10 格' },
+  { tool:2, n:1, name:'大礼盒 ×1',   desc:'点它再点一格，周围 5×5 全炸开' }
+];
+
+/* ---------- 随机数：统一注入，可复现 ---------- */
+function mulberry32(a){
+  return function(){
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+/* ---------- 状态 ---------- */
+var S = {
+  seed:0, rng:null,
+  level:1, board:[], steps:0, stepsMax:0,
+  prog:0, target:1, wantT:-1, need:0, have:0,
+  upgrades:[], trig:{}, swapCount:0,
+  tools:[0,0,0], arm:-1, rewardInfo:null,
+  pattern:0, filledIdx:[],
+  phase:'title', busy:false,
+  maxGain:0, lastGain:0, cascadeMax:0,
+  reshuffles:0,
+  hintOpen:false, hintText:'',
+  cand:[], picked:[],
+  shakeUntil:0, punchUntil:0, gainFlashUntil:0,
+  // 动画层：逻辑一步算完，动画把这一步摊到几帧里演出来
+  anim:null, instant:false,
+  pops:[], fallMap:null, parts:[],
+  combo:0, comboTxt:0, tmpGain:0, popTxt:null,
+  animFreeze:false,
+  progShown:0,
+  trace:[]
+};
+
+function rndInt(n){ return Math.floor(S.rng() * n); }
+function own(id){ return S.upgrades.indexOf(id) >= 0; }   // 老接口留着，现在没人调
+function cfg(){ return LEVELS[S.level - 1]; }
+
+/* ============================================================
+   棋盘逻辑
+   ============================================================ */
+function findRuns(b){
+  var runs = [], r, c, t, e, i, len, cells;
+  for (r = 0; r < N; r++){
+    c = 0;
+    while (c < N){
+      t = b[r][c];
+      if (t === null){ c++; continue; }
+      e = c;
+      while (e + 1 < N && b[r][e + 1] === t) e++;
+      len = e - c + 1;
+      if (len >= 3){
+        cells = [];
+        for (i = c; i <= e; i++) cells.push(r + ',' + i);
+        runs.push({ dir:'h', t:t, len:len, cells:cells });
+      }
+      c = e + 1;
+    }
+  }
+  for (c = 0; c < N; c++){
+    r = 0;
+    while (r < N){
+      t = b[r][c];
+      if (t === null){ r++; continue; }
+      e = r;
+      while (e + 1 < N && b[e + 1][c] === t) e++;
+      len = e - r + 1;
+      if (len >= 3){
+        cells = [];
+        for (i = r; i <= e; i++) cells.push(i + ',' + c);
+        runs.push({ dir:'v', t:t, len:len, cells:cells });
+      }
+      r = e + 1;
+    }
+  }
+  return runs;
+}
+
+function swapCells(b, a, c){
+  var t = b[a[0]][a[1]];
+  b[a[0]][a[1]] = b[c[0]][c[1]];
+  b[c[0]][c[1]] = t;
+}
+
+function validMoves(b){
+  var out = [], r, c;
+  for (r = 0; r < N; r++){
+    for (c = 0; c < N; c++){
+      if (b[r][c] === null) continue;
+      if (c + 1 < N && b[r][c+1] !== null){
+        swapCells(b, [r,c], [r,c+1]);
+        if (findRuns(b).length) out.push([[r,c],[r,c+1]]);
+        swapCells(b, [r,c], [r,c+1]);
+      }
+      if (r + 1 < N && b[r+1][c] !== null){
+        swapCells(b, [r,c], [r+1,c]);
+        if (findRuns(b).length) out.push([[r,c],[r+1,c]]);
+        swapCells(b, [r,c], [r+1,c]);
+      }
+    }
+  }
+  return out;
+}
+
+// 生成无现成匹配、且至少有一个合法交换的棋盘
+function genBoard(){
+  var b, guard = 0, r, c, tries, t, ok;
+  do {
+    b = [];
+    for (r = 0; r < N; r++){
+      b.push([]);
+      for (c = 0; c < N; c++){
+        tries = 0;
+        do {
+          t = rndInt(3); ok = true;
+          if (c >= 2 && b[r][c-1] === t && b[r][c-2] === t) ok = false;
+          if (r >= 2 && b[r-1][c] === t && b[r-2][c] === t) ok = false;
+          tries++;
+        } while (!ok && tries < 40);
+        b[r][c] = t;
+      }
+    }
+    guard++;
+  } while (findRuns(b).length > 0 && guard < 60);
+  if (!validMoves(b).length) return genBoard();
+  return b;
+}
+
+function clearCells(cells){
+  var i, k;
+  for (i = 0; i < cells.length; i++){
+    k = cells[i].split(',');
+    S.board[+k[0]][+k[1]] = null;
+  }
+}
+
+// 掉落 + 顶部补新
+function dropRefill(){
+  var c, r, col, i;
+  for (c = 0; c < N; c++){
+    col = [];
+    for (r = N - 1; r >= 0; r--) if (S.board[r][c] !== null) col.push(S.board[r][c]);
+    r = N - 1;
+    for (i = 0; i < col.length; i++){ S.board[r][c] = col[i]; r--; }
+    while (r >= 0){ S.board[r][c] = rndInt(3); r--; }   // 补进来的只会是三种零食，不会是炸弹
+  }
+}
+
+/* 在盘上埋 n 颗炸弹（老机制已删，保留这个空壳会被误当成还在用） */
+
+/* 把一批格子真正消掉：算分、清盘、掉落、录一段动画。
+   cells 用 'r,c' 字符串；label 是这一步的来源（消除 / 打包机 / 仓鼠 / 大礼盒）。 */
+function commitClear(cells, round, log, rec, label){
+  var before = snapshot(), haveBefore = S.have;
+  var i, k, r, c, t;
+  var perType = [0,0,0];
+  for (i = 0; i < cells.length; i++){
+    k = cells[i].split(',');
+    t = S.board[+k[0]][+k[1]];
+    if (t !== null && t < 3) perType[t]++;
+  }
+  var gain = cells.length;
+  log.push({ label: (label || '消除') + ' ' + cells.length, v: cells.length });
+  if (S.wantT >= 0) S.have += perType[S.wantT];
+
+  clearCells(cells);
+  dropRefill();
+
+  if (rec){
+    var dead = {}, q;
+    for (q = 0; q < cells.length; q++) dead[cells[q]] = 1;
+    var fall = {}, cc, rr, surv, kk, nNew;
+    for (cc = 0; cc < N; cc++){
+      surv = [];
+      for (rr = 0; rr < N; rr++)
+        if (before[rr][cc] !== null && !dead[rr + ',' + cc]) surv.push(rr);
+      nNew = N - surv.length;
+      // 掉落与 dropRefill 同序：存活块自下而上占满底部，新块从盘顶上方落进来
+      for (rr = 0; rr < N; rr++)
+        fall[rr + ',' + cc] = (rr < nNew) ? (rr - nNew) : surv[rr - nNew];
+    }
+    rec.push({
+      cells: cells.map(function(s){ var p = s.split(','); return [ +p[0], +p[1] ]; }),
+      dead: dead, before: before, after: snapshot(), fall: fall,
+      gain: gain, round: round, haveGain: S.have - haveBefore
+    });
+  }
+  return gain;
+}
+
+/* 一轮自然三连消除 */
+function resolveRound(round, log, rec){
+  var runs = findRuns(S.board);
+  if (!runs.length) return -1;
+  var seen = {}, cells = [], i, j, k;
+  for (i = 0; i < runs.length; i++){
+    for (j = 0; j < runs[i].cells.length; j++){
+      k = runs[i].cells[j];
+      if (!seen[k]){ seen[k] = 1; cells.push(k); }
+    }
+  }
+  return commitClear(cells, round, log, rec, '消除');
+}
+
+function snapshot(){
+  var out = [], r;
+  for (r = 0; r < N; r++) out.push(S.board[r].slice());
+  return out;
+}
+
+// 消除到棋盘稳定，返回总进度；log 记录每笔来源，rec 记录每一轮用于播放动画
+// after：已经用掉的回合数（技能先清了一轮就传 1，连击编号接着往下排）
+function resolveAll(log, rec, after){
+  var round = after || 0, total = 0, g;
+  S.cascadeMax = 0;
+  while (true){
+    g = resolveRound(round + 1, log, rec);
+    if (g < 0) break;
+    round++;
+    total += g;
+  }
+  if (round > S.cascadeMax) S.cascadeMax = round;
+  return total;
+}
+
+/* ============================================================
+   礼盒工具：主动技能，点一下用一次
+   ============================================================ */
+/* 算这颗技能要清哪些格。返回 'r,c' 的数组，越界/空格自动跳过。 */
+function toolCells(id, cell){
+  var out = [], seen = {}, r, c, k;
+  function put(rr, cc){
+    if (rr < 0 || rr >= N || cc < 0 || cc >= N) return;
+    if (S.board[rr][cc] === null) return;
+    var kk = rr + ',' + cc;
+    if (seen[kk]) return;
+    seen[kk] = 1; out.push(kk);
+  }
+  if (id === 0){
+    // 打包机：整行 + 整列（十字）
+    for (c = 0; c < N; c++) put(cell[0], c);
+    for (r = 0; r < N; r++) put(r, cell[1]);
+  } else if (id === 1){
+    // 打包仓鼠：盘上最多的那种零食，从最大的一堆开始啃，一共啃 10 格。
+    // 整盘同色全清太离谱（实测一次 +140，第一关直接通关），封顶 10 格才有得取舍。
+    var cnt = [0,0,0], best = 0, br, bc, kk, q;
+    for (br = 0; br < N; br++) for (bc = 0; bc < N; bc++){
+      kk = S.board[br][bc];
+      if (kk !== null && kk < 3) cnt[kk]++;
+    }
+    for (k = 1; k < 3; k++) if (cnt[k] > cnt[best]) best = k;
+    var mark = {}, groups = [];
+    for (br = 0; br < N; br++) for (bc = 0; bc < N; bc++){
+      if (S.board[br][bc] !== best || mark[br + ',' + bc]) continue;
+      var group = [], st = [[br, bc]];
+      mark[br + ',' + bc] = 1;
+      while (st.length){
+        var g2 = st.pop(); group.push(g2);
+        var nb = [[g2[0]-1,g2[1]],[g2[0]+1,g2[1]],[g2[0],g2[1]-1],[g2[0],g2[1]+1]];
+        for (q = 0; q < 4; q++){
+          var nr = nb[q][0], nc = nb[q][1];
+          if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
+          if (S.board[nr][nc] !== best) continue;
+          if (mark[nr + ',' + nc]) continue;
+          mark[nr + ',' + nc] = 1;
+          st.push([nr, nc]);
+        }
+      }
+      groups.push(group);
+    }
+    groups.sort(function(a, b){ return b.length - a.length; });
+    var LIMIT = 10, tookN = 0;
+    for (k = 0; k < groups.length && tookN < LIMIT; k++){
+      for (q = 0; q < groups[k].length && tookN < LIMIT; q++){
+        put(groups[k][q][0], groups[k][q][1]);
+        tookN++;
+      }
+    }
+  } else {
+    // 大礼盒：以这一格为中心 5×5
+    for (r = cell[0] - 2; r <= cell[0] + 2; r++)
+      for (c = cell[1] - 2; c <= cell[1] + 2; c++) put(r, c);
+  }
+  return out;
+}
+
+/* 点技能：不需要选格子的立刻生效；需要选格子的先把按钮点亮，等玩家点盘面。
+   返回 'used' | 'armed' | 'off'。技能不花步数，但库存只有一次。 */
+function useTool(id, cell){
+  if (S.phase !== 'play' || S.anim) return 'off';
+  if (!S.tools[id]){ S.shakeUntil = performance.now() + 160; return 'off'; }
+  if (TOOLS[id].needsCell && !cell){
+    S.arm = (S.arm === id ? -1 : id);
+    return 'armed';
+  }
+  var cells = toolCells(id, cell);
+  if (!cells.length){ S.shakeUntil = performance.now() + 160; return 'off'; }
+  S.tools[id]--;
+  S.arm = -1;
+  S.sel = null;
+
+  var pre = snapshot(), log = [], rounds = [];
+  var g1 = commitClear(cells, 1, log, rounds, TOOLS[id].name);
+  var gain = g1 + resolveAll(log, rounds, 1);
+
+  S.prog += gain;
+  S.lastGain = gain;
+  S.gains = log;
+  if (gain > S.maxGain) S.maxGain = gain;
+  S.gainFlashUntil = performance.now() + 700;
+
+  if (S.instant){ S.progShown = S.prog; afterResolve(); return 'used'; }
+  S.anim = {
+    phase:'pop', t:0, idx:0, steps:0,
+    a:null, b:null, pre:pre, rounds:rounds,
+    swapMs:0, popMs:190, fallMs:210
+  };
+  spawnPops(rounds[0]);
+  S.progShown = S.prog - gain;
+  S.combo = 0;
+  return 'used';
+}
+
+/* 无合法交换时重排：不扣步，重排后不得有现成匹配 */
+function reshuffle(){
+  var pool = [], r, c, guard = 0, i, j, tmp;
+  for (r = 0; r < N; r++) for (c = 0; c < N; c++) pool.push(S.board[r][c]);
+  do {
+    for (i = pool.length - 1; i > 0; i--){
+      j = rndInt(i + 1); tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+    }
+    i = 0;
+    for (r = 0; r < N; r++) for (c = 0; c < N; c++) S.board[r][c] = pool[i++];
+    guard++;
+  } while ((findRuns(S.board).length > 0 || !validMoves(S.board).length) && guard < 200);
+  if (findRuns(S.board).length > 0 || !validMoves(S.board).length){
+    S.board = genBoard();
+  }
+  S.reshuffles++;
+}
+
+/* ============================================================
+   一局流程
+   ============================================================ */
+function startLevel(lv){
+  var d = LEVELS[lv - 1];
+  S.level = lv;
+  S.steps = d.steps; S.stepsMax = d.steps;
+  S.prog = 0; S.target = d.target;
+  S.wantT = (d.want === undefined ? -1 : d.want);
+  S.need = d.need || 0; S.have = 0;
+  S.board = genBoard();
+  S.phase = 'play';
+  S.arm = -1;
+  S.maxGain = 0; S.lastGain = 0; S.cascadeMax = 0; S.reshuffles = 0;
+  S.sel = null;
+  S.hintText = d.tip || '';
+  S.hintOpen = !!d.tip;
+  S.gains = [];
+  // 换关要把动画层归零，否则上一关的碎屑/连击会漏到新棋盘上
+  S.anim = null; S.parts = []; S.pops = []; S.combo = 0; S.comboTxt = 0;
+  S.progShown = 0; S.tmpGain = 0; S.popTxt = null;
+}
+
+function newRun(seed){
+  S.seed = seed | 0;
+  S.rng = mulberry32(S.seed);
+  S.tools = [0,0,0]; S.arm = -1; S.rewardInfo = null;
+  S.pattern = rndInt(PATTERNS.length);
+  S.filledIdx = [];
+  S.picked = [];
+  S.trace = [];
+  startLevel(1);
+}
+
+function chunkOf(level){
+  var total = PATTERN_CELLS().length;
+  var per = Math.ceil(total / 5);
+  var start = (level - 1) * per;
+  return { start: start, end: Math.min(total, start + per), per: per, total: total };
+}
+
+var _pcache = null;
+function PATTERN_CELLS(){
+  if (_pcache && _pcache.idx === S.pattern) return _pcache.cells;
+  var p = PATTERNS[S.pattern], cells = [], r, c;
+  for (r = 0; r < p.rows.length; r++)
+    for (c = 0; c < p.rows[r].length; c++)
+      if (p.rows[r][c] === '#') cells.push([r, c]);
+  _pcache = { idx: S.pattern, cells: cells };
+  return cells;
+}
+
+function fillChunkThisLevel(){
+  var ch = chunkOf(S.level), i;
+  for (i = ch.start; i < ch.end; i++) S.filledIdx.push(i);
+}
+
+/* 过关后礼盒开出来的三选一：不是被动加成，是能点出来用的工具 */
+function rollCandidates(){
+  var i, out = [];
+  for (i = 0; i < PACKS.length; i++) out.push(i);
+  return out;
+}
+
+function chooseUpgrade(id){
+  var pk = PACKS[id];
+  if (!pk) return;
+  S.tools[pk.tool] += pk.n;
+  S.arm = -1;
+  S.picked.push(id);
+  startLevel(S.level + 1);
+}
+
+function finishLevel(){
+  fillChunkThisLevel();
+  S.trace.push({ lv:S.level, steps:S.steps, prog:S.prog, target:S.target, cascade:S.cascadeMax, resh:S.reshuffles });
+  S.maxGainOfRun = Math.max(S.maxGainOfRun || 0, S.maxGain);
+  if (S.level >= LEVELS.length){ S.phase = 'win'; return; }
+  S.cand = rollCandidates();
+  S.phase = 'pick';
+}
+
+function afterResolve(){
+  var d = cfg();
+  if (S.prog >= S.target && (S.wantT < 0 || S.have >= S.need)){ finishLevel(); return; }
+  if (S.steps <= 0){ S.phase = 'lose'; return; }
+  if (!validMoves(S.board).length) reshuffle();
+}
+
+/* 玩家交换：无效回弹不扣步，有效扣一步并完整结算。
+   结算一次性算完（逻辑不变），但把过程录成 rounds，交给动画层慢慢演：
+   交换 → 这一轮炸掉 → 掉下来 → 下一轮连击。 */
+function trySwap(a, b){
+  if (S.phase !== 'play') return false;
+  if (S.anim) return false;
+  if (!a || !b) return false;
+  var dr = Math.abs(a[0] - b[0]), dc = Math.abs(a[1] - b[1]);
+  if (dr + dc !== 1) return false;
+
+  var pre = snapshot();
+  swapCells(S.board, a, b);
+  if (findRuns(S.board).length === 0){
+    swapCells(S.board, a, b);
+    S.shakeUntil = performance.now() + 160;
+    S.sel = null;
+    return false;
+  }
+
+  S.steps--;
+  S.swapCount++;
+  S.sel = null;
+
+  var log = [], rounds = [];
+  var gain = resolveAll(log, rounds);
+
+  S.prog += gain;
+  S.lastGain = gain;
+  S.gains = log;
+  if (gain > S.maxGain) S.maxGain = gain;
+  S.gainFlashUntil = performance.now() + 700;
+
+  if (S.instant || !rounds.length){ afterResolve(); return true; }
+
+  S.anim = {
+    phase:'swap', t:0, idx:0, steps:0,
+    a:a, b:b, pre:pre, rounds:rounds,
+    swapMs:110, popMs:170, fallMs:210
+  };
+  S.progShown = S.prog - gain;         // 进度条从旧值往上爬
+  S.combo = 0;
+  return true;
+}
+
+/* 动画推进：每帧按 dt 走时间轴 */
+function stepAnim(dt){
+  var a = S.anim;
+  if (!a) return;
+  a.t += dt;
+
+  if (a.phase === 'swap'){
+    if (a.t >= a.swapMs){ a.phase = 'pop'; a.t = 0; a.idx = 0; spawnPops(a.rounds[0]); }
+    return;
+  }
+  if (a.phase === 'pop'){
+    if (a.t >= a.popMs){ a.phase = 'fall'; a.t = 0; }
+    return;
+  }
+  if (a.phase === 'fall'){
+    if (a.t >= a.fallMs){
+      a.idx++;
+      if (a.idx < a.rounds.length){
+        a.phase = 'pop'; a.t = 0;
+        spawnPops(a.rounds[a.idx]);
+      } else {
+        S.anim = null;
+        S.progShown = S.prog;
+        afterResolve();
+      }
+    }
+  }
+}
+
+/* 炸开的碎屑：只做视觉，不参与规则。
+   颜色跟被消掉的方块走，别一律琥珀色——否则三种零食炸开看着一模一样。 */
+function spawnPops(rec){
+  if (!rec) return;
+  var cs = L.cs, i, k, r, c;
+  S.combo = rec.round;
+  if (rec.round >= 2) S.comboTxt = performance.now() + 620;
+  // 连到第三下时有一下轻微的顶动，隔着屏幕能感觉到「这一下更重」
+  if (rec.round >= 3) S.punchUntil = performance.now() + 110;
+  var isNew = rec.round >= 2 || !S.popTxt;
+  for (i = 0; i < rec.cells.length; i++){
+    r = rec.cells[i][0]; c = rec.cells[i][1];
+    var cx = L.boardX + c * cs + cs / 2;
+    var cy = L.boardY + r * cs + cs / 2;
+    var tt = rec.before && rec.before[r] ? rec.before[r][c] : null;
+    var col = (tt !== null && tt !== undefined && TYPES[tt]) ? TYPES[tt].base : C.amber;
+    for (k = 0; k < 4; k++){
+      S.parts.push({
+        x:cx, y:cy,
+        // 速度按「每毫秒」算：整块碎屑在 400ms 里飞出去大约一格，看着才像被弹开；
+        // 早先按每帧写，一帧就飞出屏外，等于从来没画出来过
+        vx:(Math.random() - 0.5) * 0.0016 * cs,
+        vy:-(0.0005 + Math.random() * 0.0013) * cs,
+        g:0.0000017 * cs,
+        s:cs * (0.07 + Math.random() * 0.09),
+        life:0, max:420 + Math.random() * 180,
+        col:col
+      });
+    }
+  }
+  if (S.parts.length > 300) S.parts.splice(0, S.parts.length - 300);
+  // 每一轮在消除处飘一个「+N」，玩家能看见这一下到底加了多少
+  var rs = 0, cs2 = 0, n = 0;
+  for (i = 0; i < rec.cells.length; i++){
+    rs += rec.cells[i][0]; cs2 += rec.cells[i][1]; n++;
+  }
+  if (n){
+    S.popTxt = {
+      text: (rec.round >= 2 ? '连击 ×' + rec.round + '  +' : '+') + rec.gain,
+      x: L.boardX + (cs2 / n + 0.5) * cs,
+      y: L.boardY + (rs / n + 0.2) * cs,
+      t0: performance.now(), max: 620, big: rec.round >= 2
+    };
+  }
+}
+
+/* 动画期间要画的棋盘视图：位置、缩放、透明度都从动画状态推出来 */
+function animView(){
+  var a = S.anim;
+  if (!a) return null;
+  var cs = L.cs;
+  var out = { board:null, dx:{}, dy:{}, sc:{}, al:{}, glow:{} };
+  var p, k, i;
+
+  if (a.phase === 'swap'){
+    out.board = a.pre;
+    p = easeOut(Math.min(1, a.t / a.swapMs));
+    var A = a.a, B = a.b;
+    var ax = (B[1] - A[1]) * cs * p, ay = (B[0] - A[0]) * cs * p;
+    out.dx[A[0] + ',' + A[1]] = ax;  out.dy[A[0] + ',' + A[1]] = ay;
+    out.dx[B[0] + ',' + B[1]] = -ax; out.dy[B[0] + ',' + B[1]] = -ay;
+    return out;
+  }
+
+  var rec = a.rounds[a.idx];
+  if (!rec) return null;
+
+  if (a.phase === 'pop'){
+    out.board = rec.before;
+    out.flash = {}; out.ring = {};
+    p = Math.min(1, a.t / a.popMs);
+    /* 「被捏爆」三件事同时发生，缩放到零不算其中一件：
+       1) 0~15% 快速鼓到 1.12 倍（再多就压到隔壁格，一格一格的棋盘会糊成一片）
+       2) 15%~55% 缩回 1.0 并淡出，格子自己让位
+       3) 0~70% 从格子边缘往外荡一圈琥珀环，碎屑同时飞出去 */
+    var grow = p < 0.15
+      ? 1 + 0.12 * easeOut(p / 0.15)
+      : 1.12 - 0.12 * easeOut((p - 0.15) / 0.4);
+    for (k in rec.dead){
+      out.sc[k] = Math.max(1, grow);
+      out.al[k] = p < 0.15 ? 1 : Math.max(0, 1 - (p - 0.15) / 0.4);
+      out.flash[k] = p < 0.14 ? (p / 0.14) * 0.5 : Math.max(0, 0.5 * (1 - (p - 0.14) / 0.26));
+      out.ring[k] = p < 0.7 ? p / 0.7 : -1;
+    }
+    return out;
+  }
+
+  // fall：落到位时带一点点回弹，看着像「砸」下来而不是滑下来
+  out.board = rec.after;
+  p = Math.min(1, a.t / a.fallMs);
+  var ep = easeOut(p);
+  var over = p < 0.82 ? 0 : Math.sin((p - 0.82) / 0.18 * Math.PI) * 0.06;
+  for (k in rec.fall){
+    var from = rec.fall[k];
+    var r = +k.split(',')[0];
+    out.dy[k] = (from - r) * cs * ((1 - ep) - over);
+  }
+  return out;
+}
+
+function easeOut(t){ return 1 - (1 - t) * (1 - t); }
+
+
+/* ============================================================
+   布局
+   ============================================================ */
+function layout(){
+  W = canvas.clientWidth || 390;
+  H = (canvas.clientHeight || 844) - SAFE_TOP - SAFE_BOT;
+  var pad = Math.round(W * 0.045);
+  var headerH = Math.max(54, Math.round(H * 0.088));
+  var bottomH = Math.max(48, Math.round(H * 0.068));
+  var cs = Math.floor(Math.min((W - pad * 2) / N, (H * 0.46) / N));
+  var boardW = cs * N;
+  var boardY, giftY, giftH;
+
+  for (var guard = 0; guard < 12; guard++){
+    boardY = H - bottomH - boardW - Math.round(H * 0.02);
+    giftY = headerH + Math.round(H * 0.01);
+    giftH = boardY - Math.round(H * 0.014) - giftY;
+    if (giftH >= 96 || cs <= 26) break;
+    cs--; boardW = cs * N;
+  }
+
+  L = {
+    pad: pad, headerH: headerH, bottomH: bottomH,
+    cs: cs, boardW: boardW,
+    boardX: Math.round((W - boardW) / 2), boardY: boardY,
+    giftY: giftY, giftH: Math.max(60, giftH)
+  };
+}
+
+function resize(){
+  DPR = Math.min(3, window.devicePixelRatio || 1);
+  canvas.width = Math.round(canvas.clientWidth * DPR);
+  canvas.height = Math.round(canvas.clientHeight * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  layout();
+}
+
+/* ============================================================
+   绘制
+   ============================================================ */
+var C = {
+  bg:'#241d2e', panel:'#332b45', panel2:'#2c2540', line:'#4a4160',
+  ink:'#f4ecdc', muted:'#a79cb8', amber:'#e8ac50', good:'#69a69c', bad:'#d96d55'
+};
+
+var HIT = {};
+
+function rr(x, y, w, h, r){
+  var rad = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rad, y);
+  ctx.arcTo(x + w, y, x + w, y + h, rad);
+  ctx.arcTo(x + w, y + h, x, y + h, rad);
+  ctx.arcTo(x, y + h, x, y, rad);
+  ctx.arcTo(x, y, x + w, y, rad);
+  ctx.closePath();
+}
+
+function txt(s, x, y, size, color, align, bold){
+  ctx.font = (bold ? '700 ' : '500 ') + size + 'px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillStyle = color;
+  ctx.textAlign = align || 'left';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText(s, x, y);
+}
+
+function drawTile(x, y, size, t, dim){
+  var ty = TYPES[t];
+  if (!ty) return;
+  rr(x, y, size, size, size * 0.26);
+  ctx.fillStyle = dim ? '#2a2338' : ty.base;
+  ctx.fill();
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = dim ? '#38304d' : ty.dark;
+  ctx.stroke();
+
+  var cx = x + size / 2, cy = y + size / 2, s = size;
+  ctx.fillStyle = ty.dark;
+  if (ty.glyph === 'peanut'){
+    ctx.beginPath(); ctx.arc(cx - s * 0.11, cy, s * 0.135, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx + s * 0.11, cy, s * 0.135, 0, Math.PI * 2); ctx.fill();
+  } else if (ty.glyph === 'cookie'){
+    var d2 = s * 0.1, o2 = s * 0.175;
+    ctx.beginPath();
+    ctx.arc(cx, cy - o2 * 0.85, d2, 0, Math.PI * 2);
+    ctx.arc(cx - o2, cy + o2 * 0.7, d2, 0, Math.PI * 2);
+    ctx.arc(cx + o2, cy + o2 * 0.7, d2, 0, Math.PI * 2);
+    ctx.fill();
+  } else {
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, s * 0.13, s * 0.24, 0.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawHamster(x, y, size, snack, bob){
+  var s = size;
+  ctx.save();
+  ctx.translate(x, y + bob);
+  // 耳朵
+  ctx.fillStyle = '#c98f5e';
+  ctx.beginPath(); ctx.arc(s * 0.26, s * 0.22, s * 0.15, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(s * 0.74, s * 0.22, s * 0.15, 0, Math.PI * 2); ctx.fill();
+  // 身体
+  rr(0, s * 0.14, s, s * 0.82, s * 0.34);
+  ctx.fillStyle = '#e5b982'; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = '#a9762c'; ctx.stroke();
+  // 脸颊
+  ctx.fillStyle = '#f4dcc0';
+  ctx.beginPath(); ctx.arc(s * 0.5, s * 0.66, s * 0.3, 0, Math.PI * 2); ctx.fill();
+  // 眼睛
+  ctx.fillStyle = '#2a2338';
+  ctx.beginPath(); ctx.arc(s * 0.34, s * 0.52, s * 0.075, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(s * 0.66, s * 0.52, s * 0.075, 0, Math.PI * 2); ctx.fill();
+  // 抱着的零食
+  if (snack !== null && snack !== undefined && snack >= 0){
+    rr(s * 0.34, s * 0.72, s * 0.32, s * 0.32, s * 0.08);
+    ctx.fillStyle = TYPES[snack].base; ctx.fill();
+    ctx.strokeStyle = TYPES[snack].dark; ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawHeader(){
+  var p = L.pad, y = Math.round(L.headerH * 0.42);
+  txt('第 ' + S.level + '/' + LEVELS.length + ' 关 · ' + cfg().name, p, y, Math.round(W * 0.043), C.ink, 'left', true);
+
+  // 步数与重开
+  var bs = Math.round(W * 0.034);
+  txt('步数 ' + S.steps + '/' + S.stepsMax, W - p, y, bs, S.steps <= 1 ? C.bad : C.muted, 'right', true);
+
+  // 进度条 + 右侧读数（读数放条外，条内不再压字，否则空条上的深色字看不见）
+  var bh = Math.max(12, Math.round(H * 0.017));
+  var by = y + Math.round(H * 0.018);
+  var fs = Math.max(10, Math.round(W * 0.031));
+  // 动画期间读数追着条爬，消除的进度是一点一点加上去的
+  var shown = S.anim ? S.progShown : S.prog;
+  shown = Math.max(0, Math.round(shown));
+  var lbl = '进度 ' + Math.min(shown, S.target) + '/' + S.target;
+  if (S.wantT >= 0) lbl += ' · ' + TYPES[S.wantT].name + ' ' + S.have + '/' + S.need;
+  ctx.font = '700 ' + fs + 'px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+  var lw = ctx.measureText(lbl).width;
+  var bw = Math.max(60, W - p * 2 - lw - 10);
+
+  rr(p, by, bw, bh, bh / 2); ctx.fillStyle = C.panel2; ctx.fill();
+  var ratio = Math.min(1, shown / Math.max(1, S.target));
+  if (ratio > 0){
+    rr(p, by, Math.max(bh, bw * ratio), bh, bh / 2);
+    ctx.fillStyle = C.amber; ctx.fill();
+  }
+  txt(lbl, W - p, by + bh - Math.round(bh * 0.2), fs, shown >= S.target ? C.amber : C.muted, 'right', true);
+}
+
+function drawGiftPanel(){
+  var x = L.pad, y = L.giftY, w = W - L.pad * 2, h = L.giftH;
+  rr(x, y, w, h, 12);
+  ctx.fillStyle = C.panel; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = C.line; ctx.stroke();
+
+  var pat = PATTERNS[S.pattern];
+  var rows = pat.rows.length, cols = pat.rows[0].length;
+
+  var tSize = Math.max(10, Math.round(W * 0.033));
+  var tY = y + Math.round(tSize * 1.7) + 2;
+  txt('礼盒 · ' + pat.name, x + 12, tY, tSize, C.muted, 'left', true);
+  txt('第 ' + Math.min(5, Math.max(1, S.level)) + '/5 份', x + w - 12, tY, tSize, C.muted, 'right', true);
+
+  if (S.phase === 'play' && S.hintOpen) return;
+
+  var hamsterH = Math.round(Math.min(h * 0.2, W * 0.13));
+  var top = tY + Math.round(tSize * 0.9);
+  var availH = h - (top - y) - hamsterH - Math.round(h * 0.07);
+  var cell = Math.max(4, Math.min(15, Math.floor(Math.min((w - 28) / cols, availH / rows))));
+  var gx = x + Math.round((w - cell * cols) / 2);
+  var gy = top + Math.round((availH - cell * rows) / 2);
+
+  var cells = PATTERN_CELLS();
+  var ch = chunkOf(S.level);
+  var ratio = Math.min(1, S.prog / Math.max(1, S.target));
+  var shownIdx = {};
+  var i;
+  // 填图顺序只由「已完成的份数 + 本关进度」决定，从下往上；
+  // 之前还叠了 S.filledIdx（按行优先的原始下标），两套顺序打架，填充会跑到顶上
+  var order = [];
+  for (i = 0; i < cells.length; i++) order.push(i);
+  order.sort(function(a, b){
+    var ra = cells[a][0], rb = cells[b][0];
+    if (ra !== rb) return rb - ra;
+    return cells[a][1] - cells[b][1];
+  });
+  var liveEnd = ch.start + Math.round((ch.end - ch.start) * ratio);
+  for (i = 0; i < liveEnd && i < order.length; i++) shownIdx[order[i]] = 1;
+
+  // 空位：补成深一档的整块剪影，看得出礼盒轮廓，也知道还能填多少
+  for (var rr2 = 0; rr2 < rows; rr2++){
+    for (var cc2 = 0; cc2 < cols; cc2++){
+      if (pat.rows[rr2][cc2] !== '#') continue;
+      // 剪影整块画，不留缝 —— 留缝会变成一张格子纸，看不出礼盒的形状
+      ctx.fillStyle = 'rgba(255,255,255,.07)';
+      ctx.fillRect(gx + cc2 * cell, gy + rr2 * cell, cell, cell);
+    }
+  }
+
+  for (i = 0; i < cells.length; i++){
+    if (!shownIdx[i]) continue;
+    var rc = cells[i];
+    // 整块同色，不留缝 —— 留缝会把图案拆成一把碎方块，看不出是花还是脸
+    ctx.fillStyle = C.amber;
+    ctx.fillRect(gx + rc[1] * cell, gy + rc[0] * cell, cell, cell);
+  }
+
+  // 搬运区
+  var hy = y + h - hamsterH - Math.round(h * 0.03);
+  var hs = Math.min(hamsterH * 1.1, W * 0.15);
+  var now = performance.now();
+  var live = now < S.gainFlashUntil;
+  var snack = -1;
+  if (live && S.gains && S.gains.length) snack = ((now / 120) | 0) % 3;
+  var count = 3;
+  var totalW = count * hs + (count - 1) * hs * 0.28;
+  var hx = x + (w - totalW) / 2;
+  for (i = 0; i < count; i++){
+    var bob = live ? Math.round(Math.sin(now / 90 + i * 1.1) * hs * 0.16) : 0;
+    drawHamster(hx + i * hs * 1.28, hy, hs, live && i === ((now / 260 | 0) % count) ? snack : -1, bob);
+  }
+
+  if (now < S.gainFlashUntil && S.lastGain > 0){
+    // 放网格右上方空白处，别和「第 N/5 份」抢同一行
+    txt('+' + S.lastGain, x + w - 14, top + Math.round(tSize * 2.2), Math.round(W * 0.058), C.amber, 'right', true);
+  }
+}
+
+function drawBoard(){
+  var cs = L.cs, bx = L.boardX, by = L.boardY;
+  var now = performance.now();
+  var shake = now < S.shakeUntil ? Math.sin(now / 14) * 3
+            : (now < S.punchUntil ? Math.sin(now / 11) * 1.6 : 0);
+  var view = animView();
+
+  rr(bx - 6, by - 6, L.boardW + 12, L.boardW + 12, 14);
+  ctx.fillStyle = C.panel; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = C.line; ctx.stroke();
+
+  var grid = view ? view.board : S.board;
+  // 新块从盘顶上方落进来，必须裁在盘内，否则会飘到上面的礼盒面板上
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(bx, by, L.boardW, L.boardW);
+  ctx.clip();
+  for (var r = 0; r < N; r++){
+    for (var c = 0; c < N; c++){
+      var x = bx + c * cs + shake, y = by + r * cs;
+      var pad = Math.max(2, Math.round(cs * 0.055));
+      var t = grid[r] ? grid[r][c] : null;
+      rr(x + pad * 0.5, y + pad * 0.5, cs - pad, cs - pad, cs * 0.16);
+      ctx.fillStyle = C.panel2; ctx.fill();
+
+      var key = r + ',' + c;
+      if (t !== null && t !== undefined){
+        var ox = view && view.dx[key] || 0;
+        var oy = view && view.dy[key] || 0;
+        var sc = view && view.sc[key] !== undefined ? view.sc[key] : 1;
+        var al = view && view.al[key] !== undefined ? view.al[key] : 1;
+        var fl = view && view.flash && view.flash[key] ? view.flash[key] : 0;
+        var rg = view && view.ring && view.ring[key] !== undefined ? view.ring[key] : -1;
+        var size = (cs - pad * 2) * sc;
+        var off = ((cs - pad * 2) - size) / 2;
+
+        if (size > 0.5){
+          ctx.save();
+          ctx.globalAlpha = al;
+          drawTile(x + pad + off + ox, y + pad + off + oy, size, t);
+          // 白光：炸开瞬间整块提亮，比单纯缩放更像「被打掉」；
+          // 只提一点点，太亮会把三块零食糊成一片白，反而看不清消了什么
+          if (fl > 0){
+            ctx.globalAlpha = fl * 0.6;
+            rr(x + pad + off + ox, y + pad + off + oy, size, size, size * 0.26);
+            ctx.fillStyle = '#fff6e2';
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+
+        // 外扩环：从块的外沿往外荡一圈（画在块之后，否则被放大的块整个盖住，根本看不见）
+        if (rg > 0.02 && rg < 1){
+          var rr2 = (cs - pad * 2) * (1 + rg * 0.5);
+          ctx.save();
+          ctx.globalAlpha = (1 - rg) * 0.85;
+          ctx.lineWidth = Math.max(2, cs * 0.06);
+          ctx.strokeStyle = C.amber;
+          rr(x + cs / 2 - rr2 / 2, y + cs / 2 - rr2 / 2, rr2, rr2, rr2 * 0.24);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+
+      if (!view && S.sel && S.sel[0] === r && S.sel[1] === c){
+        rr(x + 2, y + 2, cs - 4, cs - 4, cs * 0.2);
+        ctx.lineWidth = 2; ctx.strokeStyle = C.ink; ctx.stroke();
+      }
+    }
+  }
+  ctx.restore();
+
+  drawParts();
+
+  // 消除读数：飘在被消掉的那片格子上方，玩家一眼看到「这一下加了多少」；
+  // 连击那一轮字号更大、带一行「连击 ×N」
+  if (S.popTxt){
+    var pt = S.popTxt;
+    var pa = (now - pt.t0) / pt.max;
+    if (S.animFreeze) { if (pa > 0.34) pa = 0.34; }   // 定格截图时不淡出
+    if (pa >= 1){ S.popTxt = null; }
+    else {
+      var fsz = Math.round(cs * (pt.big ? 0.5 : 0.4) * (pa < 0.2 ? 0.7 + 1.5 * pa : 1));
+      // 只飘大半格，并且钉死在盘内：消最上面那行时，原来的 1.05 格会飘到礼盒和仓鼠身上
+      var rise = easeOut(pa) * cs * 0.7;
+      var ty = pt.y - rise;
+      var tTop = L.boardY + fsz * 0.85;
+      var tBot = L.boardY + 5 * cs - fsz * 0.25;
+      if (ty < tTop) ty = tTop;
+      if (ty > tBot) ty = tBot;
+      ctx.save();
+      ctx.globalAlpha = pa > 0.62 ? Math.max(0, 1 - (pa - 0.62) / 0.38) : 1;
+      ctx.textAlign = 'center';
+      ctx.font = '900 ' + fsz + 'px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+      ctx.lineWidth = Math.max(3, fsz * 0.22);
+      ctx.strokeStyle = 'rgba(28,22,38,.92)';
+      ctx.strokeText(pt.text, pt.x, ty);
+      ctx.fillStyle = pt.big ? C.amber : '#fff0cf';
+      ctx.fillText(pt.text, pt.x, ty);
+      ctx.restore();
+    }
+  }
+}
+
+/* 碎屑：重力 + 淡出，纯视觉 */
+function drawParts(){
+  if (!S.parts.length) return;
+  var now = performance.now(), i = 0, p;
+  while (i < S.parts.length){
+    p = S.parts[i];
+    if (p.t0 === undefined) p.t0 = now;
+    var age = now - p.t0;
+    if (age > p.max){ S.parts.splice(i, 1); continue; }
+    var k = age / p.max;
+    var x = p.x + p.vx * age;
+    var y = p.y + p.vy * age + (p.g || 0) * age * age;
+    ctx.globalAlpha = Math.max(0, 1 - k);
+    ctx.fillStyle = p.col;
+    ctx.fillRect(x - p.s / 2, y - p.s / 2, p.s, p.s);
+    i++;
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawBottom(){
+  var y = H - L.bottomH;
+  var hb = L.bottomH - Math.round(L.bottomH * 0.18);
+  rr(L.pad, y, W - L.pad * 2, hb, 10);
+  ctx.fillStyle = C.panel; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = C.line; ctx.stroke();
+
+  // 重开
+  var bw = Math.round(W * 0.15), bh = Math.round(hb * 0.62);
+  var bx = W - L.pad - 8 - bw, byy = y + Math.round((hb - bh) / 2);
+  rr(bx, byy, bw, bh, bh / 2);
+  ctx.fillStyle = C.panel2; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = C.line; ctx.stroke();
+  txt('重开', bx + bw / 2, byy + bh * 0.68, Math.max(10, Math.round(W * 0.032)), C.muted, 'center', true);
+  HIT.restart = [bx, byy, bw, bh];
+
+  // 三个工具：点一下用一次。有库存时亮着，用光变灰；等选格子的那个按下后描边变亮
+  var chip = Math.round(hb * 0.66);
+  var cy = y + Math.round((hb - chip) / 2);
+  var cx = L.pad + 8;
+  var roomW = bx - 8 - cx;
+  var gap = 6;
+  var bw2 = Math.min(Math.round(chip * 2.2), Math.floor((roomW - gap * 2) / 3));
+  var now = performance.now();
+  for (var i = 0; i < TOOLS.length; i++){
+    var t = TOOLS[i], n = S.tools[i] || 0;
+    var tx = cx + i * (bw2 + gap);
+    var on = n > 0, armed = S.arm === i;
+    rr(tx, cy, bw2, chip, 9);
+    ctx.fillStyle = on ? '#4a4160' : '#2a2338';
+    ctx.fill();
+    ctx.lineWidth = armed ? Math.max(2, Math.round(chip * 0.07)) : 1;
+    ctx.strokeStyle = armed ? C.amber : (on ? '#6d6188' : C.line);
+    ctx.stroke();
+    // 图标在左，文字「机 ×2」在右，各自占一块，谁也不压谁
+    var s = Math.round(chip * 0.56);
+    drawToolMark(tx + 7 + s / 2, cy + chip / 2, s, i, on);
+    var fs = Math.max(9, Math.round(chip * 0.34));
+    txt(t.mark + ' ×' + n, tx + bw2 - 7, cy + chip * 0.62, fs, on ? C.ink : '#6a6480', 'right', true);
+    if (armed && now % 900 < 560){
+      ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(232,172,80,.6)';
+      rr(tx - 2, cy - 2, bw2 + 4, chip + 4, 10); ctx.stroke();
+    }
+    HIT['tool' + i] = [tx, cy, bw2, chip];
+  }
+  if (S.arm >= 0){
+    // 选了要指定格子的工具：给一句提示，否则玩家不知道下一步点哪儿。
+    // 只能放在礼盒区中间（盘上会盖住方块、盘下只有十几像素、工具条里没位置），
+    // 提示是临时的，压住礼盒剪影不挡任何操作。
+    var tipFs = Math.max(10, Math.round(W * 0.031));
+    ctx.font = '700 ' + tipFs + 'px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+    var tw = ctx.measureText(TOOLS[S.arm].tip).width;
+    var th = Math.round(tipFs * 2.0);
+    var tbx = Math.round((W - tw) / 2) - 11;
+    var tby = L.giftY + Math.round(L.giftH * 0.5) - Math.round(th / 2);
+    rr(tbx, tby, tw + 22, th, th / 2);
+    ctx.fillStyle = 'rgba(28,23,40,.96)'; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(232,172,80,.65)'; ctx.stroke();
+    txt(TOOLS[S.arm].tip, W / 2, tby + th * 0.67, tipFs, C.amber, 'center', true);
+  }
+}
+
+/* 工具图标：全是代码画，跟零食方块一个语言 */
+function drawToolMark(cx, cy, s, id, on){
+  var col = on ? C.ink : '#6a6480';
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.lineWidth = Math.max(1.5, s * 0.1);
+  ctx.strokeStyle = col;
+  if (id === 0){
+    // 打包机：方箱 + 上下两道压条
+    ctx.strokeRect(-s * 0.34, -s * 0.3, s * 0.68, s * 0.6);
+    ctx.beginPath();
+    ctx.moveTo(-s * 0.42, -s * 0.12); ctx.lineTo(s * 0.42, -s * 0.12);
+    ctx.moveTo(-s * 0.42, s * 0.16);  ctx.lineTo(s * 0.42, s * 0.16);
+    ctx.stroke();
+  } else if (id === 1){
+    // 仓鼠：两只耳朵 + 一张脸
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(-s * 0.26, -s * 0.26, s * 0.15, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc( s * 0.26, -s * 0.26, s * 0.15, 0, Math.PI * 2); ctx.fill();
+    rr(-s * 0.34, -s * 0.12, s * 0.68, s * 0.54, s * 0.24); ctx.stroke();
+    ctx.beginPath(); ctx.arc(-s * 0.12, s * 0.14, s * 0.05, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc( s * 0.12, s * 0.14, s * 0.05, 0, Math.PI * 2); ctx.fill();
+  } else {
+    // 大礼盒：盒身 + 中间的缎带 + 顶上蝴蝶结
+    ctx.strokeRect(-s * 0.34, -s * 0.16, s * 0.68, s * 0.54);
+    ctx.beginPath();
+    ctx.moveTo(0, -s * 0.16); ctx.lineTo(0, s * 0.38);
+    ctx.moveTo(-s * 0.34, s * 0.06); ctx.lineTo(s * 0.34, s * 0.06);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(-s * 0.14, -s * 0.26, s * 0.14, 0, Math.PI * 2);
+    ctx.arc( s * 0.14, -s * 0.26, s * 0.14, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function cardBox(h){
+  var w = Math.min(W - L.pad * 2, 340);
+  var x = (W - w) / 2, y = (H - h) / 2;
+  ctx.fillStyle = 'rgba(20,16,28,.74)';
+  ctx.fillRect(0, 0, W, H);
+  rr(x, y, w, h, 16);
+  ctx.fillStyle = C.panel; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = C.line; ctx.stroke();
+  return [x, y, w, h];
+}
+
+/* 说明文字排版：先压字号塞成一行；压不下去就按标点对半断成两行，
+   绝不让最后一行只剩一个句号（320 档出现过「。」独占一行） */
+function fitHintLines(text, maxW, base){
+  var sz, one;
+  for (sz = base; sz >= 11; sz--){
+    one = wrap(text, maxW, sz);
+    if (one.length === 1) return { size: sz, lines: one };
+  }
+  var mid = text.length / 2, idx = -1, bestD = 1e9, i, d;
+  for (i = 0; i < text.length - 1; i++){
+    if ('，。；、！？'.indexOf(text.charAt(i)) < 0) continue;
+    d = Math.abs(i + 1 - mid);
+    if (d < bestD){ bestD = d; idx = i + 1; }
+  }
+  if (idx < 0) idx = Math.round(mid);
+  var two = [text.slice(0, idx), text.slice(idx)];
+  for (sz = base; sz >= 11; sz--){
+    if (wrap(two[0], maxW, sz).length === 1 && wrap(two[1], maxW, sz).length === 1)
+      return { size: sz, lines: two };
+  }
+  return { size: 11, lines: two };
+}
+
+function drawHint(){
+  var padIn = 24;
+  var w = w0();
+  var base = Math.max(13, Math.round(W * 0.04));
+  var fit = fitHintLines(S.hintText, w - padIn * 2, base);
+  var size = fit.size, lines = fit.lines;
+  var lh = Math.round(size * 1.8);
+  var btnH = Math.round(Math.min(44, W * 0.115));
+  var h = 30 + 26 + lines.length * lh + 18 + btnH + 22;
+
+  var box = cardBox(h);
+  var x = box[0], y = box[1];
+
+  txt('第 ' + S.level + ' 关 · ' + cfg().name, W / 2, y + 30, Math.max(11, Math.round(W * 0.034)), C.muted, 'center', true);
+  for (var i = 0; i < lines.length; i++)
+    txt(lines[i], W / 2, y + 30 + 26 + i * lh, size, C.ink, 'center', true);
+
+  var bw = Math.round(w * 0.52);
+  var bx = W / 2 - bw / 2, byy = y + h - btnH - 22;
+  rr(bx, byy, bw, btnH, btnH / 2);
+  ctx.fillStyle = C.amber; ctx.fill();
+  txt('知道了', bx + bw / 2, byy + btnH * 0.66, Math.max(12, Math.round(W * 0.038)), '#241d2e', 'center', true);
+  HIT.ok = [bx, byy, bw, btnH];
+}
+
+function wrap(str, maxW, size){
+  ctx.font = '700 ' + size + 'px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+  var out = [], cur = '', i, ch, test;
+  for (i = 0; i < str.length; i++){
+    ch = str.charAt(i);
+    test = cur + ch;
+    if (ctx.measureText(test).width > maxW && cur.length){
+      out.push(cur); cur = ch;
+    } else cur = test;
+  }
+  if (cur.length) out.push(cur);
+  return out;
+}
+
+function drawPick(){
+  var h = Math.round(Math.min(H * 0.56, 400));
+  var box = cardBox(h);
+  var x = box[0], y = box[1], w = box[2];
+  txt('第 ' + S.level + ' 关完成', W / 2, y + 30, Math.round(W * 0.042), C.muted, 'center', true);
+  txt('礼盒里挑一样带走', W / 2, y + 56, Math.round(W * 0.038), C.ink, 'center', true);
+
+  var ch = Math.round((h - 96) / 3) - 6;
+  var cw = w - 32;
+  for (var i = 0; i < S.cand.length; i++){
+    var pk = PACKS[S.cand[i]];
+    var cy = y + 70 + i * (ch + 8);
+    rr(x + 16, cy, cw, ch, 10);
+    ctx.fillStyle = C.panel2; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = C.line; ctx.stroke();
+    drawToolMark(x + 44, cy + ch * 0.44, Math.min(ch * 0.62, 34), pk.tool, true);
+    txt(pk.name, x + 72, cy + ch * 0.42, Math.round(W * 0.04), C.ink, 'left', true);
+    txt(pk.desc, x + 72, cy + ch * 0.74, Math.max(10, Math.round(W * 0.03)), C.muted, 'left');
+    txt('带走', x + 16 + cw - 16, cy + ch * 0.55, Math.round(W * 0.034), C.amber, 'right', true);
+    HIT['pick' + i] = [x + 16, cy, cw, ch];
+  }
+}
+
+function drawEnd(){
+  var win = S.phase === 'win';
+  var padIn = 22;
+  var titleSize = Math.round(W * 0.052);
+  var subSize = Math.round(W * 0.036);
+  var rowSize = Math.max(11, Math.round(W * 0.034));
+  var lh = Math.round(rowSize * 1.9);
+
+  var rows = [
+    ['总进度', Math.min(S.prog, S.target) + ' / ' + S.target],
+    ['剩余步数', String(S.steps)],
+    ['最大单次滑动', '+' + S.maxGain],
+    ['本关重排', S.reshuffles + ' 次']
+  ];
+  if (S.wantT >= 0) rows.splice(1, 0, [TYPES[S.wantT].name, S.have + ' / ' + S.need]);
+
+  var names = [];
+  for (var ni = 0; ni < TOOLS.length; ni++)
+    if (S.tools[ni]) names.push(TOOLS[ni].name + ' ×' + S.tools[ni]);
+  var nameLines = wrap(names.length ? names.join('、') : '没用出去', w0() - padIn * 2, Math.max(11, Math.round(W * 0.032)));
+
+  var pat = PATTERNS[S.pattern];
+  var prow = pat.rows.length, pcol = pat.rows[0].length;
+  var cell = win ? Math.max(6, Math.min(14, Math.floor((w0() - padIn * 2) / pcol))) : 0;
+  var giftH = win ? cell * prow : 0;
+
+  var btnH = Math.round(Math.min(44, W * 0.115));
+  // 逐段推 y，再据此定卡高 —— 之前用估的公式，礼盒底部会压到按钮
+  var yTitle = 40, ySub = yTitle + 30;
+  var yRows = ySub + Math.round(lh * 0.9) + 4;
+  var yNames = yRows + rows.length * lh + 4;
+  var yNameFirst = yNames + 20;
+  var yGift = yNameFirst + Math.max(0, nameLines.length - 1) * 20 + 12;
+  var h = yGift + giftH + 20 + btnH + 24;
+  h = Math.min(h, Math.round(H * 0.9));
+
+  var box = cardBox(h);
+  var x = box[0], y = box[1], w = box[2];
+
+  txt(win ? '本局通关' : '订单没完成', W / 2, y + yTitle, titleSize, win ? C.amber : C.bad, 'center', true);
+  txt('第 ' + S.level + ' 关 · ' + cfg().name, W / 2, y + ySub, subSize, C.muted, 'center', true);
+
+  for (var i = 0; i < rows.length; i++){
+    txt(rows[i][0], x + padIn, y + yRows + i * lh, rowSize, C.muted, 'left');
+    txt(rows[i][1], x + w - padIn, y + yRows + i * lh, rowSize, C.ink, 'right', true);
+  }
+
+  txt('本局剩下的工具', x + padIn, y + yNames, Math.max(11, Math.round(W * 0.032)), C.muted, 'left');
+  for (i = 0; i < nameLines.length; i++)
+    txt(nameLines[i], x + padIn, y + yNameFirst + i * 20, Math.max(11, Math.round(W * 0.032)), C.ink, 'left');
+
+  if (win){
+    var gx = Math.round(W / 2 - cell * pcol / 2), gy = y + yGift;
+    for (var r2 = 0; r2 < prow; r2++){
+      for (var c2 = 0; c2 < pcol; c2++){
+        if (pat.rows[r2][c2] !== '#') continue;
+        ctx.fillStyle = C.amber;
+        ctx.fillRect(gx + c2 * cell, gy + r2 * cell, cell, cell);
+      }
+    }
+  }
+
+  var bw = Math.round(w * 0.52), bh = btnH;
+  var bx = W / 2 - bw / 2, byy = y + h - bh - 22;
+  rr(bx, byy, bw, bh, bh / 2);
+  ctx.fillStyle = win ? C.amber : C.panel;
+  ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = C.amber; ctx.stroke();
+  txt(win ? '再玩一局' : '重打这一关', bx + bw / 2, byy + bh * 0.66,
+      Math.max(12, Math.round(W * 0.038)), win ? '#241d2e' : C.amber, 'center', true);
+  HIT.again = [bx, byy, bw, bh];
+}
+
+function w0(){ return Math.min(W - L.pad * 2, 340); }
+
+function drawTitle(){
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+  var cy = Math.round(H * 0.3);
+  txt('仓鼠零食工厂', W / 2, cy, Math.round(W * 0.1), C.ink, 'center', true);
+  txt('交换三消 · 掉落连击 · 集齐礼盒', W / 2, cy + Math.round(W * 0.08),
+      Math.max(11, Math.round(W * 0.036)), C.muted, 'center');
+
+  var hs = Math.round(W * 0.16);
+  for (var i = 0; i < 3; i++)
+    drawHamster(W / 2 - hs * 1.9 + i * hs * 1.4, cy + Math.round(W * 0.16), hs, i % 3, 0);
+
+  var bw = Math.round(W * 0.56), bh = Math.round(Math.min(52, H * 0.07));
+  var bx = W / 2 - bw / 2, by = Math.round(H * 0.68);
+  rr(bx, by, bw, bh, bh / 2);
+  ctx.fillStyle = C.amber; ctx.fill();
+  txt('开一局', bx + bw / 2, by + bh * 0.65, Math.round(W * 0.045), '#241d2e', 'center', true);
+  HIT.start = [bx, by, bw, bh];
+
+  txt('五关订单 · 三选一强化 · 一张礼盒图案', W / 2, by + bh + 34,
+      Math.max(10, Math.round(W * 0.031)), C.muted, 'center');
+}
+
+function draw(){
+  HIT = {};
+  if (S.phase === 'title'){ drawTitle(); return; }
+
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+  drawHeader();
+  drawGiftPanel();
+  drawBoard();
+  drawBottom();
+
+  if (S.phase === 'play' && S.hintOpen) drawHint();
+  if (S.phase === 'pick') drawPick();
+  if (S.phase === 'win' || S.phase === 'lose') drawEnd();
+}
+
+/* ============================================================
+   交互
+   ============================================================ */
+function hitCell(px, py){
+  var cs = L.cs;
+  var c = Math.floor((px - L.boardX) / cs);
+  var r = Math.floor((py - L.boardY) / cs);
+  if (r < 0 || r >= N || c < 0 || c >= N) return null;
+  return [r, c];
+}
+
+function inRect(p, rect){
+  return rect && p[0] >= rect[0] && p[0] <= rect[0] + rect[2] && p[1] >= rect[1] && p[1] <= rect[1] + rect[3];
+}
+
+var drag = null;
+
+function onDown(e){
+  var rect = canvas.getBoundingClientRect();
+  var pt = [e.clientX - rect.left, e.clientY - rect.top - SAFE_TOP];
+  drag = { start: pt, cell: hitCell(pt[0], pt[1]), done: false };
+
+  // 动画期间不接操作，否则连点会把还没演完的那一步顶掉
+  if (S.anim){ drag = null; return; }
+  if (S.phase === 'play' && S.hintOpen){
+    if (inRect(pt, HIT.ok)){ S.hintOpen = false; drag = null; }
+    return;
+  }
+  if (S.phase === 'title'){ newRun(Date.now() & 0x7fffffff); drag = null; return; }
+  if (S.phase === 'pick'){
+    for (var i = 0; i < S.cand.length; i++){
+      if (inRect(pt, HIT['pick' + i])){ chooseUpgrade(S.cand[i]); drag = null; return; }
+    }
+    return;
+  }
+  if ((S.phase === 'win' || S.phase === 'lose') && inRect(pt, HIT.again)){
+    if (S.phase === 'win') newRun((Date.now() ^ 0x5f3a) & 0x7fffffff);
+    else startLevel(S.level);
+    drag = null;
+    return;
+  }
+  if (inRect(pt, HIT.restart)){ newRun((Date.now() ^ 0x1f) & 0x7fffffff); drag = null; return; }
+
+  // 底部三个工具：点一下用一次。需要选格子的按下后进入「待点」状态，再点盘面。
+  if (S.phase === 'play'){
+    for (var ti = 0; ti < TOOLS.length; ti++){
+      if (inRect(pt, HIT['tool' + ti])){
+        if (S.tools[ti] > 0 && TOOLS[ti].needsCell){ useTool(ti, null); drag = null; return; }
+        if (S.tools[ti] > 0){ useTool(ti, null); drag = null; return; }
+        S.shakeUntil = performance.now() + 160;   // 没有库存：晃一下，别静默
+        drag = null; return;
+      }
+    }
+    // 待点状态：这一下点盘面就是给工具指位置
+    if (S.arm >= 0 && drag.cell){
+      useTool(S.arm, drag.cell);
+      drag = null;
+      return;
+    }
+  }
+
+  // 点选两下也能换：先点的留在 S.sel，第二下要是相邻就直接交换。
+  // 之前这里无条件 S.sel = 当前格，第一下就被自己覆盖，点两下永远换不动。
+  if (S.phase === 'play' && drag.cell){
+    var prev = S.sel;
+    if (prev && (Math.abs(prev[0] - drag.cell[0]) + Math.abs(prev[1] - drag.cell[1]) === 1)){
+      trySwap(prev, drag.cell);
+      S.sel = null;
+      drag = null;
+      return;
+    }
+    S.sel = drag.cell;
+  }
+}
+
+function onMove(e){
+  if (!drag || drag.done || S.phase !== 'play' || S.hintOpen) return;
+  var rect = canvas.getBoundingClientRect();
+  var px = e.clientX - rect.left, py = e.clientY - rect.top - SAFE_TOP;
+  var dx = px - drag.start[0], dy = py - drag.start[1];
+  var th = L.cs * 0.42;
+  if (Math.abs(dx) < th && Math.abs(dy) < th) return;
+
+  var a = drag.cell;
+  if (!a) return;
+  var b = Math.abs(dx) > Math.abs(dy)
+    ? [a[0], a[1] + (dx > 0 ? 1 : -1)]
+    : [a[0] + (dy > 0 ? 1 : -1), a[1]];
+  if (b[0] < 0 || b[0] >= N || b[1] < 0 || b[1] >= N) return;
+
+  drag.done = true;
+  trySwap(a, b);
+}
+
+function onUp(e){
+  if (!drag) return;
+  if (S.anim){ drag = null; return; }
+  var rect = canvas.getBoundingClientRect();
+  var pt = [e.clientX - rect.left, e.clientY - rect.top - SAFE_TOP];
+  if (!drag.done && S.phase === 'play' && !S.hintOpen){
+    var cell = hitCell(pt[0], pt[1]);
+    if (cell && drag.cell && (cell[0] !== drag.cell[0] || cell[1] !== drag.cell[1])){
+      var d = Math.abs(cell[0] - drag.cell[0]) + Math.abs(cell[1] - drag.cell[1]);
+      if (d === 1) trySwap(drag.cell, cell);
+      else S.sel = cell;
+    }
+  }
+  drag = null;
+}
+
+canvas.addEventListener('pointerdown', onDown);
+canvas.addEventListener('pointermove', onMove);
+canvas.addEventListener('pointerup', onUp);
+canvas.addEventListener('pointercancel', function(){ drag = null; });
+window.addEventListener('resize', resize);
+
+/* ============================================================
+   主循环
+   ============================================================ */
+function frame(ts){
+  if (ts === undefined || ts === null) ts = performance.now();
+  var dt = _lastTs ? Math.min(60, ts - _lastTs) : 16;
+  _lastTs = ts;
+  // 进度条在动画期间追着真值爬，别一帧跳满
+  if (S.anim){
+    var target = S.prog;
+    S.progShown += (target - S.progShown) * Math.min(1, dt / 90);
+    if (Math.abs(target - S.progShown) < 0.6) S.progShown = target;
+    if (!S.animFreeze) stepAnim(dt);
+  } else if (S.progShown !== S.prog){
+    S.progShown = S.prog;
+  }
+  draw();
+  requestAnimationFrame(frame);
+}
+var _lastTs = 0;
+
+resize();
+S.phase = 'title';
+S.board = [];
+for (var _i = 0; _i < N; _i++) S.board.push([0,0,0,0,0]);
+requestAnimationFrame(frame);
+
+/* ============================================================
+   测试接口
+   ============================================================ */
+function bestMove(b){
+  var moves = validMoves(b), best = null, bestScore = -1, i, runs, seen, k;
+  for (i = 0; i < moves.length; i++){
+    swapCells(b, moves[i][0], moves[i][1]);
+    runs = findRuns(b);
+    seen = {};
+    for (var j = 0; j < runs.length; j++)
+      for (k = 0; k < runs[j].cells.length; k++) seen[runs[j].cells[k]] = 1;
+    var score = Object.keys(seen).length;
+    swapCells(b, moves[i][0], moves[i][1]);
+    if (score > bestScore){ bestScore = score; best = moves[i]; }
+  }
+  return best;
+}
+
+window.__gameState = function(){
+  return {
+    phase: S.phase, level: S.level, steps: S.steps, prog: S.prog,
+    target: S.target, have: S.have, need: S.need,
+    want: S.wantT, upgrades: S.upgrades.slice(), pattern: S.pattern,
+    board: S.board.map(function(row){ return row.slice(); }),
+    seed: S.seed, cascadeMax: S.cascadeMax, reshuffles: S.reshuffles
+  };
+};
+
+window.__newRun = newRun;
+window.__trySwap = trySwap;
+window.__chooseUpgrade = chooseUpgrade;
+/* 给截图/回归用的钩子：只改状态，不改规则 */
+window.__startLevel = startLevel;
+window.__dismissHint = function(){ if (S.phase === 'play') S.hintOpen = false; };
+window.__debug = function(obj){ for (var k in obj) S[k] = obj[k]; };
+window.__bestMove = function(){ return bestMove(S.board); };
+window.__pickFirst = function(){ return S.cand ? S.cand[0] : -1; };
+window.__useTool = function(id, cell){ return useTool(id, cell || null); };
+window.__geom = function(){ return { cs: L.cs, bx: L.boardX, by: L.boardY }; };
+/* 动画自检：返回当前动画阶段与碎屑/连击状态 */
+window.__animState = function(){
+  return {
+    phase: S.anim ? S.anim.phase : null,
+    idx: S.anim ? S.anim.idx : -1,
+    rounds: S.anim ? S.anim.rounds.length : 0,
+    parts: S.parts.length,
+    combo: S.combo,
+    progShown: Math.round(S.progShown),
+    prog: S.prog
+  };
+};
+/* 渲染层自检：把这一帧真正用来画的视图吐出来，排查错位 */
+window.__viewDump = function(){
+  var v = animView();
+  return {
+    phase: S.anim ? S.anim.phase : null,
+    idx: S.anim ? S.anim.idx : -1,
+    board: v ? v.board : S.board.map(function(r){ return r.slice(); }),
+    dy: v ? v.dy : {}, sc: v ? v.sc : {},
+    rounds: S.anim ? S.anim.rounds.map(function(r){ return { n:r.cells.length, gain:r.gain }; }) : []
+  };
+};
+
+/* 截图自检：把动画钉在某一阶段的某一时刻，拍准这一帧。
+   __freezeAnim('pop', 0.12) —— 只给截图脚本用，不参与规则 */
+window.__freezeAnim = function(phase, frac){
+  var a = S.anim;
+  if (!a) return null;
+  S.animFreeze = true;
+  a.idx = 0;
+  a.phase = phase;
+  a.t = (phase === 'swap' ? a.swapMs : phase === 'pop' ? a.popMs : a.fallMs) * (frac || 0);
+  if (phase === 'pop') spawnPops(a.rounds[0]);
+  return { phase: a.phase, t: a.t, idx: a.idx };
+};
+window.__unfreezeAnim = function(){ S.animFreeze = false; return !!S.anim; };
+
+/* 动画自检（截图/回归用）：不开画面，同步把动画一点点推完，
+   记录每一段的阶段、连击数、飘字内容。用来证明「连击」这一段真的会播。 */
+window.__animSelfTest = function(board, move){
+  var wasInstant = S.instant;
+  S.instant = false;
+  if (board){ S.board = board.map(function(r){ return r.slice(); }); S.phase = 'play'; if (!S.steps) S.steps = 9; }
+  S.sel = null; S.prog = 0; S.anim = null; S.parts = []; S.popTxt = null; S.combo = 0;
+  if (!move) move = bestMove(S.board);
+  var ok = move ? trySwap(move[0], move[1]) : false;
+  var seen = [], guard = 0;
+  while (S.anim && guard++ < 2000){
+    seen.push({ ph: S.anim.phase, idx: S.anim.idx, combo: S.combo,
+                txt: S.popTxt ? S.popTxt.text : null, parts: S.parts.length });
+    S.anim.t += 24;              // 每步 24ms，够把 swapMs/popMs/fallMs 走穿
+    stepAnim(24);
+  }
+  var out = {
+    started: ok, steps: seen.length, phases: [], combos: [], texts: [],
+    maxParts: 0, ended: !!S.anim === false, prog: S.prog
+  };
+  for (var i = 0; i < seen.length; i++){
+    var s = seen[i];
+    var key = s.ph + '/' + s.idx;
+    if (out.phases.indexOf(key) < 0) out.phases.push(key);
+    if (out.combos.indexOf(s.combo) < 0) out.combos.push(s.combo);
+    if (s.txt && out.texts.indexOf(s.txt) < 0) out.texts.push(s.txt);
+    if (s.parts > out.maxParts) out.maxParts = s.parts;
+  }
+  S.instant = wasInstant;
+  return out;
+};
+/* 当前飘字（回归读取用） */
+window.__popInfo = function(){
+  return S.popTxt ? { text: S.popTxt.text, big: !!S.popTxt.big } : null;
+};
+
+/* 截图用：装上一批工具，真放一次，把动画停在「清得最多的那一轮」的 pop 上并钉住。
+   cell 不传就自己挑：打包机/大礼盒取盘面中心，仓鼠不需要格子。
+   注意：为了让这一手不被过关判定打断，临时把 target 抬高；定格后把顶部读数恢复成
+   关卡真值，否则截图上会出现「步数 399/5、进度 166/99999」这种一眼假的数字。 */
+window.__toolStage = function(toolId, frac, cell){
+  window.__unfreezeAnim();
+  if (S.phase !== 'play'){ newRun(Date.now() & 0x7fffffff); S.hintOpen = false; }
+  var realTarget = S.target, realSteps = S.steps, realProg = S.prog;
+  S.tools = [0,0,0]; S.tools[toolId] = 1;
+  S.target = 99999; S.steps = 400;
+  S.anim = null; S.parts = []; S.popTxt = null; S.combo = 0;
+  var at = cell || [2, 2];
+  // 空格子换一个，否则 toolCells 会把它跳掉
+  if (S.board[at[0]][at[1]] === null) at = [2, 3];
+  var res = useTool(toolId, TOOLS[toolId].needsCell ? at : null);
+  if (res !== 'used') return { ok:false, why:'tool ' + res };
+  if (!S.anim) return { ok:false, why:'no anim' };
+  var bestI = 0, bestN = -1, i;
+  for (i = 0; i < S.anim.rounds.length; i++){
+    if (S.anim.rounds[i].cells.length > bestN){ bestN = S.anim.rounds[i].cells.length; bestI = i; }
+  }
+  var guard = 0;
+  while (S.anim && guard++ < 4000){
+    if (S.anim.phase === 'pop' && S.anim.idx === bestI) break;
+    S.anim.t = 1e6; stepAnim(16);
+  }
+  if (!S.anim) return { ok:false, why:'anim ended' };
+  S.animFreeze = true;
+  S.anim.t = S.anim.popMs * (frac === undefined ? 0.24 : frac);
+  if (S.popTxt) S.popTxt.t0 = performance.now();
+  var acc = 0, rr;
+  for (rr = 0; rr <= bestI && rr < S.anim.rounds.length; rr++) acc += (S.anim.rounds[rr].gain || 0);
+  var shownProg = Math.min(realTarget, realProg + acc);
+  S.target = realTarget;
+  S.steps = Math.max(0, realSteps - 1);
+  S.prog = shownProg; S.progShown = shownProg;
+  return { ok:true, idx: bestI, cells: bestN, rounds: S.anim.rounds.length,
+           txt: S.popTxt ? S.popTxt.text : null,
+           want: shownProg + '/' + realTarget, steps: S.steps + '/' + S.stepsMax,
+           log: S.gains.map(function(g){ return g.label; }).join(' | ') };
+};
+
+/* 当前这一轮要清掉几格（截图挑帧用） */
+window.__animRoundSize = function(){
+  if (!S.anim) return 0;
+  var rec = S.anim.rounds[S.anim.idx];
+  return rec ? rec.cells.length : 0;
+};
+
+/* 工具自检（回归用）：给每个工具放一次，返回清掉几格、花没花步数、动画几轮。
+   目标调成 9999，免得中途过关换关。 */
+window.__toolProbe = function(moves, seed){
+  var wasInst = S.instant;
+  var out = { perTool: [], stepsSpent: 0, errors: [] };
+  newRun(seed || 20261120);
+  S.instant = true;
+  S.target = 9999; S.steps = 400;
+  for (var id = 0; id < TOOLS.length; id++){
+    var pre = S.prog, preSteps = S.steps;
+    S.tools = [0,0,0]; S.tools[id] = 1;
+    var before = S.steps;
+    var r = useTool(id, TOOLS[id].needsCell ? [2, 3] : null);
+    out.perTool.push({
+      name: TOOLS[id].name, res: r, gain: S.prog - pre,
+      stepsUsed: before - S.steps, rounds: S.gains.length,
+      log: S.gains.map(function(g){ return g.label; }).join(' | ')
+    });
+  }
+  // 连放 20 手普通交换，确认工具用完以后规则照旧
+  S.steps = 400;
+  for (var i = 0; i < (moves || 20) && S.phase === 'play'; i++){
+    var mv = bestMove(S.board);
+    if (!mv) break;
+    trySwap(mv[0], mv[1]);
+  }
+  S.instant = wasInst;
+  return out;
+};
+
+/* 连击抽样（回归用）：连下 n 手，返回有多少手演到了第二回合以上，   以及一个实例的相位/飘字，用来证明「连击」那一段确实会播。 */
+window.__animScan = function(n){
+  n = n || 60;
+  var played = 0, multi = [], maxIdx = 0, i, k, hi, p2, r;
+  for (i = 0; i < n; i++){
+    if (S.phase !== 'play'){ newRun(20261120 + i * 97); S.hintOpen = false; }
+    S.steps = Math.max(S.steps, 2);
+    r = window.__animSelfTest(null, null);
+    if (!r.started) continue;
+    played++;
+    hi = 0;
+    for (k = 0; k < r.phases.length; k++){
+      p2 = r.phases[k].split('/');
+      if (+p2[1] > hi) hi = +p2[1];
+    }
+    if (hi > maxIdx) maxIdx = hi;
+    if (hi >= 1) multi.push({ hand: i, idx: hi, phases: r.phases, texts: r.texts, combos: r.combos });
+  }
+  return { played: played, multiRound: multi.length, maxIdx: maxIdx, sample: multi[0] || null };
+};
+
+/* 截图用：真下一手，把动画推进到第 wantIdx 回合的 pop 阶段并钉住（配合 __freezeAnim 出图）。
+   返回是否到达；不到就原样收尾。 */
+window.__animStage = function(wantIdx, frac){
+  window.__unfreezeAnim();
+  if (S.phase !== 'play'){ newRun(Date.now() & 0x7fffffff); S.hintOpen = false; }
+  var mv = bestMove(S.board);
+  if (!mv) return { ok:false, why:'no move' };
+  S.anim = null; S.parts = []; S.popTxt = null; S.combo = 0;
+  if (!trySwap(mv[0], mv[1])) return { ok:false, why:'swap refused' };
+  if (!S.anim) return { ok:false, why:'no anim (single round instant?)' };
+  var guard = 0, reached = false;
+  while (S.anim && guard++ < 3000){
+    if (S.anim.phase === 'pop' && S.anim.idx === wantIdx){ reached = true; break; }
+    S.anim.t = 1e6; stepAnim(16);
+  }
+  if (!reached) return { ok:false, why:'rounds=' + (S.anim ? S.anim.rounds.length : 0) };
+  S.animFreeze = true;
+  S.anim.t = S.anim.popMs * (frac === undefined ? 0.12 : frac);
+  if (S.popTxt) S.popTxt.t0 = performance.now();   // 定格这一帧时飘字也从起点开始，截图才对准
+  S.progShown = S.prog;
+  return { ok:true, idx: S.anim.idx, rounds: S.anim.rounds.length, combo: S.combo,
+           txt: S.popTxt ? S.popTxt.text : null, parts: S.parts.length };
+};
+
+/* 批量回归：跑 games 局，返回通过率与可疑项（只筛异常，不证趣味） */
+window.__testRun = function(games, seed0, useTools){
+  games = games || 12;
+  seed0 = (seed0 === undefined ? 20261120 : seed0) | 0;
+  if (useTools === undefined) useTools = true;   // 工具不花步数，真人一定会点，回归也得点
+  var wasInstant = S.instant;
+  S.instant = true;                 // 回归只验规则，不等动画
+  var out = {
+    games: games, wins: 0, stuck: 0, errors: [],
+    levelReach: [0,0,0,0,0],
+    stepsLeft: {}, cascades: [], reshuffleTotal: 0,
+    picks: {}, toolsUsed: 0
+  };
+  for (var gi = 0; gi < games; gi++){
+    try {
+      newRun(seed0 + gi * 7919);
+      var usedLv = {}, pickTurn = 0, guard = 0;
+      while (S.phase === 'play' || S.phase === 'pick'){
+        if (++guard > 800){ out.stuck++; break; }
+        if (S.phase === 'pick'){
+          // 三张卡轮流选，才测得出每样工具的实际强度（以前永远取第一张）
+          var pk = PACKS[(gi + pickTurn++) % PACKS.length];
+          out.picks[pk.name] = (out.picks[pk.name] || 0) + 1;
+          chooseUpgrade(pk.tool);
+          continue;
+        }
+        // 每关开局先把手上的工具用完（不用白不用，且不花步数）
+        var lkey = S.trace.length;
+        if (useTools && !usedLv[lkey]){
+          usedLv[lkey] = 1;
+          for (var ti = 0; ti < TOOLS.length && S.phase === 'play'; ti++){
+            var want = 0;
+            while (S.tools[ti] > 0 && S.phase === 'play' && want++ < 6){
+              useTool(ti, TOOLS[ti].needsCell ? [2, 2] : null);
+              out.toolsUsed++;
+            }
+          }
+          if (S.phase !== 'play') continue;
+        }
+        var mv = bestMove(S.board);
+        if (!mv){ out.stuck++; break; }
+        trySwap(mv[0], mv[1]);
+      }
+      if (S.phase === 'win') out.wins++;
+      for (var t = 0; t < S.trace.length; t++){
+        var tr = S.trace[t];
+        out.levelReach[tr.lv - 1]++;
+        out.stepsLeft[tr.lv] = (out.stepsLeft[tr.lv] || 0) + tr.steps;
+        out.cascades.push(tr.cascade);
+        out.reshuffleTotal += tr.resh;
+      }
+    } catch (err){
+      out.errors.push(String(err && err.message || err));
+    }
+  }
+  var avg = function(arr){ if (!arr.length) return 0; var s = 0; for (var i = 0; i < arr.length; i++) s += arr[i]; return Math.round(s / arr.length * 10) / 10; };
+  out.maxCascade = Math.max.apply(null, out.cascades.concat([0]));
+  out.avgCascade = avg(out.cascades);
+  for (var k in out.stepsLeft) out.stepsLeft[k] = Math.round(out.stepsLeft[k] / Math.max(1, out.levelReach[+k - 1]) * 10) / 10;
+  out.winRate = Math.round(out.wins / Math.max(1, games) * 100);
+  S.instant = wasInstant;
+  return out;
+};
+
+
+/* ============================================================
+   dsh-game-studio 接入层（收编时追加，上面的原逻辑一行未改）
+   ============================================================ */
+/* ---------- 0. 工程清单：关卡、工具都从 game.json 的 rules 来 ---------- */
+var GAME = (typeof window !== 'undefined' && window.GAME) || {};
+var RULES = GAME.rules || {};
+
+if (RULES.levels && RULES.levels.length){
+  LEVELS.length = 0;
+  for (var _li = 0; _li < RULES.levels.length; _li++){
+    var _src = RULES.levels[_li] || {};
+    LEVELS.push({
+      name: String(_src.name || ('第 ' + (_li + 1) + ' 关')),
+      steps: Math.max(1, +_src.steps || 6),
+      target: Math.max(3, +_src.target || 40),
+      want: (_src.want === undefined || _src.want === null) ? undefined : +_src.want,
+      need: +_src.need || 0,
+      hint: _src.hint || '',
+      tip: _src.tip || ''
+    });
+  }
+}
+
+/* ---------- 1. 存档：最高关卡、最大单次进度、通关次数、音效开关 ---------- */
+var SAVE_KEY = 'hamsterSnackFactory.save.v2';
+var SAVE = { best: 1, bestGain: 0, plays: 0, wins: 0, mute: false };
+
+function loadSave(){
+  try {
+    var raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return;
+    var obj = JSON.parse(raw);
+    if (obj && typeof obj === 'object'){
+      if (obj.best) SAVE.best = Math.max(1, +obj.best || 1);
+      if (obj.bestGain) SAVE.bestGain = Math.max(0, +obj.bestGain || 0);
+      if (obj.plays) SAVE.plays = Math.max(0, +obj.plays || 0);
+      if (obj.wins) SAVE.wins = Math.max(0, +obj.wins || 0);
+      SAVE.mute = !!obj.mute;
+    }
+  } catch (e) { /* 隐私模式 / 微信未登录：只是不存，不影响玩 */ }
+}
+
+function saveNow(){
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(SAVE)); } catch (e) {}
+}
+
+loadSave();
+
+/* ---------- 2. 音效：WebAudio 现场合成，不占包体，微信也能出声 ---------- */
+var AC = null, AC_DEAD = false, SFX_GAIN = 0.11;
+
+function audioCtx(){
+  if (AC || AC_DEAD) return AC;
+  try {
+    var Ctor = window.AudioContext || window.webkitAudioContext;
+    if (!Ctor){ AC_DEAD = true; return null; }
+    AC = new Ctor();
+  } catch (e) { AC_DEAD = true; AC = null; }
+  return AC;
+}
+
+function unlockAudio(){
+  var c = audioCtx();
+  if (!c) return;
+  try { if (c.state === 'suspended' && c.resume) c.resume(); } catch (e) {}
+}
+
+function blip(freq, toFreq, ms, type, gain, delay){
+  if (SAVE.mute) return;
+  var c = audioCtx();
+  if (!c) return;
+  try {
+    var t0 = (c.currentTime || 0) + (delay || 0);
+    var osc = c.createOscillator();
+    var env = c.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(freq, t0);
+    if (toFreq && toFreq !== freq) osc.frequency.exponentialRampToValueAtTime(Math.max(20, toFreq), t0 + ms / 1000);
+    env.gain.setValueAtTime(0.0001, t0);
+    env.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain || SFX_GAIN), t0 + 0.012);
+    env.gain.exponentialRampToValueAtTime(0.0001, t0 + ms / 1000);
+    osc.connect(env);
+    env.connect(c.destination);
+    osc.start(t0);
+    osc.stop(t0 + ms / 1000 + 0.02);
+  } catch (e) {}
+}
+
+function noise(ms, gain, lowpass){
+  if (SAVE.mute) return;
+  var c = audioCtx();
+  if (!c || !c.createBuffer) return;
+  try {
+    var n = Math.max(1, Math.floor((c.sampleRate || 44100) * ms / 1000));
+    var buf = c.createBuffer(1, n, c.sampleRate || 44100);
+    var data = buf.getChannelData(0);
+    for (var i = 0; i < n; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / n);
+    var src = c.createBufferSource();
+    src.buffer = buf;
+    var env = c.createGain();
+    env.gain.value = gain || 0.05;
+    var filter = null;
+    if (c.createBiquadFilter && lowpass){
+      filter = c.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = lowpass;
+      src.connect(filter);
+      filter.connect(env);
+    } else {
+      src.connect(env);
+    }
+    env.connect(c.destination);
+    src.start(0);
+  } catch (e) {}
+}
+
+function sfx(name, opt){
+  if (SAVE.mute) return;
+  opt = opt || {};
+  if (name === 'tap'){
+    blip(660, 480, 70, 'square', 0.05);
+  } else if (name === 'swap'){
+    blip(520, 760, 80, 'sine', 0.07);
+  } else if (name === 'invalid'){
+    blip(220, 160, 110, 'sawtooth', 0.05);
+  } else if (name === 'pop'){
+    /* 消除：一声脆响 + 一点点噪声，连击越高越亮 */
+    var step = Math.min(6, Math.max(0, (opt.round || 1) - 1));
+    blip(560 + step * 90, 900 + step * 110, 110, 'triangle', 0.09);
+    noise(55, 0.045, 2200);
+  } else if (name === 'combo'){
+    blip(520, 660, 90, 'triangle', 0.07);
+    blip(780, 980, 110, 'triangle', 0.06, 0.06);
+  } else if (name === 'tool'){
+    blip(180, 940, 200, 'sawtooth', 0.08);
+    noise(160, 0.06, 3200);
+  } else if (name === 'pick'){
+    blip(720, 720, 90, 'sine', 0.07);
+    blip(960, 960, 130, 'sine', 0.06, 0.08);
+  } else if (name === 'win'){
+    var notes = [523, 659, 784, 1047];
+    for (var i = 0; i < notes.length; i++) blip(notes[i], notes[i], 200, 'triangle', 0.08, i * 0.11);
+  } else if (name === 'lose'){
+    blip(400, 180, 320, 'sine', 0.08);
+  } else if (name === 'reshuffle'){
+    blip(300, 620, 160, 'sine', 0.06);
+  }
+}
+
+/* ---------- 3. 美术槽：game.json 里有自定义图就用图，没有就沿用代码画的方块 ---------- */
+var SLOT_OF_TYPE = ['snack_peanut', 'snack_cookie', 'snack_seed'];
+var ART = {};
+
+function loadArt(){
+  var assets = GAME.assets || {};
+  var slots = GAME.slots || {};
+  var ids = ['hamster', 'snack_peanut', 'snack_cookie', 'snack_seed'];
+  for (var i = 0; i < ids.length; i++){
+    var id = ids[i];
+    var meta = slots[id];
+    if (!meta || !meta.custom || !assets[id]) continue;
+    try {
+      var img = new Image();
+      img.__ready = false;
+      img.onload = function(){ this.__ready = true; };
+      img.onerror = function(){ this.__ready = false; };
+      img.src = assets[id];
+      ART[id] = img;
+    } catch (e) { /* 微信旧基础库没有 Image，就留在代码美术 */ }
+  }
+}
+
+loadArt();
+
+var _drawTile = drawTile;
+drawTile = function(x, y, size, t, dim){
+  var img = SLOT_OF_TYPE[t] ? ART[SLOT_OF_TYPE[t]] : null;
+  if (img && img.__ready && !dim){
+    try { ctx.drawImage(img, x, y, size, size); return; } catch (e) {}
+  }
+  return _drawTile(x, y, size, t, dim);
+};
+
+var _drawHamster = drawHamster;
+drawHamster = function(x, y, size, snack, bob){
+  var img = ART.hamster;
+  if (img && img.__ready){
+    try { ctx.drawImage(img, x, y + (bob || 0), size, size); return; } catch (e) {}
+  }
+  return _drawHamster(x, y, size, snack, bob);
+};
+
+/* ---------- 4. 音效 / 存档挂点：包一层，规则不动 ---------- */
+var _commitClear = commitClear;
+commitClear = function(cells, round, log, rec, label){
+  var gain = _commitClear.apply(null, arguments);
+  if (gain > 0) sfx(round >= 2 ? 'combo' : 'pop', { round: round });
+  return gain;
+};
+
+var _useTool = useTool;
+useTool = function(id, cell){
+  var res = _useTool.apply(null, arguments);
+  if (res === 'used') sfx('tool');
+  else if (res === 'off') sfx('invalid');
+  return res;
+};
+
+var _reshuffle = reshuffle;
+reshuffle = function(){
+  var res = _reshuffle.apply(null, arguments);
+  sfx('reshuffle');
+  return res;
+};
+
+var _chooseUpgrade = chooseUpgrade;
+chooseUpgrade = function(id){
+  sfx('pick');
+  return _chooseUpgrade.apply(null, arguments);
+};
+
+var _newRun = newRun;
+newRun = function(seed){
+  loadSave();
+  SAVE.plays++;
+  saveNow();
+  sfx('tap');
+  return _newRun.apply(null, arguments);
+};
+
+var _afterResolve = afterResolve;
+afterResolve = function(){
+  var res = _afterResolve.apply(null, arguments);
+  if (S.phase === 'lose'){
+    SAVE.best = Math.max(SAVE.best, S.level);
+    SAVE.bestGain = Math.max(SAVE.bestGain, S.maxGain || 0);
+    saveNow();
+    sfx('lose');
+  }
+  return res;
+};
+
+var _finishLevel = finishLevel;
+finishLevel = function(){
+  var res = _finishLevel.apply(null, arguments);
+  SAVE.best = Math.max(SAVE.best, Math.min(LEVELS.length, S.level));
+  SAVE.bestGain = Math.max(SAVE.bestGain, S.maxGain || 0);
+  if (S.phase === 'win'){ SAVE.wins++; sfx('win'); } else { sfx('pick'); }
+  saveNow();
+  return res;
+};
+
+/* ---------- 5. 标题页：存档回显 + 音效开关 ---------- */
+function toggleMute(){
+  SAVE.mute = !SAVE.mute;
+  saveNow();
+  if (!SAVE.mute) sfx('tap');
+}
+
+function drawMuteChip(){
+  var w = Math.round(Math.min(96, W * 0.24));
+  var h = Math.round(Math.min(30, Math.max(22, W * 0.072)));
+  var x = W - L.pad - w, y = Math.round(Math.max(14, H * 0.022));
+  rr(x, y, w, h, h / 2);
+  ctx.fillStyle = C.panel2; ctx.fill();
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = SAVE.mute ? C.line : C.amber;
+  ctx.stroke();
+  txt(SAVE.mute ? '音效 关' : '音效 开', x + w / 2, y + h * 0.66,
+      Math.max(10, Math.round(W * 0.029)), SAVE.mute ? C.muted : C.amber, 'center', true);
+  HIT.mute = [x, y, w, h];
+}
+
+var _drawTitle = drawTitle;
+drawTitle = function(){
+  _drawTitle();
+  var fs = Math.max(10, Math.round(W * 0.03));
+  var yb = Math.round(H * 0.68) + Math.round(Math.min(52, H * 0.07)) + 58;
+  txt('最高第 ' + SAVE.best + ' 关 · 最大单次 +' + SAVE.bestGain + ' · 通关 ' + SAVE.wins + ' 次',
+      W / 2, Math.min(H - 16, yb), fs, C.muted, 'center');
+  drawMuteChip();
+};
+
+/* ---------- 6. 主绘制包一层：微信安全区整体下移 ---------- */
+var _draw = draw;
+draw = function(){
+  if (SAFE_TOP || SAFE_BOT){
+    ctx.save();
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, W, H + SAFE_TOP + SAFE_BOT);
+    ctx.translate(0, SAFE_TOP);
+    _draw();
+    ctx.restore();
+  } else {
+    _draw();
+  }
+};
+
+/* ---------- 7. 输入补充：静音按钮（捕获阶段吞掉），键盘快捷 ---------- */
+canvas.addEventListener('pointerdown', function(e){
+  try {
+    unlockAudio();
+    var rect = canvas.getBoundingClientRect();
+    var pt = [e.clientX - rect.left, e.clientY - rect.top - SAFE_TOP];
+    if (HIT.mute && inRect(pt, HIT.mute)){
+      toggleMute();
+      if (e.preventDefault) e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  } catch (err) {}
+}, true);
+
+window.addEventListener('keydown', function(e){
+  var k = e.key;
+  if (k === 'm' || k === 'M'){ toggleMute(); return; }
+  if (S.anim) return;
+  if (k === 'Enter' || k === ' '){
+    if (S.phase === 'title') newRun(Date.now() & 0x7fffffff);
+    else if (S.phase === 'win') newRun((Date.now() ^ 0x5f3a) & 0x7fffffff);
+    else if (S.phase === 'lose') startLevel(S.level);
+    return;
+  }
+  if (S.phase === 'pick' && S.cand && S.cand.length){
+    var idx = '123'.indexOf(k);
+    if (idx >= 0 && idx < S.cand.length) chooseUpgrade(S.cand[idx]);
+  }
+}, false);
+
+/* ---------- 8. 给 dsh-game-studio 的自动化接口 ---------- */
+var PHASE_MAP = { title: 'title', shop: 'shop', play: 'playing', pick: 'playing', win: 'won', lose: 'lost' };
+
+var _gameState = window.__gameState;
+window.__gameState = function(){
+  var raw = _gameState ? _gameState() : {};
+  raw.phase = PHASE_MAP[S.phase] || 'playing';
+  raw.phaseRaw = S.phase;
+  raw.score = S.prog;
+  raw.hearts = S.steps;
+  raw.world = { w: W, h: H };
+  raw.fps = 60;
+  raw.tools = S.tools.slice();
+  raw.arm = S.arm;
+  raw.maxGain = S.maxGain;
+  raw.best = SAVE.best;
+  raw.muted = SAVE.mute;
+  raw.safeTop = SAFE_TOP;
+  return raw;
+};
+
+/* 无人操作时自己打：一次一个动作，等动画演完再下一步 */
+window.__autoplay = function(){
+  if (S.anim) return 'wait';
+  if (S.phase === 'title'){ newRun(Date.now() & 0x7fffffff); return 'start'; }
+  if (S.phase === 'win'){ newRun((Date.now() ^ 0x5f3a) & 0x7fffffff); return 'restart'; }
+  if (S.phase === 'lose'){ startLevel(S.level); return 'retry'; }
+  if (S.phase === 'pick'){
+    if (S.cand && S.cand.length){ chooseUpgrade(S.cand[0]); return 'pick'; }
+    return 'wait';
+  }
+  if (S.hintOpen){ S.hintOpen = false; return 'hint'; }
+  for (var i = 0; i < TOOLS.length; i++){
+    if (S.tools[i] > 0){
+      useTool(i, TOOLS[i].needsCell ? [2, 2] : null);
+      return 'tool';
+    }
+  }
+  var mv = bestMove(S.board);
+  if (!mv){ reshuffle(); return 'shuffle'; }
+  trySwap(mv[0], mv[1]);
+  return 'swap';
+};
+
+/* 侧栏缩略图：把代码画的角色单独渲染出来 */
+window.__renderSlots = function(size){
+  size = size || 256;
+  var out = {};
+  var ids = ['hamster', 'snack_peanut', 'snack_cookie', 'snack_seed'];
+  for (var i = 0; i < ids.length; i++){
+    var id = ids[i];
+    try {
+      var cv = document.createElement('canvas');
+      cv.width = size; cv.height = size;
+      var g = cv.getContext('2d');
+      var keep = ctx;
+      ctx = g;
+      try {
+        if (id === 'hamster'){
+          drawHamster(size * 0.06, size * 0.02, size * 0.88, 0, 0);
+        } else {
+          drawTile(size * 0.08, size * 0.08, size * 0.84, SLOT_OF_TYPE.indexOf(id), false);
+        }
+      } finally {
+        ctx = keep;
+      }
+      var url = cv.toDataURL('image/png');
+      if (typeof url === 'string' && url.indexOf('data:image/png') === 0) out[id] = url;
+    } catch (e) { /* 微信部分基础库没有 toDataURL，跳过即可 */ }
+  }
+  return out;
+};
+
+/* 微信转发文案 */
+window.__wxSharePayload = function(){
+  return { title: '仓鼠零食工厂 · 我已经开到第 ' + SAVE.best + ' 关了' };
+};
+
+/* 安全区变了（比如折叠屏/旋转）重新排一次版 */
+resize();
+
+/* ============================================================
+   RPG 战斗层（M2）：三资源 → 仓鼠小队 / 尖牙帮
+   ============================================================ */
+/* ============================================================
+   RPG 战斗层（M2：三资源 → 我方仓鼠小队 / 敌方鼠群）
+   ------------------------------------------------------------
+   设计依据：docs/GDD-v4-shop-routing.md
+   · 护甲 = 全队共享护盾（不分配给具体单位）
+   · 零件 / 能量 = 私有槽（断点轮转）+ 余量进公共池
+   · 步数即时间轴：走一步 = 敌人充能 +1
+   · 美术全部代码矢量图，尺寸集中在 SZ 里，改一处全动
+   ============================================================ */
+
+/* ---------- 1. 尺寸规范（逻辑像素，竖屏 390×844 基准） ----------
+   按"最挤的情况"定：我方 3 + 敌方 3 = 6 张卡同时在场。
+   舞台可用宽 = W - 2*pad - 12 ≈ 344 → 6*48 + 5*6 = 318，留 26 余量。 */
+var SZ = {
+  card: 48,        // 单位卡宽（3v3 满编上限，别再改大）
+  cardH: 76,       // 单位卡高：横向是瓶颈，纵向借用舞台富余空间
+  art: 44,         // 卡内矢量角色边长
+  gap: 6,          // 卡片间距
+  hpBar: 4,        // 卡内血条高
+  slotBar: 3,      // 卡内充能条高（我方私有槽 / 敌方出手倒计时）
+  name: 8,         // 卡下名字字号
+  queue: 20,       // 排队小卡边长
+  queueGap: 4,
+  stripH: 7,       // 底部资源条高
+  ult: 44,         // 大招按钮直径
+  title: 11,       // 舞台标题字号
+  float: 13,       // 伤害飘字字号
+  log: 9           // 战斗日志字号
+};
+
+/* ---------- 2. 配置：game.json 的 rules.rpg 覆盖默认值 ---------- */
+var RPGR = RULES.rpg || {};
+
+var CFG = {
+  hp: 100, armorMax: 60, partsMax: 30, energyMax: 100,
+  // 每格产出（花生→能量 / 饼干→护甲 / 瓜子→零件）
+  yieldPer: { energy: 4, armor: 2, parts: 1 },
+  cascade: [1, 1.5, 2, 3],
+  turret: { cost: 10, dmg: 6 },       // 公共炮台：余量零件自动开火
+  ult: { cost: 100, dmg: 25 },        // 大招：消耗全部能量，全体伤害
+  slots: 2,                            // 本版固定 2 个上场位（章节解锁在 M4 接）
+  squad: ['tin', 'cannon'],
+  realtime: true,                      // 敌方按真实时间出手（不再是"走一步充一格"）
+  tankRedirect: 0.2,                   // 承伤单位吸引走的伤害比例
+  tankReduce: 0.3                      // 承伤单位自身减伤
+};
+(function(){
+  for (var k in RPGR){ if (RPGR[k] !== undefined && CFG[k] !== undefined) CFG[k] = RPGR[k]; }
+})();
+
+var CFG_YIELD = CFG.yieldPer || { energy: 4, armor: 2, parts: 1 };
+
+/* ---------- 3. 仓鼠品种（职责全程不漂移：一行一条线） ----------
+   自动战斗：每个单位有自己的出手间隔 atkMs 与基础伤害 baseDmg。
+   资源不再是"能不能动"的门票，而是"强化弹"——私有槽满了，下一次出手就用 act 的强化值。 */
+var ROSTER = {
+  worker:   { name: '工鼠',     line: 'none', eats: null,     hp: 60,  eff: 1.1, atkMs: 3200, baseDmg: 3, act: { kind: 'hit', dmg: 8 } },
+  tin:      { name: '铁皮鼠',   line: 'wrench', eats: null,   hp: 90,  tank: 1, atkMs: 0, baseDmg: 0 },
+  hydra:    { name: '液压鼠',   line: 'wrench', eats: null,   hp: 120, tank: 1, thorns: 4, atkMs: 0, baseDmg: 0 },
+  cannon:   { name: '炮筒鼠',   line: 'driver', eats: 'parts',  hp: 55, need: 6, atkMs: 2600, baseDmg: 4, act: { kind: 'hit', dmg: 12 } },
+  sniper:   { name: '瓜子狙击鼠', line: 'driver', eats: 'parts', hp: 55, need: 9, atkMs: 3200, baseDmg: 5, act: { kind: 'hit', dmg: 14, pierce: true } },
+  spring:   { name: '速滑鼠',   line: 'spring', eats: 'energy', hp: 50, need: 25, atkMs: 2400, baseDmg: 5, act: { kind: 'hit', dmg: 15 } },
+  boom:     { name: '爆产鼠',   line: 'spring', eats: 'energy', hp: 50, need: 30, atkMs: 3000, baseDmg: 6, act: { kind: 'aoe', dmg: 20 } },
+  medic:    { name: '扳钳鼠',   line: 'medic',  eats: 'energy', hp: 45, need: 30, atkMs: 5000, baseDmg: 4, act: { kind: 'heal', dmg: 12 } },
+  nurse:    { name: '医护鼠',   line: 'medic',  eats: 'energy', hp: 55, need: 35, atkMs: 5000, baseDmg: 4, act: { kind: 'heal', dmg: 10, armor: 8 } },
+  collect:  { name: '收集鼠',   line: 'sack',   eats: null,   hp: 40, cascade: 0.5, atkMs: 0, baseDmg: 0 },
+  store:    { name: '仓库鼠',   line: 'sack',   eats: null,   hp: 40, cascade: 0.5, cap: 10, atkMs: 0, baseDmg: 0 }
+};
+(function(){
+  var src = RPGR.roster || {};
+  for (var k in src){
+    ROSTER[k] = ROSTER[k] || {};
+    for (var f in src[k]) ROSTER[k][f] = src[k][f];
+  }
+})();
+
+/* ---------- 4. 敌方（尖牙帮） ---------- */
+var FOES = {
+  crate: { name: '纸箱鼠', hp: 18, charge: 3, atk: 8,  box: 1 },
+  shell: { name: '抛壳鼠', hp: 22, charge: 3, atk: 10, pierce: 1 },
+  thief: { name: '拾荒鼠', hp: 26, charge: 4, atk: 0 },
+  boss:  { name: '质检机', hp: 90, charge: 4, atk: 18, boss: 1 }
+};
+(function(){
+  var src = RPGR.foes || {};
+  for (var k in src){
+    FOES[k] = FOES[k] || {};
+    for (var f in src[k]) FOES[k][f] = src[k][f];
+  }
+})();
+
+/* ---------- 5. 关卡表：每关可以有自己的一套波次与修饰符 ----------
+   rules.rpg.levels 是数组；关卡号超出长度后进入无尽：按轮次整体放大，并循环使用关卡表。 */
+var WAVES_DEFAULT = [
+  [{ type: 'crate' }],
+  [{ type: 'crate' }, { type: 'shell' }],
+  [{ type: 'crate' }, { type: 'crate' }, { type: 'shell' }]
+];
+var CHAPTER = RPGR.chapter || { name: '工厂开张', steps: 14, waves: WAVES_DEFAULT, tools: [1, 2, 1], onField: 2 };
+
+var LEVELS_TABLE = (RPGR.levels && RPGR.levels.length) ? RPGR.levels : [CHAPTER];
+var ROUND_SCALE = RPGR.roundScale || 1.15;   // 关卡表循环一圈后，整体强度 ×这个数
+
+/* 当前关的配置：名字 / 波次 / 同屏上限 / 修饰符 / 工具次数 */
+function levelCfgFor(level){
+  var lv = Math.max(1, level || 1);
+  var idx = (lv - 1) % LEVELS_TABLE.length;
+  var base = LEVELS_TABLE[idx] || CHAPTER;
+  var round = Math.floor((lv - 1) / LEVELS_TABLE.length);
+  var scale = Math.pow(ROUND_SCALE, round);
+  var mod = base.mod || {};
+  function mul(a, b){ return (a === undefined ? 1 : a) * b; }
+  return {
+    name: base.name || '工厂开张',
+    level: lv,
+    waves: base.waves || WAVES_DEFAULT,
+    onField: base.onField || 2,
+    tools: base.tools || [1, 1, 1],
+    round: round,
+    mod: {
+      hpMul: mul(mod.hpMul, scale),
+      atkMul: mul(mod.atkMul, scale),
+      chargeMul: mod.chargeMul === undefined ? 1 : mod.chargeMul,
+      armorMaxDelta: mod.armorMaxDelta || 0,
+      yieldMul: mod.yieldMul || {},
+      noUlt: !!mod.noUlt,
+      stealBonus: mod.stealBonus || 0,
+      note: mod.note || ''
+    }
+  };
+}
+
+/* 把配置写进 CHAPTER（其余代码都读它）与 R.mod（战斗内生效的修饰符） */
+function applyLevelCfg(level){
+  var cfg = levelCfgFor(level);
+  CHAPTER.name = cfg.name;
+  CHAPTER.waves = cfg.waves;
+  CHAPTER.onField = cfg.onField;
+  CHAPTER.tools = cfg.tools;
+  R.cfg = cfg;
+  R.mod = cfg.mod;
+  return cfg;
+}
+
+/* ---------- 6. 战斗状态 ---------- */
+var R = {
+  hp: 100, hpMax: 100,
+  armor: 0, armorMax: 60,
+  parts: 0, partsMax: 30,
+  energy: 0, energyMax: 100,
+  units: [], enemies: [], queue: [],
+  wave: 0, waveTotal: 0,
+  dmgDealt: 0, kills: 0,
+  floats: [], ultFlash: 0, banner: null,
+  pending: { energy: 0, armor: 0, parts: 0 },
+  cursor: { parts: 0, energy: 0 },
+  stepThisTurn: false,
+  log: []
+};
+
+function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
+
+function pushLog(text){ R.log.push(text); if (R.log.length > 40) R.log.shift(); }
+
+function floatText(text, x, y, col, big){
+  R.floats.push({ text: text, x: x, y: y, t0: performance.now(), max: 760, col: col || C.ink, big: !!big });
+  if (R.floats.length > 24) R.floats.shift();
+}
+
+/* ---------- 7. 组队 ---------- */
+function makeUnit(id, slot){
+  var def = ROSTER[id] || ROSTER.worker;
+  var hpBonus = 0, need = def.need || 0;
+  return {
+    id: id, name: def.name, line: def.line || 'none',
+    eats: def.eats || null, need: need,
+    hp: def.hp + hpBonus, hpMax: def.hp + hpBonus,
+    charge: 0, ready: false, alive: true, slot: slot,
+    act: def.act || null, tank: !!def.tank, thorns: def.thorns || 0,
+    atkMs: def.atkMs || 0, baseDmg: def.baseDmg || 0,
+    timerMs: 0, empowered: false,
+    cascade: def.cascade || 0, cap: def.cap || 0,
+    flash: 0, actFlash: 0
+  };
+}
+
+function buildSquad(){
+  var squad = CFG.squad || ['worker'];
+  R.units = [];
+  for (var i = 0; i < squad.length && i < CFG.slots; i++) R.units.push(makeUnit(squad[i], i));
+  // 补满空槽（视觉上画虚线框）
+  while (R.units.length < CFG.slots) R.units.push(null);
+  for (var j = 0; j < R.units.length; j++) if (R.units[j]) R.units[j].slot = j;
+}
+
+/* 被动单位（收集鼠/仓库鼠）改上限与连击 */
+function applyPassives(){
+  var capBonus = 0, cascadeBonus = 0;
+  for (var i = 0; i < R.units.length; i++){
+    var u = R.units[i];
+    if (!u || !u.alive) continue;
+    if (u.cap) capBonus += u.cap;
+    if (u.cascade) cascadeBonus += u.cascade;
+  }
+  R.capBonus = capBonus;
+  R.cascadeBonus = cascadeBonus;
+  var delta = (R.mod && R.mod.armorMaxDelta) || 0;
+  R.armorMax = Math.max(10, CFG.armorMax + capBonus + delta + (R.buffArmorMax || 0));
+  R.partsMax = CFG.partsMax + capBonus;
+  R.energyMax = CFG.energyMax + capBonus;
+}
+
+/* ---------- 8. 开局 / 重开 / 波次 ---------- */
+function rpgResetBattle(){
+  R.hpMax = 0; R.hp = 0;   // 核心血池已取消：胜负只看全队是否阵亡
+  R.armor = 0; R.parts = 0; R.energy = 0;
+  R.enemies = []; R.queue = []; R.wave = 0;
+  R.dmgDealt = 0; R.kills = 0; R.floats = []; R.pending = { energy: 0, armor: 0, parts: 0 };
+  R.cursor = { parts: 0, energy: 0 };
+  R.ultFlash = 0; R.banner = null; R.log = [];
+  R.outOfStock = false; R.graceUntil = 0;
+  // 波间补给只在本关有效：开新关时清空
+  R.buffArmorMax = 0; R.buffDmgMul = 1; R.buffAtkMul = 1; R.pick = null;
+  buildSquad();
+  applyPassives();
+  R.waveTotal = (CHAPTER.waves || []).length || 1;
+  spawnWave(0);
+}
+
+function foeMake(type){
+  var def = FOES[type] || FOES.crate;
+  var chargeMs = def.chargeMs || ((def.charge || 3) * 1500);
+  var mod = R.mod || {};
+  var hpMul = mod.hpMul || 1;
+  var atkMul = mod.atkMul || 1;
+  var chargeMul = mod.chargeMul || 1;
+  return {
+    type: type, name: def.name,
+    hp: Math.round(def.hp * hpMul), hpMax: Math.round(def.hp * hpMul),
+    charge: 0, chargeMax: def.charge || 3, atk: Math.round((def.atk || 8) * atkMul * 10) / 10,
+    chargeMs: Math.round(chargeMs * chargeMul), timerMs: 0,
+    pierce: !!def.pierce, box: def.box || 0, boss: !!def.boss,
+    steal: (def.steal || 0) + (mod.stealBonus || 0),
+    flash: 0, alive: true, slot: 0
+  };
+}
+
+function spawnWave(idx){
+  R.wave = idx;
+  var list = (CHAPTER.waves || [])[idx] || [];
+  var onField = CHAPTER.onField || 2;
+  R.enemies = [];
+  R.queue = [];
+  for (var i = 0; i < list.length; i++){
+    var foe = foeMake(list[i].type);
+    if (R.enemies.length < onField) R.enemies.push(foe);
+    else R.queue.push(foe);
+  }
+  for (var j = 0; j < R.enemies.length; j++) R.enemies[j].slot = j;
+  R.banner = { text: '第 ' + (idx + 1) + ' / ' + R.waveTotal + ' 波', t0: performance.now() };
+  pushLog('第 ' + (idx + 1) + ' 波进场');
+}
+
+/* ---------- 9. 资源产出：包装 commitClear 采集每格类型 ---------- */
+var _rpgCommitClear = commitClear;
+commitClear = function(cells, round, log, rec, label){
+  var i, k, t;
+  var cnt = { energy: 0, armor: 0, parts: 0 };
+  for (i = 0; i < cells.length; i++){
+    k = cells[i].split(',');
+    t = S.board[+k[0]][+k[1]];
+    if (t === 0) cnt.energy++;
+    else if (t === 1) cnt.armor++;
+    else if (t === 2) cnt.parts++;
+  }
+  var gain = _rpgCommitClear.apply(null, arguments);
+  var inTool = R.inTool !== null && R.inTool !== undefined;
+  if (gain > 0 && !inTool && (cnt.energy + cnt.armor + cnt.parts) > 0){
+    var r = Math.max(1, round || 1);
+    var mult = (CFG.cascade[r - 1] !== undefined ? CFG.cascade[r - 1] : CFG.cascade[CFG.cascade.length - 1])
+             + (R.cascadeBonus || 0);
+    addYield(cnt, mult);
+  }
+  return gain;
+};
+
+function addYield(cnt, mult){
+  var ym = (R.mod && R.mod.yieldMul) || {};
+  var ye = ym.energy === undefined ? 1 : ym.energy;
+  var ya = ym.armor === undefined ? 1 : ym.armor;
+  var yp = ym.parts === undefined ? 1 : ym.parts;
+  R.pending.energy += cnt.energy * CFG_YIELD.energy * mult * ye;
+  R.pending.armor  += cnt.armor  * CFG_YIELD.armor  * mult * ya;
+  R.pending.parts  += cnt.parts  * CFG_YIELD.parts  * mult * yp;
+  R.cellsThisTurn = (R.cellsThisTurn || 0) + cnt.energy + cnt.armor + cnt.parts;
+  R.lastYield = { energy: cnt.energy, armor: cnt.armor, parts: cnt.parts, mult: mult };
+}
+
+/* ---------- 10. 分配：护甲进公共盾；零件/能量按断点轮转灌私有槽 ---------- */
+function eatersOf(res){
+  var out = [];
+  for (var i = 0; i < R.units.length; i++){
+    var u = R.units[i];
+    if (u && u.alive && u.eats === res) out.push(u);
+  }
+  return out;
+}
+
+function distributeResource(res, amount){
+  if (amount <= 0) return;
+  var eaters = eatersOf(res);
+  var bank = res === 'parts' ? 'parts' : 'energy';
+  if (!eaters.length){
+    R[bank] = clamp(R[bank] + amount, 0, res === 'parts' ? R.partsMax : R.energyMax);
+    return;
+  }
+  var i = R.cursor[res] % eaters.length;
+  var guard = 0;
+  while (amount > 0.01 && guard++ < 400){
+    var u = eaters[i % eaters.length];
+    var need = u.need - u.charge;
+    if (need <= 0){ i++; continue; }
+    var give = Math.min(need, amount);
+    u.charge += give;
+    amount -= give;
+    if (u.charge >= u.need - 0.001){ u.charge = u.need; u.ready = true; }
+    i++;
+    var allFull = true;
+    for (var q = 0; q < eaters.length; q++) if (eaters[q].charge < eaters[q].need - 0.001) allFull = false;
+    if (allFull) break;
+  }
+  R.cursor[res] = i % eaters.length;
+  if (amount > 0.01) R[bank] = clamp(R[bank] + amount, 0, res === 'parts' ? R.partsMax : R.energyMax);
+}
+
+/* ---------- 11. 我方行动 ---------- */
+function aliveEnemies(){
+  var out = [];
+  for (var i = 0; i < R.enemies.length; i++) if (R.enemies[i].alive) out.push(R.enemies[i]);
+  return out;
+}
+
+function weakestEnemy(){
+  var list = aliveEnemies(), best = null;
+  for (var i = 0; i < list.length; i++) if (!best || list[i].hp < best.hp) best = list[i];
+  return best;
+}
+
+function hurtFoe(foe, dmg, pierce){
+  if (!foe || !foe.alive) return;
+  var left = Math.round(dmg * (R.buffDmgMul || 1));   // 波间补给：本关伤害加成
+  if (foe.box > 0 && !pierce){          // 纸箱：第一下只破箱
+    foe.box--;
+    floatText('破箱', stageXOf(foe, true), stageYOf(foe, true), C.amber);
+    return;
+  }
+  foe.hp -= left;
+  R.dmgDealt += left;
+  foe.flash = performance.now() + 180;
+  floatText('-' + Math.round(left), stageXOf(foe, true), stageYOf(foe, true), '#ff9d8a', left >= 10);
+  if (foe.hp <= 0){
+    foe.alive = false;
+    R.kills++;
+    pushLog(foe.name + ' 被击退');
+    promoteFromQueue();
+  }
+}
+
+function promoteFromQueue(){
+  if (!R.queue.length) return;
+  for (var i = 0; i < R.enemies.length; i++){
+    if (!R.enemies[i].alive){
+      var next = R.queue.shift();
+      next.slot = i;
+      R.enemies[i] = next;
+      pushLog(next.name + ' 补位进场');
+      return;
+    }
+  }
+  if (R.enemies.length < (CHAPTER.onField || 2)){
+    var extra = R.queue.shift();
+    extra.slot = R.enemies.length;
+    R.enemies.push(extra);
+  }
+}
+
+function weakestAlly(){
+  var best = null;
+  for (var i = 0; i < R.units.length; i++){
+    var u = R.units[i];
+    if (u && u.alive && (!best || u.hp < best.hp)) best = u;
+  }
+  return best;
+}
+
+/* 一次出手：有强化弹（资源灌满过）就用 act 的强化值，否则用 baseDmg 的基础值。
+   也就是说"没资源也能打，只是打得弱"——消除是加强，不是开关。 */
+function unitStrike(u, empowered){
+  if (!u || !u.alive) return;
+  var now = performance.now();
+  u.actFlash = now + 220;
+  var act = u.act || null;
+  var dmg = empowered && act ? act.dmg : (u.baseDmg || 0);
+  if (dmg <= 0) return;
+  if (act && act.kind === 'heal'){
+    var ally = weakestAlly();
+    if (ally){
+      var before = ally.hp;
+      ally.hp = Math.min(ally.hpMax, ally.hp + dmg);
+      if (ally.hp > before) floatText('+' + Math.round(ally.hp - before), stageXOf(ally, false), stageYOf(ally, false), '#8ee0a8');
+    }
+    if (empowered && act.armor) R.armor = clamp(R.armor + act.armor, 0, R.armorMax);
+  } else if (act && act.kind === 'aoe' && empowered){
+    var list = aliveEnemies();
+    for (var i = 0; i < list.length; i++) hurtFoe(list[i], dmg, false);
+  } else {
+    var foe = weakestEnemy();
+    if (foe) hurtFoe(foe, dmg, !!(act && act.pierce));
+  }
+  if (empowered) floatText('强化', stageXOf(u, false), stageYOf(u, false) - 14, C.amber);
+  sfx(empowered ? 'combo' : 'pop', { round: 1 });
+}
+
+/* 兼容旧调用点：按资源"行动"改成"点燃强化弹" */
+function unitAct(u){
+  if (!u || !u.alive) return;
+  u.empowered = true;
+}
+
+/* 我方自动战斗：每个单位按自己的 atkMs 出手，与玩家消不消无关 */
+function unitTick(dtMs){
+  for (var i = 0; i < R.units.length; i++){
+    var u = R.units[i];
+    if (!u || !u.alive || !u.atkMs) continue;
+    u.timerMs += dtMs * (R.buffAtkMul || 1);   // 波间补给：本关出手加速
+    var guard = 0;
+    while (u.timerMs >= u.atkMs && u.alive && guard++ < 4){
+      u.timerMs -= u.atkMs;
+      var wasEmpowered = u.empowered;
+      if (wasEmpowered){ u.empowered = false; u.charge = 0; }
+      unitStrike(u, wasEmpowered);
+      if (S.phase !== 'play') return;
+    }
+  }
+}
+
+/* 公共炮台：余量零件自动开火 */
+function turretTick(){
+  var guard = 0;
+  while (R.parts >= CFG.turret.cost && guard++ < 6){
+    R.parts -= CFG.turret.cost;
+    var foe = weakestEnemy();
+    if (!foe) break;
+    hurtFoe(foe, CFG.turret.dmg, false);
+  }
+}
+
+/* ---------- 12. 敌方行动 ----------
+   伤害只落在仓鼠身上：没有核心血池。全队阵亡就是输。 */
+function hurtTeam(dmg, pierce){
+  var alive = [];
+  var tank = null, front = null;
+  for (var i = 0; i < R.units.length; i++){
+    var u = R.units[i];
+    if (!u || !u.alive) continue;
+    alive.push(u);
+    if (!tank && u.tank) tank = u;
+    if (!front && !u.tank) front = u;
+  }
+  if (!alive.length){ loseTeam(); return; }
+
+  var rest = dmg;
+  if (tank){
+    var pull = dmg * CFG.tankRedirect;
+    applyUnitDamage(tank, Math.round(pull * (1 - CFG.tankReduce)), pierce);
+    if (tank.thorns){ var foe = weakestEnemy(); if (foe) hurtFoe(foe, tank.thorns, true); }
+    rest = dmg - Math.round(pull * (1 - CFG.tankReduce));
+  }
+  var target = front || tank;
+  if (target && target.alive) applyUnitDamage(target, rest, pierce);
+  if (!aliveUnits().length) loseTeam();
+}
+
+function aliveUnits(){
+  var out = [];
+  for (var i = 0; i < R.units.length; i++){
+    var u = R.units[i];
+    if (u && u.alive) out.push(u);
+  }
+  return out;
+}
+
+function loseTeam(){
+  if (S.phase !== 'play') return;
+  S.phase = 'lose';
+  pushLog('全队阵亡，工厂失守');
+  sfx('lose');
+}
+
+function applyUnitDamage(u, dmg, pierce){
+  var left = dmg;
+  if (!pierce && R.armor > 0){
+    var absorb = Math.min(R.armor, left);
+    R.armor -= absorb;
+    left -= absorb;
+    if (absorb > 0) floatText('盾 -' + Math.round(absorb), stageXOf(u, false), stageYOf(u, false) - 10, '#9fc6ff');
+  }
+  if (left <= 0) return;
+  u.hp -= left;
+  u.flash = performance.now() + 220;
+  floatText('-' + Math.round(left), stageXOf(u, false), stageYOf(u, false), '#ff9d8a', left >= 10);
+  if (u.hp <= 0){
+    u.hp = 0; u.alive = false; u.ready = false;
+    pushLog(u.name + ' 累趴下场');
+    floatText('累趴', stageXOf(u, false), stageYOf(u, false) - 14, C.bad);
+    sfx('lose');
+  }
+}
+
+function foeAct(foe){
+  foe.charge = 0;
+  foe.timerMs = 0;
+  foe.actFlash = performance.now() + 260;
+  if (foe.atk > 0) hurtTeam(foe.atk, foe.pierce);
+  if (foe.steal > 0) stealCells(foe.steal, foe);
+  sfx(foe.atk > 0 ? 'invalid' : 'reshuffle');
+}
+
+/* 拾荒鼠：把盘上几格换成别的零食 —— 直接打乱你的颜色计划，不造成伤害 */
+function stealCells(n, foe){
+  if (S.anim) return;
+  var cells = [];
+  for (var r = 0; r < N; r++){
+    for (var c = 0; c < N; c++){
+      if (S.board[r][c] !== null) cells.push([r, c]);
+    }
+  }
+  if (!cells.length) return;
+  var took = 0;
+  for (var i = 0; i < n && cells.length; i++){
+    var pick = Math.floor(Math.random() * cells.length);
+    var cell = cells.splice(pick, 1)[0];
+    var old = S.board[cell[0]][cell[1]];
+    var t = Math.floor(Math.random() * 3);
+    if (t === old) t = (t + 1) % 3;
+    S.board[cell[0]][cell[1]] = t;
+    took++;
+  }
+  if (took > 0){
+    floatText('偷走 ' + took + ' 格', stageXOf(foe, true), stageYOf(foe, true) - 16, '#ffb26b', true);
+    pushLog(foe ? foe.name + ' 改写了 ' + took + ' 格' : '盘面被改写');
+    sfx('reshuffle');
+    // 改写后可能出现现成的三连，交给下一手结算，不在这里触发连锁
+  }
+}
+
+/* 步数制（旧）：走一步 +1 充能。CFG.realtime 打开时不走这条。 */
+function enemyTick(){
+  for (var i = 0; i < R.enemies.length; i++){
+    var foe = R.enemies[i];
+    if (!foe.alive) continue;
+    foe.charge++;
+    if (foe.charge >= foe.chargeMax){ foeAct(foe); }
+  }
+}
+
+/* 实时制：敌方按毫秒充能，与玩家消不消无关 —— 你磨蹭，它就多打。
+   只在"关卡进行中"走表；结算、切后台、标题页都停表。 */
+function realtimeTick(dtMs){
+  if (S.phase !== 'play') return;
+  try { if (typeof document !== 'undefined' && document.hidden) return; } catch (e) {}
+  if (CFG.realtime){
+    for (var i = 0; i < R.enemies.length; i++){
+      var foe = R.enemies[i];
+      if (!foe || !foe.alive) continue;
+      foe.timerMs += dtMs;
+      var guard = 0;
+      while (foe.timerMs >= foe.chargeMs && foe.alive && guard++ < 3){
+        foe.timerMs -= foe.chargeMs;
+        foeAct(foe);
+        if (S.phase !== 'play') return;
+      }
+    }
+  }
+  // 我方也按秒自动出手（双方自动战斗）。没有步数限制，也就不需要回充。
+  unitTick(dtMs);
+  checkBattleEnd();
+}
+
+/* 接管渲染帧：dt 由时间戳差算，避免切后台回来一次性补一堆伤害 */
+var _rpgFrame = frame;
+var _rpgLastTs = 0;
+frame = function(ts){
+  var now = (ts === undefined || ts === null) ? performance.now() : ts;
+  var scale = CFG.timeScale || 1;
+  var dt = _rpgLastTs ? Math.min(120, now - _rpgLastTs) : 16;
+  _rpgLastTs = now;
+  _rpgFrame(ts);
+  // 时间缩放只给批量模拟用：dt 乘 scale，clamp 同倍放宽，避免高倍速下一帧被截断
+  realtimeTick(Math.min(120 * scale, dt * scale));
+};
+
+/* ---------- 13. 一步结束：产出 → 分配 → 行动 → 敌方 ---------- */
+function rpgTurn(wasStep){
+  if (S.phase !== 'play') return;
+  var dmgBefore = R.dmgDealt;
+  R.dbg = {
+    cells: R.cellsThisTurn || 0,
+    pending: { energy: Math.round(R.pending.energy), armor: Math.round(R.pending.armor), parts: Math.round(R.pending.parts) },
+    eaters: { parts: eatersOf('parts').length, energy: eatersOf('energy').length },
+    units: R.units.map(function(u){ return u ? (u.id + '|' + u.eats + '|' + u.need + '|' + u.alive) : 'null'; })
+  };
+  R.cellsThisTurn = 0;
+  // ① 资源结算（护甲每步有软顶：大消除不该一步把盾补满，否则实时制下永远打不穿）
+  var p = R.pending;
+  if (p.armor > 0){
+    var armorGain = Math.min(p.armor, CFG.armorStepCap || 999);
+    R.armor = clamp(R.armor + armorGain, 0, R.armorMax);
+    floatText('盾 +' + Math.round(armorGain), stageXOf(null, false), L.giftY + L.giftH - 46, '#9fc6ff');
+  }
+  distributeResource('parts', p.parts);
+  distributeResource('energy', p.energy);
+  R.pending = { energy: 0, armor: 0, parts: 0 };
+
+  // ② 我方行动（槽位顺序，每步每单位最多 1 次）
+  for (var i = 0; i < R.units.length; i++){
+    var u = R.units[i];
+    if (!u || !u.alive || !u.ready) continue;
+    u.charge -= u.need;
+    if (u.charge < 0) u.charge = 0;
+    u.ready = false;
+    unitAct(u);
+  }
+  // ③ 公共炮台
+  turretTick();
+
+  // ④ 敌方充能：实时制由 frame 的秒表驱动；只在关掉 realtime 时才按步数推进
+  if (wasStep && !CFG.realtime) enemyTick();
+
+  // ⑤ 胜负
+  checkBattleEnd();
+}
+
+function checkBattleEnd(){
+  // 唯一的失败条件：我方仓鼠全部阵亡
+  if (!aliveUnits().length){ loseTeam(); return; }
+  var foes = aliveEnemies().length + R.queue.length;
+  if (foes === 0){
+    if (R.wave + 1 < R.waveTotal){
+      if (shouldPick()) openPick();          // 波间三选一：按 pickEveryN 的间隔给
+      else spawnWave(R.wave + 1);            // 不给卡就直接进下一波
+    } else if (S.phase === 'play'){
+      S.phase = 'win';
+      pushLog('本厂守住了');
+      sfx('win');
+    }
+    return;
+  }
+  // 没有步数限制：不存在"用尽"这个状态
+}
+
+/* 三选一的频次：每 N 波给一次（默认 2 → 5 波里给 2 次：第 2 波后、第 4 波后）。
+   pickEveryN = 1 是"每波都给"，0 表示关掉。 */
+function shouldPick(){
+  var n = CFG.pickEveryN;
+  if (n === undefined) n = 2;
+  if (!n || n <= 0) return false;
+  return ((R.wave + 1) % n) === 0;
+}
+
+/* ---------- 13.5 波间三选一（临时增益，只在本关有效） ---------- */
+var BUFF_DECK = [
+  { id: 'armorCap', name: '加固车间', desc: '本关护甲上限 +20', apply: function(){ R.buffArmorMax = (R.buffArmorMax || 0) + 20; refreshCaps(); } },
+  { id: 'armorFill', name: '整箱饼干', desc: '护甲立刻补满', apply: function(){ R.armor = R.armorMax; } },
+  { id: 'dmgUp', name: '磨快牙口', desc: '本关我方伤害 +25%', apply: function(){ R.buffDmgMul = (R.buffDmgMul || 1) * 1.25; } },
+  { id: 'atkSpeed', name: '上足发条', desc: '本关我方出手快 15%', apply: function(){ R.buffAtkMul = (R.buffAtkMul || 1) * 1.15; } },
+  { id: 'energy', name: '备用电瓶', desc: '能量 +50', apply: function(){ R.energy = clamp(R.energy + 50, 0, R.energyMax); } },
+  { id: 'parts', name: '零件补给', desc: '零件补满', apply: function(){ R.parts = R.partsMax; } },
+  { id: 'repair', name: '紧急修理', desc: '全队恢复 25 点生命', apply: function(){
+      for (var i = 0; i < R.units.length; i++){
+        var u = R.units[i];
+        if (u && u.alive) u.hp = Math.min(u.hpMax, u.hp + 25);
+      }
+    } }
+];
+
+function refreshCaps(){
+  var capBonus = R.capBonus || 0;
+  R.armorMax = CFG.armorMax + capBonus + (R.buffArmorMax || 0);
+}
+
+function openPick(){
+  var pool = BUFF_DECK.slice();
+  R.pick = [];
+  for (var i = 0; i < 3 && pool.length; i++){
+    R.pick.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+  }
+  S.phase = 'pick';
+  sfx('pick');
+}
+
+function chooseBuff(idx){
+  if (S.phase !== 'pick') return;
+  var b = R.pick && R.pick[idx];
+  if (!b) return;
+  try { b.apply(); } catch (e) {}
+  pushLog('补给：' + b.name);
+  R.pick = null;
+  S.phase = 'play';
+  spawnWave(R.wave + 1);
+  sfx('tool');
+}
+
+/* 覆盖原版的三选一绘制（它用的是 PACKS，已经不用了） */
+drawPick = function(){
+  var now = performance.now();
+  ctx.fillStyle = 'rgba(16,12,24,.72)';
+  ctx.fillRect(0, 0, W, H);
+  txt('波间补给 · 三选一', W / 2, Math.round(H * 0.2), Math.round(W * 0.05), C.amber, 'center', true);
+  txt('只在本关有效', W / 2, Math.round(H * 0.2) + 22, Math.max(10, Math.round(W * 0.03)), C.muted, 'center');
+
+  var pad = L.pad, cw = W - pad * 2, ch = Math.round(H * 0.1), gap = Math.round(H * 0.014);
+  var y0 = Math.round(H * 0.27);
+  for (var i = 0; i < (R.pick || []).length; i++){
+    var b = R.pick[i];
+    var y = y0 + i * (ch + gap);
+    rr(pad, y, cw, ch, 12);
+    ctx.fillStyle = C.panel; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(232,172,80,.45)'; ctx.stroke();
+    txt(b.name, pad + 14, y + Math.round(ch * 0.38), Math.round(W * 0.04), C.ink, 'left', true);
+    txt(b.desc, pad + 14, y + Math.round(ch * 0.7), Math.max(9, Math.round(W * 0.027)), C.muted, 'left');
+    txt('选它', pad + cw - 14, y + Math.round(ch * 0.55), Math.max(11, Math.round(W * 0.034)), C.amber, 'right', true);
+    HIT['pick' + i] = [pad, y, cw, ch];
+  }
+  txt('也可以按 1 / 2 / 3', W / 2, y0 + 3 * (ch + gap) + 18,
+      Math.max(10, Math.round(W * 0.03)), C.muted, 'center');
+};
+
+canvas.addEventListener('pointerdown', function(e){
+  if (S.phase !== 'pick') return;
+  try {
+    var rect = canvas.getBoundingClientRect();
+    var pt = [e.clientX - rect.left, e.clientY - rect.top - SAFE_TOP];
+    for (var i = 0; i < 3; i++){
+      if (HIT['pick' + i] && inRect(pt, HIT['pick' + i])){
+        chooseBuff(i);
+        if (e.preventDefault) e.preventDefault();
+        e.stopImmediatePropagation();
+        return;
+      }
+    }
+  } catch (err) {}
+}, true);
+
+window.addEventListener('keydown', function(e){
+  if (S.phase !== 'pick') return;
+  var k = '123'.indexOf(e.key);
+  if (k >= 0) chooseBuff(k);
+}, false);
+
+/* ---------- 14. 接管三个原流程函数 ---------- */
+var _rpgAfterResolve = afterResolve;
+afterResolve = function(){
+  if (S.phase !== 'play') return;
+  if (S.anim) return;
+  rpgTurn(R.stepThisTurn);
+  R.stepThisTurn = false;
+};
+
+var _rpgTrySwap = trySwap;
+trySwap = function(a, b){
+  // 没有步数限制：只要小队还在，就能一直消
+  var before = S.swapCount || 0;
+  R.stepThisTurn = false;
+  var ok = _rpgTrySwap.apply(null, arguments);
+  if (ok && (S.swapCount || 0) > before) R.stepThisTurn = true;   // 有效交换（含连锁的那一手）
+  return ok;
+};
+
+/* 工具在 RPG 里是"技能"：清格不再刷资源，改成直接结算伤害/能量（v4 §7）。
+   否则 4 次工具的清盘量会变成几十点能量，两步就把整关清掉，步数形同虚设。 */
+var _rpgUseTool = useTool;
+useTool = function(id, cell){
+  R.inTool = id;
+  var res;
+  try { res = _rpgUseTool.apply(null, arguments); }
+  finally { R.inTool = null; }
+  if (res === 'used'){
+    if (id === 0){
+      var foe = weakestEnemy();
+      if (foe) hurtFoe(foe, 10, false);
+      pushLog('液压冲压：单体 10');
+    } else if (id === 1){
+      R.energy = clamp(R.energy + 40, 0, R.energyMax);
+      pushLog('仓鼠加餐：能量 +40');
+    } else if (id === 2){
+      var list = aliveEnemies();
+      for (var i = 0; i < list.length; i++) hurtFoe(list[i], 15, false);
+      pushLog('开箱爆裂：全场 15');
+    }
+    checkBattleEnd();
+  }
+  return res;
+};
+
+/* 原 startLevel 里是 var d = LEVELS[lv - 1] 取模板；LEVELS 只有 5 条，
+   第 6 关起 d 是 undefined，d.steps 直接抛错（连过五关就崩）。
+   RPG 层要跑无尽关卡，所以把"模板关卡号"夹回表内，建完场再把真关卡号写回 S.level。 */
+function rpgTemplateLevel(lv){
+  var n = LEVELS.length || 1;
+  return ((Math.max(1, lv) - 1) % n) + 1;
+}
+/* 兜底：任何还在按 S.level 直取 LEVELS 的地方都不再越界 */
+var _rpgCfg = cfg;
+cfg = function(){
+  return _rpgCfg.apply(null, arguments) || LEVELS[rpgTemplateLevel(S.level) - 1] || LEVELS[0];
+};
+
+var _rpgStartLevel = startLevel;
+startLevel = function(lv){
+  var real = Math.max(1, Math.round(Number(lv) || SHOP.level || S.level || 1));
+  applyLevelCfg(real);   // 先按关卡把配置写好，再建战场
+  var res = _rpgStartLevel.call(null, rpgTemplateLevel(real));
+  S.level = real;        // 真关卡号：顶栏 / 商店 / 战斗都按它走
+  // 没有步数限制：stepsMax = 0 表示不限（原 LEVELS 只保留关卡名）
+  S.stepsMax = 0;
+  S.steps = 0;
+  S.tools = (CHAPTER.tools || [1, 1, 1]).slice();
+  S.arm = -1;
+  rpgResetBattle();
+  S.phase = 'play';
+  S.hintOpen = false;
+  if (R.mod && R.mod.note) pushLog(R.mod.note);
+  return res;
+};
+
+/* ---------- 15. 舞台绘制（替换原礼盒面板） ---------- */
+function stageLeftX(idx){ return L.pad + 10 + idx * (SZ.card + SZ.gap); }
+function stageRightX(idx, total){
+  var w = total * SZ.card + (total - 1) * SZ.gap;
+  return W - L.pad - 10 - w + idx * (SZ.card + SZ.gap);
+}
+function stageCardY(){ return L.giftY + 34; }
+
+/* 伤害飘字的锚点：单位卡中心 / 敌方卡中心 */
+function stageXOf(u, isFoe){
+  if (!u) return W / 2;
+  var list = isFoe ? R.enemies : R.units;
+  var idx = 0, count = 0;
+  for (var i = 0; i < list.length; i++){
+    if (!list[i]) continue;
+    if (list[i] === u){ idx = count; break; }
+    count++;
+  }
+  var total = 0;
+  for (var j = 0; j < list.length; j++) if (list[j]) total++;
+  if (isFoe) return stageRightX(idx, Math.max(1, total)) + SZ.card / 2;
+  return stageLeftX(idx) + SZ.card / 2;
+}
+function stageYOf(u, isFoe){ return stageCardY() + SZ.cardH * 0.42; }
+
+function drawStage(){
+  var x = L.pad, y = L.giftY, w = W - L.pad * 2, h = L.giftH;
+  var now = performance.now();
+
+  rr(x, y, w, h, 12);
+  ctx.fillStyle = C.panel; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = C.line; ctx.stroke();
+
+  /* 标题行：左=章节，右=波次（关卡号交给顶栏，避免两处重复） */
+  txt(CHAPTER.name, x + 12, y + SZ.title + 6, SZ.title, C.muted, 'left', true);
+  txt('尖牙帮 · 波 ' + (R.wave + 1) + '/' + R.waveTotal,
+      x + w - 12, y + SZ.title + 6, SZ.title, C.muted, 'right', true);
+
+  var cardY = stageCardY();
+  drawFactoryBackdrop(x, y, w, h, cardY + SZ.cardH - 6, now);
+
+  /* 我方（左） */
+  for (var i = 0; i < R.units.length; i++){
+    var u = R.units[i];
+    var cx = stageLeftX(i);
+    if (!u){
+      dashBox(cx, cardY, SZ.card, SZ.cardH, 10);
+      txt('空位', cx + SZ.card / 2, cardY + SZ.cardH / 2 + 3, SZ.name, '#5b5374', 'center', true);
+      continue;
+    }
+    drawUnitCard(cx, cardY, u, false, now);
+  }
+
+  /* 敌方（右） */
+  var foeCount = R.enemies.length;
+  for (var j = 0; j < foeCount; j++){
+    var foe = R.enemies[j];
+    if (!foe) continue;
+    drawFoeCard(stageRightX(j, foeCount), cardY, foe, now);
+  }
+
+  /* 排队条：改到舞台右下，横排，不再和敌方卡抢右边缘 */
+  drawQueueRow(x + w - 12, y + h - SZ.stripH - 26);
+
+  /* 底部：护甲 / 零件 / 大招 */
+  var stripY = y + h - SZ.stripH - 18;
+  var stripW = Math.round((w - 36 - SZ.ult) * 0.5);
+  drawStrip(x + 10, stripY, stripW, '护甲', R.armor, R.armorMax, '#9fc6ff');
+  drawStrip(x + 10 + stripW + 8, stripY, stripW, '零件', R.parts, R.partsMax, '#c7b6ff');
+  drawUltButton(x + w - SZ.ult - 10, stripY - Math.round((SZ.ult - SZ.stripH) / 2), now);
+
+  /* 战况面板：压住中段的空白，也给"刚刚发生了什么"一个交代 */
+  drawBattleLog(x + 10, y + h - 92, w - 20, 3);
+
+  /* 飘字 */
+  for (var f = R.floats.length - 1; f >= 0; f--){
+    var ft = R.floats[f];
+    var age = now - ft.t0;
+    if (age > ft.max){ R.floats.splice(f, 1); continue; }
+    var p = age / ft.max;
+    ctx.save();
+    ctx.globalAlpha = 1 - p * p;
+    txt(ft.text, ft.x, ft.y - 26 * p, ft.big ? SZ.float + 3 : SZ.float, ft.col, 'center', true);
+    ctx.restore();
+  }
+
+  /* 波次横幅 */
+  if (R.banner){
+    var bAge = now - R.banner.t0;
+    if (bAge > 1100) R.banner = null;
+    else {
+      var bp = bAge / 1100;
+      ctx.save();
+      ctx.globalAlpha = bp < 0.7 ? 1 : (1 - (bp - 0.7) / 0.3);
+      txt(R.banner.text, W / 2, y + h * 0.52, Math.round(W * 0.052), C.amber, 'center', true);
+      ctx.restore();
+    }
+  }
+}
+
+/* 车间背景：一条传送带 + 中间加工中心 + 右侧鼠帮管道口。
+   纯装饰，不参与任何判定，作用是把舞台中段的空白填出"厂"的味道。 */
+function drawFactoryBackdrop(x, y, w, h, beltY, now){
+  /* 传送带 */
+  ctx.fillStyle = 'rgba(255,255,255,.045)';
+  ctx.fillRect(x + 8, beltY - 5, w - 16, 10);
+  var n = Math.floor((w - 20) / 24);
+  for (var i = 0; i < n; i++){
+    ctx.fillStyle = 'rgba(255,255,255,.08)';
+    ctx.fillRect(x + 12 + i * 24, beltY - 3, 11, 6);
+  }
+
+  /* 中间加工中心：齿轮 + 双向流动箭头 */
+  var cx = W / 2, cy = beltY + Math.round(h * 0.11);
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate((now / 3400) % (Math.PI * 2));
+  ctx.strokeStyle = 'rgba(255,255,255,.09)';
+  ctx.lineWidth = 3;
+  for (var t = 0; t < 8; t++){
+    var a = t * Math.PI / 4;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(a) * 11, Math.sin(a) * 11);
+    ctx.lineTo(Math.cos(a) * 17, Math.sin(a) * 17);
+    ctx.stroke();
+  }
+  ctx.beginPath(); ctx.arc(0, 0, 9, 0, Math.PI * 2); ctx.stroke();
+  ctx.restore();
+
+  /* 左侧：我方出货口（三条短线） */
+  ctx.strokeStyle = 'rgba(159,198,255,.22)';
+  ctx.lineWidth = 2;
+  for (var s = 0; s < 3; s++){
+    var sx = x + 14 + s * 7, sy = cy - 8 + s * 7;
+    ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + 10, sy); ctx.stroke();
+  }
+  /* 右侧：鼠帮管道口（一段管子 + 三个齿） */
+  var px = x + w - 22;
+  ctx.fillStyle = 'rgba(217,109,85,.16)';
+  rr(px - 6, cy - 13, 24, 26, 6); ctx.fill();
+  ctx.strokeStyle = 'rgba(217,109,85,.45)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(px, cy - 9); ctx.lineTo(px + 12, cy - 9); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(px, cy); ctx.lineTo(px + 12, cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(px, cy + 9); ctx.lineTo(px + 12, cy + 9); ctx.stroke();
+}
+
+/* 接管原礼盒面板：draw() 里调的是 drawGiftPanel，这里直接换绑 */
+drawGiftPanel = drawStage;
+
+function dashBox(x, y, w, h, r){
+  ctx.save();
+  if (ctx.setLineDash) ctx.setLineDash([4, 4]);
+  rr(x, y, w, h, r);
+  ctx.lineWidth = 1; ctx.strokeStyle = '#4a4160'; ctx.stroke();
+  ctx.restore();
+}
+
+function drawBattleLog(x, bottomY, w, rows){
+  rows = rows || 3;
+  var lineH = 12;
+  var boxH = rows * lineH + 18;
+  var boxY = bottomY - boxH;
+  rr(x, boxY, w, boxH, 8);
+  ctx.fillStyle = 'rgba(0,0,0,.16)'; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.05)'; ctx.stroke();
+  txt('战况', x + 8, boxY + 12, SZ.log, C.muted, 'left', true);
+  var start = Math.max(0, R.log.length - rows);
+  for (var i = 0; i < rows; i++){
+    var line = R.log[start + i];
+    if (!line && i === 0) line = '消掉零食，把力气送进车间';
+    if (!line) continue;
+    txt('· ' + line, x + 8, boxY + 12 + (i + 1) * lineH, SZ.log, '#948caa', 'left');
+  }
+}
+
+/* 增援：横排在舞台右下，不再和敌方卡抢右边缘的竖排位置 */
+function drawQueueRow(rightX, bottomY){
+  if (!R.queue.length) return;
+  var n = Math.min(4, R.queue.length);
+  var w = n * (SZ.queue + 2) - 2;
+  txt('增援 ' + R.queue.length, rightX, bottomY - SZ.queue - 3, SZ.log, '#c99', 'right');
+  for (var i = 0; i < n; i++){
+    var qx = rightX - w + i * (SZ.queue + 2);
+    rr(qx, bottomY - SZ.queue, SZ.queue, SZ.queue, 5);
+    ctx.fillStyle = 'rgba(217,109,85,.12)'; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(217,109,85,.35)'; ctx.stroke();
+    drawFoeArt(qx + 2, bottomY - SZ.queue + 2, SZ.queue - 4, R.queue[i]);
+  }
+}
+
+function drawStrip(x, y, w, label, val, max, col){
+  var v = Math.round(val);
+  txt(label + ' ' + v + '/' + max, x, y - 3, SZ.log, C.muted, 'left');
+  rr(x, y, w, SZ.stripH, SZ.stripH / 2);
+  ctx.fillStyle = C.panel2; ctx.fill();
+  var ratio = clamp(val / Math.max(1, max), 0, 1);
+  if (ratio > 0){
+    rr(x, y, Math.max(SZ.stripH, w * ratio), SZ.stripH, SZ.stripH / 2);
+    ctx.fillStyle = col; ctx.fill();
+  }
+}
+
+/* 步数用尽只是"不能再消"，不再有横幅、也不参与胜负（只在战况里记一行）。 */
+
+function drawUltButton(x, y, now){
+  var ready = R.energy >= CFG.ult.cost;
+  var r = SZ.ult / 2;
+  var cx = x + r, cy = y + r;
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fillStyle = ready ? 'rgba(232,172,80,.22)' : C.panel2;
+  ctx.fill();
+  ctx.lineWidth = ready ? 3 : 1;
+  ctx.strokeStyle = ready ? C.amber : C.line;
+  ctx.stroke();
+  /* 环形进度 */
+  var ratio = clamp(R.energy / CFG.ult.cost, 0, 1);
+  ctx.beginPath();
+  ctx.arc(cx, cy, r - 4, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ratio);
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = ready ? '#ffe1a3' : '#6d6188';
+  ctx.stroke();
+  txt(ready ? '爆产' : Math.round(ratio * 100) + '%', cx, cy + 4, ready ? 11 : 10,
+      ready ? C.amber : C.muted, 'center', true);
+  HIT.ult = [x, y, SZ.ult, SZ.ult];
+}
+
+function drawUnitCard(x, y, u, isFoe, now){
+  var hurt = now < u.flash;
+  var act = now < u.actFlash;
+  rr(x, y, SZ.card, SZ.cardH, 10);
+  ctx.fillStyle = hurt ? 'rgba(217,109,85,.22)' : C.panel2;
+  ctx.fill();
+  ctx.lineWidth = act ? 2 : 1;
+  ctx.strokeStyle = act ? C.amber : (hurt ? C.bad : C.line);
+  ctx.stroke();
+
+  drawHamsterArt(x + (SZ.card - SZ.art) / 2, y + 6, SZ.art, u);
+
+  /* 卡内底部三条：血条 / 资源强化条 / 出手进度条 */
+  var baseY = y + SZ.cardH - 4;
+  if (u.eats){
+    bar(x + 4, baseY - SZ.slotBar, SZ.card - 8, SZ.slotBar,
+        u.charge / Math.max(1, u.need), u.empowered ? C.amber : (u.eats === 'parts' ? '#c7b6ff' : '#ffd98a'), '#2a2338');
+    baseY -= SZ.slotBar + 1;
+  }
+  if (u.atkMs){
+    bar(x + 4, baseY - 2, SZ.card - 8, 2, u.timerMs / u.atkMs, 'rgba(255,255,255,.35)', '#2a2338');
+    baseY -= 3;
+  }
+  bar(x + 4, baseY - SZ.hpBar, SZ.card - 8, SZ.hpBar, u.hp / u.hpMax, '#79c98a', '#2a2338');
+
+  txt(u.name, x + SZ.card / 2, y + SZ.cardH + 10, SZ.name, u.alive ? C.muted : '#6a6480', 'center', true);
+  if (u.alive){
+    var label = u.empowered ? '强化就绪'
+      : (u.atkMs ? (Math.max(0, (u.atkMs - u.timerMs) / 1000)).toFixed(1) + 's' : '');
+    if (label){
+      txt(label, x + SZ.card / 2, y + SZ.cardH + 19, SZ.name,
+          u.empowered ? C.amber : '#8f86a6', 'center', true);
+    }
+  }
+  if (!u.alive){
+    ctx.fillStyle = 'rgba(20,16,28,.55)';
+    rr(x, y, SZ.card, SZ.cardH, 10); ctx.fill();
+    txt('累趴', x + SZ.card / 2, y + SZ.cardH / 2 + 3, 9, C.bad, 'center', true);
+  }
+}
+
+function drawFoeCard(x, y, foe, now){
+  var hurt = now < foe.flash;
+  var act = now < foe.actFlash;
+  rr(x, y, SZ.card, SZ.cardH, 10);
+  ctx.fillStyle = hurt ? 'rgba(217,109,85,.22)' : (foe.boss ? 'rgba(217,109,85,.1)' : C.panel2);
+  ctx.fill();
+  ctx.lineWidth = act ? 2 : 1;
+  ctx.strokeStyle = act ? C.bad : (hurt ? C.bad : C.line);
+  ctx.stroke();
+  drawFoeArt(x + (SZ.card - SZ.art) / 2, y + 6, SZ.art, foe);
+
+  /* 出手倒计时：实时制按毫秒走，条越满越危险 */
+  var baseY = y + SZ.cardH - 4;
+  var ratio = CFG.realtime
+    ? (foe.timerMs / Math.max(1, foe.chargeMs))
+    : (foe.charge / Math.max(1, foe.chargeMax));
+  var soon = ratio > 0.72;
+  bar(x + 4, baseY - SZ.slotBar, SZ.card - 8, SZ.slotBar, ratio,
+      soon ? '#ff8a5c' : C.amber, '#2a2338');
+  baseY -= SZ.slotBar + 1;
+  bar(x + 4, baseY - SZ.hpBar, SZ.card - 8, SZ.hpBar, foe.hp / foe.hpMax, '#d96d55', '#2a2338');
+
+  txt(foe.name, x + SZ.card / 2, y + SZ.cardH + 10, SZ.name, C.muted, 'center', true);
+  var cd = CFG.realtime
+    ? (Math.max(0, foe.chargeMs - foe.timerMs) / 1000).toFixed(1) + 's'
+    : (foe.chargeMax - foe.charge) + '步';
+  txt(foe.alive ? cd : '已击退', x + SZ.card / 2, y + SZ.cardH + 19,
+      SZ.name, foe.alive ? (soon ? '#ff8a5c' : '#c99') : '#6a6480', 'center');
+  if (!foe.alive){
+    ctx.fillStyle = 'rgba(20,16,28,.6)';
+    rr(x, y, SZ.card, SZ.cardH, 10); ctx.fill();
+  }
+}
+
+function bar(x, y, w, h, ratio, col, back){
+  rr(x, y, w, h, h / 2);
+  ctx.fillStyle = back || '#2a2338'; ctx.fill();
+  var r = clamp(ratio, 0, 1);
+  if (r > 0.02){
+    rr(x, y, Math.max(h, w * r), h, h / 2);
+    ctx.fillStyle = col; ctx.fill();
+  }
+}
+
+/* ---------- 16. 矢量角色（占位美术，尺寸由 SZ.art 控制） ---------- */
+function drawHamsterArt(x, y, s, u){
+  ctx.save();
+  ctx.translate(x, y);
+  /* 耳朵 */
+  ctx.fillStyle = '#c98f5e';
+  ctx.beginPath(); ctx.arc(s * 0.24, s * 0.2, s * 0.13, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(s * 0.76, s * 0.2, s * 0.13, 0, Math.PI * 2); ctx.fill();
+  /* 身体 */
+  rr(0, s * 0.14, s, s * 0.8, s * 0.32);
+  ctx.fillStyle = u.line === 'wrench' ? '#cfd4de' : '#e5b982';
+  ctx.fill();
+  ctx.lineWidth = 1.4;
+  ctx.strokeStyle = u.line === 'wrench' ? '#7c8494' : '#a9762c';
+  ctx.stroke();
+  /* 脸颊 */
+  ctx.fillStyle = '#f4dcc0';
+  ctx.beginPath(); ctx.arc(s * 0.5, s * 0.64, s * 0.28, 0, Math.PI * 2); ctx.fill();
+  /* 眼睛 */
+  ctx.fillStyle = '#2a2338';
+  ctx.beginPath(); ctx.arc(s * 0.35, s * 0.5, s * 0.07, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(s * 0.65, s * 0.5, s * 0.07, 0, Math.PI * 2); ctx.fill();
+
+  /* 职业标识：只用 2~3 笔，缩到 42px 还认得出 */
+  if (u.line === 'wrench'){
+    ctx.strokeStyle = '#7c8494'; ctx.lineWidth = s * 0.09;
+    ctx.beginPath(); ctx.moveTo(s * 0.2, s * 0.9); ctx.lineTo(s * 0.8, s * 0.9); ctx.stroke();
+    ctx.fillStyle = '#8e97a8';
+    for (var i = 0; i < 3; i++){
+      ctx.beginPath(); ctx.arc(s * (0.28 + i * 0.22), s * 0.9, s * 0.045, 0, Math.PI * 2); ctx.fill();
+    }
+  } else if (u.line === 'driver'){
+    ctx.fillStyle = '#8e97a8';
+    rr(s * 0.62, s * 0.42, s * 0.44, s * 0.16, s * 0.06); ctx.fill();
+    ctx.fillStyle = '#ffd98a';
+    ctx.beginPath(); ctx.arc(s * 0.32, s * 0.62, s * 0.09, 0, Math.PI * 2); ctx.fill();
+  } else if (u.line === 'spring'){
+    ctx.strokeStyle = '#ffd98a'; ctx.lineWidth = s * 0.06;
+    ctx.beginPath();
+    for (var k = 0; k <= 6; k++){
+      var px = s * (0.24 + k * 0.09), py = s * (0.86 + ((k % 2) ? -0.05 : 0.05));
+      if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+  } else if (u.line === 'medic'){
+    ctx.fillStyle = '#e37b6d';
+    ctx.fillRect(s * 0.46, s * 0.6, s * 0.08, s * 0.24);
+    ctx.fillRect(s * 0.38, s * 0.68, s * 0.24, s * 0.08);
+  } else if (u.line === 'sack'){
+    ctx.fillStyle = '#a48b6a';
+    rr(s * 0.66, s * 0.62, s * 0.3, s * 0.28, s * 0.08); ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawFoeArt(x, y, s, foe){
+  ctx.save();
+  ctx.translate(x, y);
+  var body = '#9aa0ad';
+  ctx.fillStyle = body;
+  rr(s * 0.08, s * 0.3, s * 0.84, s * 0.66, s * 0.3); ctx.fill();
+  ctx.lineWidth = 1.4; ctx.strokeStyle = '#5c6270'; ctx.stroke();
+  /* 耳朵 */
+  ctx.fillStyle = '#8b91a0';
+  ctx.beginPath(); ctx.arc(s * 0.26, s * 0.3, s * 0.12, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(s * 0.74, s * 0.3, s * 0.12, 0, Math.PI * 2); ctx.fill();
+  /* 眼睛（尖牙帮统一：红豆眼） */
+  ctx.fillStyle = '#ff6f61';
+  ctx.beginPath(); ctx.arc(s * 0.35, s * 0.58, s * 0.075, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(s * 0.65, s * 0.58, s * 0.075, 0, Math.PI * 2); ctx.fill();
+  /* 尖牙 */
+  ctx.fillStyle = '#fff4e2';
+  ctx.beginPath();
+  ctx.moveTo(s * 0.44, s * 0.78); ctx.lineTo(s * 0.5, s * 0.88); ctx.lineTo(s * 0.56, s * 0.78);
+  ctx.closePath(); ctx.fill();
+
+  if (foe.type === 'crate'){
+    /* 纸箱头盔 */
+    ctx.fillStyle = '#c19a63';
+    rr(s * 0.14, s * 0.04, s * 0.72, s * 0.36, s * 0.05); ctx.fill();
+    ctx.strokeStyle = '#8d6b3c'; ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(s * 0.5, s * 0.06); ctx.lineTo(s * 0.5, s * 0.38); ctx.stroke();
+    if (foe.box > 0){ ctx.fillStyle = 'rgba(193,154,99,.55)'; rr(s * 0.1, s * 0.02, s * 0.8, s * 0.4, s * 0.06); ctx.fill(); }
+  } else if (foe.type === 'shell'){
+    /* 背上的果壳堆 */
+    ctx.fillStyle = '#b98b5e';
+    for (var i = 0; i < 3; i++){
+      ctx.beginPath();
+      ctx.ellipse(s * (0.3 + i * 0.2), s * 0.26, s * 0.1, s * 0.07, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  } else if (foe.boss){
+    /* 机械臂：方头 + 液压杆 */
+    ctx.fillStyle = '#8e97a8';
+    rr(s * 0.2, s * 0.06, s * 0.6, s * 0.3, s * 0.08); ctx.fill();
+    ctx.strokeStyle = '#5c6270'; ctx.lineWidth = 1.4; ctx.stroke();
+    ctx.strokeStyle = '#ffd98a'; ctx.lineWidth = s * 0.08;
+    ctx.beginPath(); ctx.moveTo(s * 0.86, s * 0.5); ctx.lineTo(s * 0.98, s * 0.78); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/* ---------- 17. 顶栏接管：敌方血条取代"进度" ---------- */
+drawHeader = function(){
+  var p = L.pad, y = Math.round(L.headerH * 0.42);
+  txt('第 ' + S.level + ' 关 · ' + CHAPTER.name, p, y, Math.round(W * 0.043), C.ink, 'left', true);
+  txt('消除 ' + (S.swapCount || 0) + ' 次 · 无限步', W - p, y, Math.round(W * 0.034), C.muted, 'right', true);
+
+  var bh = Math.max(12, Math.round(H * 0.017));
+  var by = y + Math.round(H * 0.018);
+  var fs = Math.max(10, Math.round(W * 0.031));
+  var target = aliveEnemies()[0];
+  var name = target ? target.name : (R.queue.length ? R.queue[0].name : '下一波待命');
+  var hp = target ? target.hp : 0;
+  var hpMax = target ? target.hpMax : 1;
+  var lbl = '存活 ' + aliveUnits().length + '/' + R.units.filter(Boolean).length +
+            (target ? ' · ' + name + ' ' + Math.max(0, Math.round(hp)) + '/' + hpMax : '');
+  ctx.font = '700 ' + fs + 'px -apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+  var lw = ctx.measureText(lbl).width;
+  var bw = Math.max(60, W - p * 2 - lw - 10);
+
+  rr(p, by, bw, bh, bh / 2); ctx.fillStyle = C.panel2; ctx.fill();
+  var ratio = clamp((target ? hp : 0) / Math.max(1, hpMax), 0, 1);
+  if (ratio > 0){
+    rr(p, by, Math.max(bh, bw * ratio), bh, bh / 2);
+    ctx.fillStyle = C.bad; ctx.fill();
+  }
+  txt(lbl, W - p, by + bh - Math.round(bh * 0.2), fs, C.muted, 'right', true);
+};
+
+/* ---------- 18. 结算卡片：换成 RPG 数据 ---------- */
+drawEnd = function(){
+  var win = S.phase === 'win';
+  var padIn = 22;
+  var wCard = w0();
+  var titleSize = Math.round(W * 0.052);
+  var rowSize = Math.max(11, Math.round(W * 0.034));
+  var lh = Math.round(rowSize * 1.85);
+
+  var rows = [
+    ['波次', Math.min(R.waveTotal, R.wave + (win ? 1 : 0)) + ' / ' + R.waveTotal],
+    ['击退鼠群', R.kills + ' 只'],
+    ['累计伤害', Math.round(R.dmgDealt)],
+    ['存活仓鼠', aliveUnits().length + ' / ' + R.units.filter(Boolean).length]
+  ];
+  var btnH = Math.round(Math.min(44, W * 0.115));
+  var yTitle = 40, ySub = yTitle + 30;
+  var yRows = ySub + 26;
+  var h = yRows + rows.length * lh + 16 + btnH + 22;
+  h = Math.min(h, Math.round(H * 0.9));
+
+  var box = cardBox(h);
+  var x = box[0], y = box[1], w = box[2];
+
+  txt(win ? '守住了' : '全队阵亡', W / 2, y + yTitle, titleSize, win ? C.amber : C.bad, 'center', true);
+  txt(CHAPTER.name + ' · 第 ' + S.level + ' 关', W / 2, y + ySub, Math.round(W * 0.036), C.muted, 'center', true);
+
+  for (var i = 0; i < rows.length; i++){
+    txt(rows[i][0], x + padIn, y + yRows + i * lh, rowSize, C.muted, 'left');
+    txt(String(rows[i][1]), x + w - padIn, y + yRows + i * lh, rowSize, C.ink, 'right', true);
+  }
+
+  var bw = Math.round(w * 0.52), bh = btnH;
+  var bx = W / 2 - bw / 2, byy = y + h - bh - 22;
+  rr(bx, byy, bw, bh, bh / 2);
+  ctx.fillStyle = win ? C.amber : C.panel;
+  ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = C.amber; ctx.stroke();
+  txt(win ? '再开一厂' : '重新开工', bx + bw / 2, byy + bh * 0.66,
+      Math.max(12, Math.round(W * 0.038)), win ? '#241d2e' : C.amber, 'center', true);
+  HIT.again = [bx, byy, bw, bh];
+};
+
+/* ---------- 19. 大招：能量满点按钮 ---------- */
+function useUlt(){
+  if (S.phase !== 'play' || S.anim) return false;
+  if (R.mod && R.mod.noUlt) return false;       // 某些关卡停电：大招停用
+  if (R.energy < CFG.ult.cost) return false;
+  R.energy = 0;
+  var list = aliveEnemies();
+  for (var i = 0; i < list.length; i++) hurtFoe(list[i], CFG.ult.dmg, true);
+  R.ultFlash = performance.now() + 420;
+  floatText('全厂爆产', W / 2, L.giftY + L.giftH * 0.22, C.amber, true);
+  sfx('tool');
+  checkBattleEnd();
+  return true;
+}
+
+canvas.addEventListener('pointerdown', function(e){
+  try {
+    var rect = canvas.getBoundingClientRect();
+    var pt = [e.clientX - rect.left, e.clientY - rect.top - SAFE_TOP];
+    if (HIT.ult && inRect(pt, HIT.ult)){
+      if (useUlt()){ e.preventDefault(); e.stopImmediatePropagation(); }
+    }
+  } catch (err) {}
+}, true);
+
+window.addEventListener('keydown', function(e){
+  if (e.key === 'q' || e.key === 'Q') useUlt();
+}, false);
+
+/* ---------- 20. 自动化接口补字段 ---------- */
+var _rpgGameState = window.__gameState;
+window.__gameState = function(){
+  var st = _rpgGameState ? _rpgGameState() : {};
+  st.score = Math.round(R.dmgDealt);
+  st.hearts = S.swapCount || 0;   // 无限步：把"已消次数"作为读数报给试玩报告
+  st.rpg = {
+    alive: aliveUnits().length,
+    total: R.units.filter(Boolean).length,
+    armor: Math.round(R.armor), armorMax: R.armorMax,
+    parts: Math.round(R.parts), partsMax: R.partsMax,
+    energy: Math.round(R.energy), energyMax: R.energyMax,
+    wave: R.wave + 1, waveTotal: R.waveTotal,
+    kills: R.kills,
+    realtime: !!CFG.realtime,
+    outOfStock: !!R.outOfStock,
+    units: R.units.map(function(u){
+      return u ? { id: u.id, name: u.name, hp: Math.round(u.hp), hpMax: u.hpMax,
+        eats: u.eats, charge: Math.round(u.charge), need: u.need, alive: u.alive,
+        atkMs: u.atkMs, timerMs: Math.round(u.timerMs), empowered: !!u.empowered } : null;
+    }),
+    enemies: R.enemies.filter(function(f){ return f; }).map(function(f){
+      return { type: f.type, name: f.name, hp: Math.round(f.hp), hpMax: f.hpMax, charge: f.charge, alive: f.alive };
+    }),
+    queue: R.queue.length
+  };
+  return st;
+};
+
+/* 自动试玩：波间补给先选，能量满了放大招，其余交给原调度（开局 / 最优交换） */
+var _rpgAutoplay = window.__autoplay;
+window.__autoplay = function(st){
+  if (S.phase === 'pick'){ chooseBuff(0); return 'pick'; }
+  if (S.phase === 'play' && !S.anim && R.energy >= CFG.ult.cost){ useUlt(); return 'ult'; }
+  return _rpgAutoplay ? _rpgAutoplay(st) : 'wait';
+};
+
+/* 调试口 */
+window.__rpg = function(){ return R; };
+window.__rpgUlt = useUlt;
+
+/* 配平模拟器：instant 模式下按"会用工具 + 满能量就放大招 + 最优交换"跑 N 局。
+   原工程的 __testRun 不认识大招，用它配平会把伤害低估一半。 */
+window.__rpgSim = function(games, seed0){
+  games = games || 10;
+  seed0 = seed0 === undefined ? 20261120 : seed0;
+  var wasInstant = S.instant;
+  S.instant = true;
+  var wins = 0, stepsLeft = [], dmgDealt = [], stuckN = 0, perWave = [];
+  for (var g = 0; g < games; g++){
+    S.phase = 'title';               // 绕开商店守卫：模拟器要的是"重开一局"
+    newRun((seed0 + g * 7919) | 0);
+    var guard = 0;
+    while ((S.phase === 'play' || S.phase === 'pick') && guard++ < 500){
+      if (S.phase === 'pick'){ chooseBuff(0); continue; }   // 模拟器固定选第一张
+      if (R.energy >= CFG.ult.cost){ useUlt(); continue; }
+      var usedTool = false;
+      for (var t = 0; t < TOOLS.length; t++){
+        if (S.tools[t] > 0){
+          useTool(t, TOOLS[t].needsCell ? [2, 2] : null);
+          usedTool = true;
+          break;
+        }
+      }
+      if (usedTool) continue;
+      var mv = bestMove(S.board);
+      if (!mv){ stuckN++; break; }
+      unitTick(1200);   // 一步按 1.2 秒算，让自动战斗的输出也计入
+      trySwap(mv[0], mv[1]);
+    }
+    if (S.phase === 'win'){ wins++; stepsLeft.push(S.swapCount || 0); dmgDealt.push(Math.round(R.dmgDealt)); }
+    perWave.push(R.wave + 1);
+  }
+  S.instant = wasInstant;
+  var avg = function(a){ if (!a.length) return 0; var s = 0; for (var i = 0; i < a.length; i++) s += a[i]; return Math.round(s / a.length * 10) / 10; };
+  return {
+    games: games, winRate: Math.round(wins / Math.max(1, games) * 100),
+    avgStepsLeft: avg(stepsLeft), avgDmg: avg(dmgDealt), stuck: stuckN,
+    wavesReached: perWave
+  };
+};
+window.__rpgHit = function(dmg, pierce){ hurtTeam(dmg, !!pierce); return { alive: aliveUnits().length, armor: R.armor }; };
+/* 批量模拟用：把战斗时钟整体加速（动画不加速，所以玩家侧偏保守） */
+window.__setTimeScale = function(v){ CFG.timeScale = Math.max(0.1, Number(v) || 1); return CFG.timeScale; };
+/* 波间三选一：测试口 */
+window.__pick = function(i){ chooseBuff(i); return R.pick ? R.pick.map(function(b){ return b.name; }) : []; };
+/* 强行指定三张卡（测试用）：__pickForce(['armorCap','dmgUp']) */
+window.__pickForce = function(ids){
+  R.pick = [];
+  for (var i = 0; i < ids.length; i++){
+    for (var j = 0; j < BUFF_DECK.length; j++){
+      if (BUFF_DECK[j].id === ids[i]) R.pick.push(BUFF_DECK[j]);
+    }
+  }
+  S.phase = 'pick';
+  return R.pick.map(function(b){ return b.id; });
+};
+
+/* ============================================================
+   商店层（M3）：金币 → 工种证 / 配件 / 编队
+   ============================================================ */
+/* ============================================================
+   M3 · 商店 / 工种证 / 配件 / 编队 / 金币（接在 RPG 战斗层之后）
+   ------------------------------------------------------------
+   设计依据：docs/GDD-v4-shop-routing.md
+   · 每过一关进店，3 个货架 + 刷新
+   · 买到的工种证装到"当前选中的仓鼠"身上 → 转职
+   · 配件（改装件）每只鼠一个位置，覆盖旧的
+   · 编队：从拥有的仓鼠里选 1~2 只上场
+   · 敌人每关递增（hp +18%、atk +10%），靠商店跟上
+   ============================================================ */
+
+/* ---------- 1. 品种映射：线 + 等级 → ROSTER 里的 id ---------- */
+var VARIANT = {
+  'none-1': 'worker',
+  'wrench-2': 'tin', 'wrench-3': 'hydra',
+  'driver-2': 'cannon', 'driver-3': 'sniper',
+  'spring-2': 'spring', 'spring-3': 'boom',
+  'medic-2': 'medic', 'medic-3': 'nurse',
+  'sack-2': 'collect', 'sack-3': 'store'
+};
+
+var LINE_NAME = { wrench: '钳工', driver: '装配', spring: '调试', medic: '医务', sack: '仓管' };
+
+/* ---------- 2. 配件 ---------- */
+var MODS = {
+  goggles: { name: '护目镜', price: 22, desc: '该鼠伤害 +15%', dmgMul: 1.15 },
+  oilcan: { name: '油壶', price: 26, desc: '该鼠出手间隔 −10%', atkMul: 0.9 },
+  backpack: { name: '小背包', price: 28, desc: '该鼠强化阈值 −2', needMinus: 2 },
+  irontooth: { name: '铁牙套', price: 30, desc: '该鼠基础伤害 +2', basePlus: 2 },
+  padspring: { name: '垫片', price: 24, desc: '该鼠受伤 −15%', defMul: 0.85 }
+};
+
+/* ---------- 3. 商店存档 ---------- */
+var SHOP_KEY = 'hamsterSnackFactory.shop.v1';
+
+var SHOP = {
+  coins: 0,
+  level: 1,
+  best: 1,
+  rats: [
+    { line: 'wrench', tier: 2, mod: '' },
+    { line: 'driver', tier: 2, mod: '' }
+  ],
+  squad: [0, 1],
+  sel: 0,
+  offers: [],
+  refreshLeft: 3,
+  earned: 0
+};
+
+function shopSave(){
+  try {
+    localStorage.setItem(SHOP_KEY, JSON.stringify({
+      coins: SHOP.coins, level: SHOP.level, best: SHOP.best,
+      rats: SHOP.rats, squad: SHOP.squad
+    }));
+  } catch (e) {}
+}
+
+function shopLoad(){
+  try {
+    var raw = localStorage.getItem(SHOP_KEY);
+    if (!raw) return;
+    var o = JSON.parse(raw);
+    if (!o || typeof o !== 'object') return;
+    if (typeof o.coins === 'number') SHOP.coins = Math.max(0, o.coins);
+    if (typeof o.level === 'number') SHOP.level = Math.max(1, o.level);
+    if (typeof o.best === 'number') SHOP.best = Math.max(1, o.best);
+    if (Array.isArray(o.rats) && o.rats.length) SHOP.rats = o.rats;
+    if (Array.isArray(o.squad) && o.squad.length) SHOP.squad = o.squad.filter(function(i){ return i < SHOP.rats.length; });
+    if (!SHOP.squad.length) SHOP.squad = [0];
+  } catch (e) {}
+}
+
+shopLoad();
+
+function ratId(rat){ return VARIANT[(rat.line || 'none') + '-' + (rat.tier || 1)] || 'worker'; }
+
+function ratLabel(rat){
+  var id = ratId(rat);
+  return (ROSTER[id] && ROSTER[id].name) || '工鼠';
+}
+
+function ratLineLabel(rat){
+  var base = LINE_NAME[rat.line] || '白板';
+  return base + ' · ' + (rat.tier === 3 ? '专精' : (rat.tier === 2 ? '二级' : '一级'));
+}
+
+/* ---------- 4. 用编队生成我方单位（覆盖 RPG 层的 buildSquad） ---------- */
+var _shopBuildSquad = buildSquad;
+buildSquad = function(){
+  R.units = [];
+  var slots = CFG.slots || 2;
+  for (var s = 0; s < slots; s++){
+    var idx = SHOP.squad[s];
+    var rat = SHOP.rats[idx];
+    if (!rat){ R.units.push(null); continue; }
+    var u = makeUnit(ratId(rat), s);
+    u.ratIndex = idx;
+    applyMod(u, rat.mod);
+    R.units.push(u);
+  }
+  for (var j = 0; j < R.units.length; j++) if (R.units[j]) R.units[j].slot = j;
+};
+
+/* 配件在"造单位"的时候一次性烤进数值，避免战斗中反复换算 */
+function applyMod(u, modId){
+  var m = MODS[modId];
+  if (!u || !m) return;
+  u.modId = modId;
+  if (m.dmgMul){
+    u.baseDmg = Math.round(u.baseDmg * m.dmgMul);
+    if (u.act && u.act.dmg){
+      u.act = { kind: u.act.kind, dmg: Math.round(u.act.dmg * m.dmgMul), pierce: u.act.pierce, armor: u.act.armor };
+    }
+  }
+  if (m.atkMul) u.atkMs = Math.max(400, Math.round(u.atkMs * m.atkMul));
+  if (m.needMinus && u.need) u.need = Math.max(2, u.need - m.needMinus);
+  if (m.basePlus) u.baseDmg = (u.baseDmg || 0) + m.basePlus;
+  if (m.defMul) u.defMul = m.defMul;
+}
+
+var _shopApplyUnitDamage = applyUnitDamage;
+applyUnitDamage = function(u, dmg, pierce){
+  if (u && u.defMul) dmg = Math.max(1, Math.round(dmg * u.defMul));
+  return _shopApplyUnitDamage(u, dmg, pierce);
+};
+
+/* ---------- 5. 关卡递增：改为读关卡表（applyLevelCfg）的修饰符，别再按关数硬乘 ----------
+   原来这里按 (1 + 0.18 × 关数) 放大，会和关卡表里的 hpMul 叠加两次；现在数值全部由
+   levelCfgFor() 统一给出，这个包装只保留占位，方便以后加"某些关卡特殊敌人"的逻辑。 */
+
+
+/* ---------- 6. 货架：三个固定类目（转职 / 属性 / 招募） ---------- */
+var SHOP_SECTIONS = [
+  { key: 'gear', label: '转职（工种证）' },
+  { key: 'mod', label: '属性（配件）' },
+  { key: 'rat', label: '招募（白板仓鼠）' }
+];
+
+/* 解锁池：证按关卡开放，别让第 1 关就刷到仓管专精证 */
+function unlockedLines(lvl){
+  var lines = ['wrench', 'driver'];
+  if (lvl >= 3) lines.push('spring');
+  if (lvl >= 5) lines.push('medic');
+  if (lvl >= 7) lines.push('sack');
+  return lines;
+}
+function allowTier3(lvl){ return lvl >= 4; }
+
+function rollOffers(){
+  var lvl = SHOP.level || 1;
+  var lines = unlockedLines(lvl);
+  var cand = [];
+  for (var i = 0; i < lines.length; i++){
+    cand.push({ kind: 'gear', line: lines[i], tier: 2, price: 40 });
+    if (allowTier3(lvl)) cand.push({ kind: 'gear', line: lines[i], tier: 3, price: 70 });
+  }
+
+  /* 保底：优先给"选中鼠现在就能用"的证，但别刷成固定一张
+     —— 60% 出同线专精，40% 出换线的二级（换线也是合法养成路线） */
+  var rat = SHOP.rats[SHOP.sel] || SHOP.rats[0] || null;
+  var sameLine3 = cand.filter(function(c){
+    return c.tier === 3 && rat && rat.line === c.line && rat.tier === 2;
+  });
+  var swapLine2 = cand.filter(function(c){
+    return c.tier === 2 && (!rat || rat.line !== c.line || rat.tier === 1);
+  });
+  var any2 = cand.filter(function(c){ return c.tier === 2; });
+  var pool;
+  if (sameLine3.length && Math.random() < 0.6) pool = sameLine3;
+  else if (swapLine2.length) pool = swapLine2;
+  else pool = any2.length ? any2 : cand;
+  var g = pool[Math.floor(Math.random() * pool.length)];
+
+  var modKeys = Object.keys(MODS);
+  var m = modKeys[Math.floor(Math.random() * modKeys.length)];
+
+  SHOP.offers = [
+    { kind: 'gear', line: g.line, tier: g.tier, price: g.price, sold: false },
+    { kind: 'mod', mod: m, price: MODS[m].price, sold: false },
+    { kind: 'rat', price: 35, sold: false }
+  ];
+}
+
+function offerTitle(o){
+  if (o.kind === 'gear') return (LINE_NAME[o.line] || '') + (o.tier === 3 ? '专精证' : '二级证');
+  if (o.kind === 'mod') return MODS[o.mod].name;
+  return '新仓鼠（白板）';
+}
+
+function offerDesc(o){
+  if (o.kind === 'gear'){
+    var id2 = VARIANT[o.line + '-2'], id3 = VARIANT[o.line + '-3'];
+    var a = (ROSTER[id2] && ROSTER[id2].name) || '', b = (ROSTER[id3] && ROSTER[id3].name) || '';
+    return o.tier === 3 ? ('转职为 ' + b + '（需同一只鼠已有二级）') : ('转职为 ' + a);
+  }
+  if (o.kind === 'mod') return MODS[o.mod].desc;
+  return '白板仓鼠，可再买证转职';
+}
+
+/* ---------- 7. 结算与进店 ---------- */
+var _shopCheckEnd = checkBattleEnd;
+checkBattleEnd = function(){
+  var was = S.phase;
+  _shopCheckEnd.apply(null, arguments);
+  if (S.phase === 'win' && was !== 'win') onLevelWin();
+};
+
+function onLevelWin(){
+  // 无限步之后，"剩余步数"不再存在：改用存活仓鼠数 + 护甲余量结算
+  var coins = 12 + aliveUnits().length * 6 + (R.armor >= R.armorMax * 0.8 ? 8 : 0);
+  SHOP.earned = coins;
+  SHOP.coins += coins;
+  SHOP.best = Math.max(SHOP.best, SHOP.level);
+  shopSave();
+}
+
+/* 失败也进补给站，而且给保底收入——否则卡关 = 没钱 = 永远打不过的死循环 */
+function onLevelLose(){
+  var coins = 8 + R.kills * 3 + (R.wave + 1) * 4;
+  SHOP.earned = coins;
+  SHOP.coins += coins;
+  shopSave();
+}
+
+function openShop(afterWin){
+  if (S.phase === 'shop') return;      // 幂等：事件顺序兜底，别重复摇货架
+  window.__counters.openShop++;
+  SHOP.advance = afterWin !== false;   // true = 赢了，开工进下一关；false = 输了，重打本关
+  if (SHOP.advance) onLevelWin(); else onLevelLose();
+  S.phase = 'shop';
+  SHOP.refreshLeft = 3;
+  SHOP.sel = Math.min(SHOP.sel, SHOP.rats.length - 1);
+  rollOffers();
+  shopSave();
+}
+
+function startNextLevel(){
+  SHOP.level += SHOP.advance === false ? 0 : 1;
+  shopSave();
+  // 正常流程里 rng 早就有了；这条只在测试/异常路径下兜底
+  if (typeof S.rng !== 'function'){ S.seed = Date.now() & 0x7fffffff; S.rng = mulberry32(S.seed); }
+  startLevel(SHOP.level);
+}
+
+/* 结算卡上的按钮：赢了先进商店。
+   注意：同一节点上的监听按"注册顺序"跑，原版 onDown 会先一步把局面重开，
+   所以真正的守卫放在 newRun 里（下面），事件顺序不再是依赖项。 */
+var _shopNewRun = newRun;
+window.__counters = { openShop: 0, startLevel: 0, newRun: 0, log: [] };
+newRun = function(){
+  window.__counters.newRun++;
+  window.__counters.log.push('newRun@' + S.phase);
+  if (S.phase === 'win' || S.phase === 'shop'){ openShop(true); return; }
+  return _shopNewRun.apply(null, arguments);
+};
+window.__rawNewRun = function(){ return _shopNewRun.apply(null, arguments); };
+
+/* ---------- 8. 商店界面 ---------- */
+var HITS = [];
+
+function shopHit(x, y, w, h, fn){
+  HITS.push({ x: x, y: y, w: w, h: h, fn: fn });
+}
+
+function hitShop(pt){
+  for (var i = HITS.length - 1; i >= 0; i--){
+    var r = HITS[i];
+    if (pt[0] >= r.x && pt[0] <= r.x + r.w && pt[1] >= r.y && pt[1] <= r.y + r.h){
+      r.fn();
+      return true;
+    }
+  }
+  return false;
+}
+
+var _shopDraw = draw;
+draw = function(){
+  if (S.phase !== 'shop'){ _shopDraw(); return; }
+  if (SAFE_TOP || SAFE_BOT){
+    ctx.save();
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, W, H + SAFE_TOP + SAFE_BOT);
+    ctx.translate(0, SAFE_TOP);
+    drawShop();
+    ctx.restore();
+  } else {
+    drawShop();
+  }
+};
+
+function drawShop(){
+  HITS = [];
+  var pad = L.pad;
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+
+  /* 顶栏 */
+  txt('第 ' + SHOP.level + ' 关 补给站', pad, Math.round(H * 0.072), Math.round(W * 0.043), C.ink, 'left', true);
+  txt('金币 ' + SHOP.coins, W - pad, Math.round(H * 0.072), Math.round(W * 0.04), C.amber, 'right', true);
+  txt('最高第 ' + SHOP.best + ' 关 · 本关收入 +' + SHOP.earned, pad, Math.round(H * 0.072) + 22,
+      Math.max(10, Math.round(W * 0.031)), C.muted, 'left');
+
+  /* 货架：三个固定类目，各占一格 */
+  var cardX = pad, cardW = W - pad * 2, cardH = Math.round(H * 0.083), gap = Math.round(H * 0.012);
+  var y = Math.round(H * 0.132);
+  for (var i = 0; i < SHOP.offers.length; i++){
+    var sec = SHOP_SECTIONS[i] || { label: '' };
+    txt(sec.label, pad, y + i * (cardH + gap + 15) - 5,
+        Math.max(10, Math.round(W * 0.029)), '#8f86a6', 'left', true);
+    drawOfferCard(cardX, y + i * (cardH + gap + 15), cardW, cardH, SHOP.offers[i], i);
+  }
+
+  /* 我的仓鼠 */
+  var ratsY = y + 3 * (cardH + gap + 15) + Math.round(H * 0.012);
+  var onCount = SHOP.squad.length;
+  txt('我的仓鼠 · 上场 ' + onCount + '/' + (CFG.slots || 2) + '（点一下选中，再点一下上下场）',
+      pad, ratsY - 6, Math.max(9, Math.round(W * 0.026)), C.muted, 'left');
+  var slotW = Math.round((cardW - 8) / 2);
+  var slotH = Math.round(H * 0.105);
+  for (var s = 0; s < SHOP.rats.length && s < 4; s++){
+    var col = s % 2, row = Math.floor(s / 2);
+    var sx = cardX + col * (slotW + 8);
+    var sy = ratsY + row * (slotH + 8);
+    drawRatCard(sx, sy, slotW, slotH, s);
+  }
+  var rows = Math.min(2, Math.ceil((SHOP.rats.length + 1) / 2));
+  if (SHOP.rats.length < 4){
+    var ex = cardX + (SHOP.rats.length % 2) * (slotW + 8);
+    var ey = ratsY + Math.floor(SHOP.rats.length / 2) * (slotH + 8);
+    rr(ex, ey, slotW, slotH, 10);
+    ctx.fillStyle = 'rgba(255,255,255,.03)'; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(90,80,110,.5)'; ctx.stroke();
+    txt('空位', ex + slotW / 2, ey + slotH / 2 + 4, Math.max(10, Math.round(W * 0.031)), '#5b5374', 'center');
+  }
+
+  /* 选中鼠的数值面板：把"买完到底强了多少"摊开给玩家看 */
+  drawRatStats(cardX, ratsY + rows * (slotH + 8) + 10, cardW);
+
+  /* 底部按钮 */
+  var btnH = Math.round(Math.min(46, H * 0.055));
+  var by = H - btnH - Math.round(H * 0.045);
+  var b1w = Math.round(cardW * 0.42), b2w = cardW - b1w - 10;
+  var bx1 = cardX, bx2 = cardX + b1w + 10;
+
+  rr(bx1, by, b1w, btnH, btnH / 2);
+  ctx.fillStyle = SHOP.coins >= 8 && SHOP.refreshLeft > 0 ? C.panel2 : '#241d2e';
+  ctx.fill();
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = SHOP.coins >= 8 && SHOP.refreshLeft > 0 ? C.line : '#332b45';
+  ctx.stroke();
+  txt('刷新 8 · 剩' + SHOP.refreshLeft, bx1 + b1w / 2, by + btnH * 0.64,
+      Math.max(10, Math.round(W * 0.032)), SHOP.refreshLeft > 0 ? C.muted : '#5b5374', 'center', true);
+  shopHit(bx1, by, b1w, btnH, function(){
+    if (SHOP.refreshLeft <= 0 || SHOP.coins < 8) return;
+    SHOP.coins -= 8; SHOP.refreshLeft--; rollOffers(); shopSave(); sfx('tap');
+  });
+
+  rr(bx2, by, b2w, btnH, btnH / 2);
+  ctx.fillStyle = SHOP.advance === false ? C.panel2 : C.amber;
+  ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = SHOP.advance === false ? C.amber : C.amber; ctx.stroke();
+  txt(SHOP.advance === false ? '重打本关 ▶' : '下一关 ▶', bx2 + b2w / 2, by + btnH * 0.64,
+      Math.round(W * 0.042), SHOP.advance === false ? C.amber : '#241d2e', 'center', true);
+  shopHit(bx2, by, b2w, btnH, function(){ sfx('pick'); startNextLevel(); });
+}
+
+function drawOfferCard(x, y, w, h, o, idx){
+  var affordable = SHOP.coins >= o.price && !o.sold;
+  rr(x, y, w, h, 10);
+  ctx.fillStyle = o.sold ? 'rgba(255,255,255,.02)' : C.panel;
+  ctx.fill();
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = o.sold ? '#332b45' : (affordable ? 'rgba(232,172,80,.5)' : C.line);
+  ctx.stroke();
+
+  var nameSize = Math.max(11, Math.round(W * 0.036));
+  txt(offerTitle(o), x + 12, y + Math.round(h * 0.34), nameSize, o.sold ? '#5b5374' : C.ink, 'left', true);
+  txt(offerDesc(o), x + 12, y + Math.round(h * 0.64), Math.max(9, Math.round(W * 0.027)),
+      o.sold ? '#4a4160' : C.muted, 'left');
+
+  var price = o.sold ? '已买' : ('💰 ' + o.price);
+  txt(price, x + w - 12, y + Math.round(h * 0.5), Math.max(11, Math.round(W * 0.034)),
+      o.sold ? '#5b5374' : (affordable ? C.amber : C.bad), 'right', true);
+
+  if (!o.sold){
+    shopHit(x, y, w, h, function(){ buyOffer(idx); });
+  }
+}
+
+/* 选中鼠的数值面板（改动前/后的实际效果都在这） */
+function drawRatStats(x, y, w){
+  var rat = SHOP.rats[SHOP.sel];
+  if (!rat) return;
+  var u = makeUnit(ratId(rat), 0);
+  applyMod(u, rat.mod);
+  var h = 92;
+  rr(x, y, w, h, 10);
+  ctx.fillStyle = 'rgba(0,0,0,.16)'; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.05)'; ctx.stroke();
+
+  var fs = Math.max(9, Math.round(W * 0.027));
+  txt('选中：' + u.name + '（' + ratLineLabel(rat) + '）', x + 12, y + 20,
+      Math.max(10, Math.round(W * 0.031)), C.ink, 'left', true);
+
+  var c1 = u.eats === 'parts' ? '零件' : (u.eats === 'energy' ? '能量' : null);
+  var left = [
+    ['出手间隔', u.atkMs ? (u.atkMs / 1000).toFixed(1) + ' s' : '不攻击'],
+    ['基础伤害', u.atkMs ? String(u.baseDmg) : '—'],
+    ['强化伤害', u.act ? String(u.act.dmg) + (u.act.kind === 'heal' ? '（修复）' : '') : '—']
+  ];
+  var right = [
+    ['强化阈值', c1 ? (u.need + ' ' + c1) : '不吃资源'],
+    ['生命', String(u.hpMax)],
+    ['配件', rat.mod && MODS[rat.mod] ? MODS[rat.mod].name : '无']
+  ];
+  var colW = Math.round((w - 34) / 2);
+  for (var i = 0; i < left.length; i++){
+    var ly = y + 42 + i * 17;
+    txt(left[i][0], x + 12, ly, fs, C.muted, 'left');
+    txt(left[i][1], x + 12 + colW - 10, ly, fs, C.ink, 'right', true);
+    txt(right[i][0], x + 22 + colW, ly, fs, C.muted, 'left');
+    txt(right[i][1], x + w - 12, ly, fs, C.ink, 'right', true);
+  }
+}
+
+function drawRatCard(x, y, w, h, idx){
+  var rat = SHOP.rats[idx];
+  if (!rat) return;
+  var onSquad = SHOP.squad.indexOf(idx) >= 0;
+  var selected = SHOP.sel === idx;
+  rr(x, y, w, h, 10);
+  ctx.fillStyle = selected ? 'rgba(232,172,80,.12)' : C.panel;
+  ctx.fill();
+  ctx.lineWidth = selected ? 2 : 1;
+  ctx.strokeStyle = selected ? C.amber : (onSquad ? 'rgba(121,201,138,.55)' : C.line);
+  ctx.stroke();
+
+  var artS = Math.round(Math.min(h * 0.62, w * 0.34));
+  var id = ratId(rat);
+  drawHamsterArt(x + 8, y + Math.round((h - artS) / 2), artS, { line: rat.line, name: ratLabel(rat) });
+
+  var tx = x + artS + 14;
+  txt(ratLabel(rat), tx, y + Math.round(h * 0.3), Math.max(10, Math.round(W * 0.032)), C.ink, 'left', true);
+  txt(ratLineLabel(rat), tx, y + Math.round(h * 0.52), Math.max(9, Math.round(W * 0.026)), C.muted, 'left');
+  var modName = rat.mod && MODS[rat.mod] ? MODS[rat.mod].name : '无配件';
+  txt('配件：' + modName, tx, y + Math.round(h * 0.74), Math.max(9, Math.round(W * 0.026)), '#8f86a6', 'left');
+  txt(onSquad ? '上场中' : '待命', x + w - 10, y + Math.round(h * 0.3),
+      Math.max(9, Math.round(W * 0.026)), onSquad ? '#79c98a' : '#5b5374', 'right', true);
+
+  shopHit(x, y, w, h, function(){
+    // 第一次点 = 选中（只选人，不动编队）；再点已选中的那只 = 上下场
+    if (SHOP.sel !== idx){
+      SHOP.sel = idx;
+      sfx('tap');
+      shopSave();
+      return;
+    }
+    var at = SHOP.squad.indexOf(idx);
+    if (at >= 0){
+      if (SHOP.squad.length > 1){ SHOP.squad.splice(at, 1); sfx('tap'); }
+      else sfx('invalid');
+    } else if (SHOP.squad.length < (CFG.slots || 2)){
+      SHOP.squad.push(idx); sfx('tap');
+    } else {
+      SHOP.squad[SHOP.squad.length - 1] = idx; sfx('tap');
+    }
+    shopSave();
+  });
+}
+
+/* ---------- 9. 购买 ---------- */
+function buyOffer(idx){
+  var o = SHOP.offers[idx];
+  if (!o || o.sold) return;
+  if (SHOP.coins < o.price){ sfx('invalid'); return; }
+  var rat = SHOP.rats[SHOP.sel];
+  if (!rat){ sfx('invalid'); return; }
+
+  if (o.kind === 'gear'){
+    if (o.tier === 3 && (rat.line !== o.line || rat.tier !== 2)){ sfx('invalid'); return; }
+    rat.line = o.line;
+    rat.tier = o.tier;
+  } else if (o.kind === 'mod'){
+    rat.mod = o.mod;
+  } else {
+    if (SHOP.rats.length >= 6){ sfx('invalid'); return; }
+    SHOP.rats.push({ line: 'none', tier: 1, mod: '' });
+    // 买了白板鼠：编队有空位就直接补上，省得玩家以为没买到
+    var newIdx = SHOP.rats.length - 1;
+    if (SHOP.squad.length < (CFG.slots || 2)) SHOP.squad.push(newIdx);
+    SHOP.sel = newIdx;
+  }
+  SHOP.coins -= o.price;
+  o.sold = true;
+  rebuildUnitsIfShop();
+  shopSave();
+  sfx('pick');
+}
+
+/* 商店里换完阵容，不重开战斗，但要保证下一关用新阵容 */
+function rebuildUnitsIfShop(){
+  buildSquad();
+  applyPassives();
+}
+
+/* ---------- 10. 商店输入（捕获阶段，先于棋盘） ---------- */
+canvas.addEventListener('pointerdown', function(e){
+  if (S.phase !== 'shop') return;
+  try {
+    var rect = canvas.getBoundingClientRect();
+    var pt = [e.clientX - rect.left, e.clientY - rect.top - SAFE_TOP];
+    if (hitShop(pt)){
+      if (e.preventDefault) e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  } catch (err) {}
+}, true);
+
+window.addEventListener('keydown', function(e){
+  if (S.phase !== 'shop') return;
+  if (e.key === 'Enter' || e.key === ' ') startNextLevel();
+  if (e.key === 'r' || e.key === 'R'){
+    if (SHOP.refreshLeft > 0 && SHOP.coins >= 8){ SHOP.coins -= 8; SHOP.refreshLeft--; rollOffers(); shopSave(); }
+  }
+}, false);
+
+/* ---------- 11. 开局 / 顶栏关卡号：与商店状态同步 ---------- */
+var _shopStartLevel = startLevel;
+startLevel = function(lv){
+  // 从失败结算卡上点「重新开工」→ 先带去补给站（花掉攒的钱再打）
+  if (S.phase === 'lose'){ openShop(false); return; }
+  window.__counters.startLevel++;
+  SHOP.level = Math.max(1, lv || SHOP.level || 1);
+  var res = _shopStartLevel.apply(null, arguments);
+  shopSave();
+  return res;
+};
+
+/* 标题页显示最高关 */
+var _shopDrawTitle = drawTitle;
+drawTitle = function(){
+  _shopDrawTitle.apply(null, arguments);
+  /* 原标题页那行写的是"五关订单"；关卡表改成 6 关一轮 + 无尽轮次之后这行就不准了，
+     底图是纯色，直接盖一层底色再重写，比改原逻辑安全（game.orig.js 一行不动）。 */
+  var bh = Math.round(Math.min(52, H * 0.07));
+  var y = Math.round(H * 0.68) + bh + 34;
+  var fs = Math.max(10, Math.round(W * 0.031));
+  ctx.fillStyle = C.bg;
+  ctx.fillRect(0, y - fs, W, fs * 2);
+  txt('6 关一轮 · 三选一强化 · 通关后无尽轮次', W / 2, y, fs, C.muted, 'center');
+  txt('最高第 ' + SHOP.best + ' 关 · 金币 ' + SHOP.coins, W / 2, Math.round(H * 0.68) + bh + 80,
+      Math.max(10, Math.round(W * 0.03)), C.amber, 'center', true);
+};
+
+/* 调参/测试口 */
+window.__shop = function(){ return SHOP; };
+window.__shopOpen = openShop;
+window.__shopNext = startNextLevel;
+window.__shopBuy = buyOffer;
+window.__shopHits = function(){ return { hit: HIT, shop: HITS }; };
+window.__rollInfo = function(){
+  return { level: SHOP.level, sel: SHOP.sel, lines: unlockedLines(SHOP.level || 1), tier3: allowTier3(SHOP.level || 1) };
+};
+/* 测试口：直接摇一次货架（不受 phase 幂等限制），返回这次出的证 */
+window.__shopRoll = function(){
+  rollOffers();
+  var o = SHOP.offers[0];
+  return { line: o.line, tier: o.tier, mod: SHOP.offers[1].mod, price: o.price };
+};
+
+})();
+</script>
+</body></html>

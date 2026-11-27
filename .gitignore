@@ -1,0 +1,18 @@
+# 依赖与临时产物
+node_modules/
+.studio/
+tools/_font/x/
+tools/_font/*.zip
+tools/_l2.png
+tools/_*.png
+tools/_*.json
+tools/_smoke.png
+*.log
+
+# 生成物（dist/ 与 export/ 保留：单文件 HTML 方便直接分发给人玩）
+# dist/
+# export/
+
+# 系统
+Thumbs.db
+.DS_Store

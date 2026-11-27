@@ -1,0 +1,1026 @@
+[
+  {
+    "key": "none-1",
+    "name": "白板鼠",
+    "prompt": "cute hamster standing",
+    "index": 0,
+    "file": "none-1-0.png",
+    "seed": 0
+  },
+  {
+    "key": "none-1",
+    "name": "白板鼠",
+    "prompt": "cute hamster standing",
+    "index": 1,
+    "file": "none-1-1.png",
+    "seed": 0
+  },
+  {
+    "key": "none-1",
+    "name": "白板鼠",
+    "prompt": "cute hamster standing",
+    "index": 2,
+    "file": "none-1-2.png",
+    "seed": 0
+  },
+  {
+    "key": "none-1",
+    "name": "白板鼠",
+    "prompt": "cute hamster standing",
+    "index": 3,
+    "file": "none-1-3.png",
+    "seed": 0
+  },
+  {
+    "key": "none-1",
+    "name": "白板鼠",
+    "prompt": "cute hamster standing",
+    "index": 4,
+    "file": "none-1-4.png",
+    "seed": 0
+  },
+  {
+    "key": "none-1",
+    "name": "白板鼠",
+    "prompt": "cute hamster standing",
+    "index": 5,
+    "file": "none-1-5.png",
+    "seed": 0
+  },
+  {
+    "key": "none-1",
+    "name": "白板鼠",
+    "prompt": "cute hamster standing",
+    "index": 6,
+    "file": "none-1-6.png",
+    "seed": 0
+  },
+  {
+    "key": "none-1",
+    "name": "白板鼠",
+    "prompt": "cute hamster standing",
+    "index": 7,
+    "file": "none-1-7.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-2",
+    "name": "铁皮鼠",
+    "prompt": "hamster holding a small round shield",
+    "index": 0,
+    "file": "tank-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-2",
+    "name": "铁皮鼠",
+    "prompt": "hamster holding a small round shield",
+    "index": 1,
+    "file": "tank-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-2",
+    "name": "铁皮鼠",
+    "prompt": "hamster holding a small round shield",
+    "index": 2,
+    "file": "tank-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-2",
+    "name": "铁皮鼠",
+    "prompt": "hamster holding a small round shield",
+    "index": 3,
+    "file": "tank-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-2",
+    "name": "铁皮鼠",
+    "prompt": "hamster holding a small round shield",
+    "index": 4,
+    "file": "tank-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-2",
+    "name": "铁皮鼠",
+    "prompt": "hamster holding a small round shield",
+    "index": 5,
+    "file": "tank-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-2",
+    "name": "铁皮鼠",
+    "prompt": "hamster holding a small round shield",
+    "index": 6,
+    "file": "tank-2-6.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-2",
+    "name": "铁皮鼠",
+    "prompt": "hamster holding a small round shield",
+    "index": 7,
+    "file": "tank-2-7.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-3",
+    "name": "铆甲鼠",
+    "prompt": "hamster with iron shield and mace",
+    "index": 0,
+    "file": "tank-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-3",
+    "name": "铆甲鼠",
+    "prompt": "hamster with iron shield and mace",
+    "index": 1,
+    "file": "tank-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-3",
+    "name": "铆甲鼠",
+    "prompt": "hamster with iron shield and mace",
+    "index": 2,
+    "file": "tank-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-3",
+    "name": "铆甲鼠",
+    "prompt": "hamster with iron shield and mace",
+    "index": 3,
+    "file": "tank-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-3",
+    "name": "铆甲鼠",
+    "prompt": "hamster with iron shield and mace",
+    "index": 4,
+    "file": "tank-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-3",
+    "name": "铆甲鼠",
+    "prompt": "hamster with iron shield and mace",
+    "index": 5,
+    "file": "tank-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-3",
+    "name": "铆甲鼠",
+    "prompt": "hamster with iron shield and mace",
+    "index": 6,
+    "file": "tank-3-6.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-3",
+    "name": "铆甲鼠",
+    "prompt": "hamster with iron shield and mace",
+    "index": 7,
+    "file": "tank-3-7.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-4",
+    "name": "堡垒鼠",
+    "prompt": "armored hamster with huge tower shield",
+    "index": 0,
+    "file": "tank-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-4",
+    "name": "堡垒鼠",
+    "prompt": "armored hamster with huge tower shield",
+    "index": 1,
+    "file": "tank-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-4",
+    "name": "堡垒鼠",
+    "prompt": "armored hamster with huge tower shield",
+    "index": 2,
+    "file": "tank-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-4",
+    "name": "堡垒鼠",
+    "prompt": "armored hamster with huge tower shield",
+    "index": 3,
+    "file": "tank-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-4",
+    "name": "堡垒鼠",
+    "prompt": "armored hamster with huge tower shield",
+    "index": 4,
+    "file": "tank-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-4",
+    "name": "堡垒鼠",
+    "prompt": "armored hamster with huge tower shield",
+    "index": 5,
+    "file": "tank-4-5.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-4",
+    "name": "堡垒鼠",
+    "prompt": "armored hamster with huge tower shield",
+    "index": 6,
+    "file": "tank-4-6.png",
+    "seed": 0
+  },
+  {
+    "key": "tank-4",
+    "name": "堡垒鼠",
+    "prompt": "armored hamster with huge tower shield",
+    "index": 7,
+    "file": "tank-4-7.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-2",
+    "name": "扳钳鼠",
+    "prompt": "hamster holding a small knife",
+    "index": 0,
+    "file": "blade-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-2",
+    "name": "扳钳鼠",
+    "prompt": "hamster holding a small knife",
+    "index": 1,
+    "file": "blade-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-2",
+    "name": "扳钳鼠",
+    "prompt": "hamster holding a small knife",
+    "index": 2,
+    "file": "blade-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-2",
+    "name": "扳钳鼠",
+    "prompt": "hamster holding a small knife",
+    "index": 3,
+    "file": "blade-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-2",
+    "name": "扳钳鼠",
+    "prompt": "hamster holding a small knife",
+    "index": 4,
+    "file": "blade-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-2",
+    "name": "扳钳鼠",
+    "prompt": "hamster holding a small knife",
+    "index": 5,
+    "file": "blade-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-2",
+    "name": "扳钳鼠",
+    "prompt": "hamster holding a small knife",
+    "index": 6,
+    "file": "blade-2-6.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-2",
+    "name": "扳钳鼠",
+    "prompt": "hamster holding a small knife",
+    "index": 7,
+    "file": "blade-2-7.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-3",
+    "name": "尖牙鼠",
+    "prompt": "hamster holding a battle axe",
+    "index": 0,
+    "file": "blade-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-3",
+    "name": "尖牙鼠",
+    "prompt": "hamster holding a battle axe",
+    "index": 1,
+    "file": "blade-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-3",
+    "name": "尖牙鼠",
+    "prompt": "hamster holding a battle axe",
+    "index": 2,
+    "file": "blade-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-3",
+    "name": "尖牙鼠",
+    "prompt": "hamster holding a battle axe",
+    "index": 3,
+    "file": "blade-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-3",
+    "name": "尖牙鼠",
+    "prompt": "hamster holding a battle axe",
+    "index": 4,
+    "file": "blade-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-3",
+    "name": "尖牙鼠",
+    "prompt": "hamster holding a battle axe",
+    "index": 5,
+    "file": "blade-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-3",
+    "name": "尖牙鼠",
+    "prompt": "hamster holding a battle axe",
+    "index": 6,
+    "file": "blade-3-6.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-3",
+    "name": "尖牙鼠",
+    "prompt": "hamster holding a battle axe",
+    "index": 7,
+    "file": "blade-3-7.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-4",
+    "name": "破城鼠",
+    "prompt": "fierce hamster with big greatsword",
+    "index": 0,
+    "file": "blade-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-4",
+    "name": "破城鼠",
+    "prompt": "fierce hamster with big greatsword",
+    "index": 1,
+    "file": "blade-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-4",
+    "name": "破城鼠",
+    "prompt": "fierce hamster with big greatsword",
+    "index": 2,
+    "file": "blade-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-4",
+    "name": "破城鼠",
+    "prompt": "fierce hamster with big greatsword",
+    "index": 3,
+    "file": "blade-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-4",
+    "name": "破城鼠",
+    "prompt": "fierce hamster with big greatsword",
+    "index": 4,
+    "file": "blade-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-4",
+    "name": "破城鼠",
+    "prompt": "fierce hamster with big greatsword",
+    "index": 5,
+    "file": "blade-4-5.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-4",
+    "name": "破城鼠",
+    "prompt": "fierce hamster with big greatsword",
+    "index": 6,
+    "file": "blade-4-6.png",
+    "seed": 0
+  },
+  {
+    "key": "blade-4",
+    "name": "破城鼠",
+    "prompt": "fierce hamster with big greatsword",
+    "index": 7,
+    "file": "blade-4-7.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-2",
+    "name": "炮筒鼠",
+    "prompt": "hamster holding a small crossbow",
+    "index": 0,
+    "file": "shot-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-2",
+    "name": "炮筒鼠",
+    "prompt": "hamster holding a small crossbow",
+    "index": 1,
+    "file": "shot-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-2",
+    "name": "炮筒鼠",
+    "prompt": "hamster holding a small crossbow",
+    "index": 2,
+    "file": "shot-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-2",
+    "name": "炮筒鼠",
+    "prompt": "hamster holding a small crossbow",
+    "index": 3,
+    "file": "shot-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-2",
+    "name": "炮筒鼠",
+    "prompt": "hamster holding a small crossbow",
+    "index": 4,
+    "file": "shot-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-2",
+    "name": "炮筒鼠",
+    "prompt": "hamster holding a small crossbow",
+    "index": 5,
+    "file": "shot-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-2",
+    "name": "炮筒鼠",
+    "prompt": "hamster holding a small crossbow",
+    "index": 6,
+    "file": "shot-2-6.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-2",
+    "name": "炮筒鼠",
+    "prompt": "hamster holding a small crossbow",
+    "index": 7,
+    "file": "shot-2-7.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-3",
+    "name": "连发鼠",
+    "prompt": "hamster holding a repeating crossbow",
+    "index": 0,
+    "file": "shot-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-3",
+    "name": "连发鼠",
+    "prompt": "hamster holding a repeating crossbow",
+    "index": 1,
+    "file": "shot-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-3",
+    "name": "连发鼠",
+    "prompt": "hamster holding a repeating crossbow",
+    "index": 2,
+    "file": "shot-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-3",
+    "name": "连发鼠",
+    "prompt": "hamster holding a repeating crossbow",
+    "index": 3,
+    "file": "shot-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-3",
+    "name": "连发鼠",
+    "prompt": "hamster holding a repeating crossbow",
+    "index": 4,
+    "file": "shot-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-3",
+    "name": "连发鼠",
+    "prompt": "hamster holding a repeating crossbow",
+    "index": 5,
+    "file": "shot-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-3",
+    "name": "连发鼠",
+    "prompt": "hamster holding a repeating crossbow",
+    "index": 6,
+    "file": "shot-3-6.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-3",
+    "name": "连发鼠",
+    "prompt": "hamster holding a repeating crossbow",
+    "index": 7,
+    "file": "shot-3-7.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-4",
+    "name": "狙炮鼠",
+    "prompt": "hamster with a big cannon",
+    "index": 0,
+    "file": "shot-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-4",
+    "name": "狙炮鼠",
+    "prompt": "hamster with a big cannon",
+    "index": 1,
+    "file": "shot-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-4",
+    "name": "狙炮鼠",
+    "prompt": "hamster with a big cannon",
+    "index": 2,
+    "file": "shot-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-4",
+    "name": "狙炮鼠",
+    "prompt": "hamster with a big cannon",
+    "index": 3,
+    "file": "shot-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-4",
+    "name": "狙炮鼠",
+    "prompt": "hamster with a big cannon",
+    "index": 4,
+    "file": "shot-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-4",
+    "name": "狙炮鼠",
+    "prompt": "hamster with a big cannon",
+    "index": 5,
+    "file": "shot-4-5.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-4",
+    "name": "狙炮鼠",
+    "prompt": "hamster with a big cannon",
+    "index": 6,
+    "file": "shot-4-6.png",
+    "seed": 0
+  },
+  {
+    "key": "shot-4",
+    "name": "狙炮鼠",
+    "prompt": "hamster with a big cannon",
+    "index": 7,
+    "file": "shot-4-7.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-2",
+    "name": "火种鼠",
+    "prompt": "hamster holding a burning torch",
+    "index": 0,
+    "file": "hex-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-2",
+    "name": "火种鼠",
+    "prompt": "hamster holding a burning torch",
+    "index": 1,
+    "file": "hex-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-2",
+    "name": "火种鼠",
+    "prompt": "hamster holding a burning torch",
+    "index": 2,
+    "file": "hex-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-2",
+    "name": "火种鼠",
+    "prompt": "hamster holding a burning torch",
+    "index": 3,
+    "file": "hex-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-2",
+    "name": "火种鼠",
+    "prompt": "hamster holding a burning torch",
+    "index": 4,
+    "file": "hex-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-2",
+    "name": "火种鼠",
+    "prompt": "hamster holding a burning torch",
+    "index": 5,
+    "file": "hex-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-2",
+    "name": "火种鼠",
+    "prompt": "hamster holding a burning torch",
+    "index": 6,
+    "file": "hex-2-6.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-2",
+    "name": "火种鼠",
+    "prompt": "hamster holding a burning torch",
+    "index": 7,
+    "file": "hex-2-7.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-3",
+    "name": "咒炉鼠",
+    "prompt": "hamster mage with electric staff",
+    "index": 0,
+    "file": "hex-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-3",
+    "name": "咒炉鼠",
+    "prompt": "hamster mage with electric staff",
+    "index": 1,
+    "file": "hex-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-3",
+    "name": "咒炉鼠",
+    "prompt": "hamster mage with electric staff",
+    "index": 2,
+    "file": "hex-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-3",
+    "name": "咒炉鼠",
+    "prompt": "hamster mage with electric staff",
+    "index": 3,
+    "file": "hex-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-3",
+    "name": "咒炉鼠",
+    "prompt": "hamster mage with electric staff",
+    "index": 4,
+    "file": "hex-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-3",
+    "name": "咒炉鼠",
+    "prompt": "hamster mage with electric staff",
+    "index": 5,
+    "file": "hex-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-3",
+    "name": "咒炉鼠",
+    "prompt": "hamster mage with electric staff",
+    "index": 6,
+    "file": "hex-3-6.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-3",
+    "name": "咒炉鼠",
+    "prompt": "hamster mage with electric staff",
+    "index": 7,
+    "file": "hex-3-7.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-4",
+    "name": "熔炉鼠",
+    "prompt": "hamster mage with glowing fire orb",
+    "index": 0,
+    "file": "hex-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-4",
+    "name": "熔炉鼠",
+    "prompt": "hamster mage with glowing fire orb",
+    "index": 1,
+    "file": "hex-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-4",
+    "name": "熔炉鼠",
+    "prompt": "hamster mage with glowing fire orb",
+    "index": 2,
+    "file": "hex-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-4",
+    "name": "熔炉鼠",
+    "prompt": "hamster mage with glowing fire orb",
+    "index": 3,
+    "file": "hex-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-4",
+    "name": "熔炉鼠",
+    "prompt": "hamster mage with glowing fire orb",
+    "index": 4,
+    "file": "hex-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-4",
+    "name": "熔炉鼠",
+    "prompt": "hamster mage with glowing fire orb",
+    "index": 5,
+    "file": "hex-4-5.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-4",
+    "name": "熔炉鼠",
+    "prompt": "hamster mage with glowing fire orb",
+    "index": 6,
+    "file": "hex-4-6.png",
+    "seed": 0
+  },
+  {
+    "key": "hex-4",
+    "name": "熔炉鼠",
+    "prompt": "hamster mage with glowing fire orb",
+    "index": 7,
+    "file": "hex-4-7.png",
+    "seed": 0
+  },
+  {
+    "key": "care-2",
+    "name": "医务鼠",
+    "prompt": "hamster doctor with syringe",
+    "index": 0,
+    "file": "care-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "care-2",
+    "name": "医务鼠",
+    "prompt": "hamster doctor with syringe",
+    "index": 1,
+    "file": "care-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "care-2",
+    "name": "医务鼠",
+    "prompt": "hamster doctor with syringe",
+    "index": 2,
+    "file": "care-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "care-2",
+    "name": "医务鼠",
+    "prompt": "hamster doctor with syringe",
+    "index": 3,
+    "file": "care-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "care-2",
+    "name": "医务鼠",
+    "prompt": "hamster doctor with syringe",
+    "index": 4,
+    "file": "care-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "care-2",
+    "name": "医务鼠",
+    "prompt": "hamster doctor with syringe",
+    "index": 5,
+    "file": "care-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "care-2",
+    "name": "医务鼠",
+    "prompt": "hamster doctor with syringe",
+    "index": 6,
+    "file": "care-2-6.png",
+    "seed": 0
+  },
+  {
+    "key": "care-2",
+    "name": "医务鼠",
+    "prompt": "hamster doctor with syringe",
+    "index": 7,
+    "file": "care-2-7.png",
+    "seed": 0
+  },
+  {
+    "key": "care-3",
+    "name": "药剂鼠",
+    "prompt": "hamster with spray can",
+    "index": 0,
+    "file": "care-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "care-3",
+    "name": "药剂鼠",
+    "prompt": "hamster with spray can",
+    "index": 1,
+    "file": "care-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "care-3",
+    "name": "药剂鼠",
+    "prompt": "hamster with spray can",
+    "index": 2,
+    "file": "care-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "care-3",
+    "name": "药剂鼠",
+    "prompt": "hamster with spray can",
+    "index": 3,
+    "file": "care-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "care-3",
+    "name": "药剂鼠",
+    "prompt": "hamster with spray can",
+    "index": 4,
+    "file": "care-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "care-3",
+    "name": "药剂鼠",
+    "prompt": "hamster with spray can",
+    "index": 5,
+    "file": "care-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "care-3",
+    "name": "药剂鼠",
+    "prompt": "hamster with spray can",
+    "index": 6,
+    "file": "care-3-6.png",
+    "seed": 0
+  },
+  {
+    "key": "care-3",
+    "name": "药剂鼠",
+    "prompt": "hamster with spray can",
+    "index": 7,
+    "file": "care-3-7.png",
+    "seed": 0
+  },
+  {
+    "key": "care-4",
+    "name": "大医师鼠",
+    "prompt": "hamster doctor with medical banner",
+    "index": 0,
+    "file": "care-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "care-4",
+    "name": "大医师鼠",
+    "prompt": "hamster doctor with medical banner",
+    "index": 1,
+    "file": "care-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "care-4",
+    "name": "大医师鼠",
+    "prompt": "hamster doctor with medical banner",
+    "index": 2,
+    "file": "care-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "care-4",
+    "name": "大医师鼠",
+    "prompt": "hamster doctor with medical banner",
+    "index": 3,
+    "file": "care-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "care-4",
+    "name": "大医师鼠",
+    "prompt": "hamster doctor with medical banner",
+    "index": 4,
+    "file": "care-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "care-4",
+    "name": "大医师鼠",
+    "prompt": "hamster doctor with medical banner",
+    "index": 5,
+    "file": "care-4-5.png",
+    "seed": 0
+  },
+  {
+    "key": "care-4",
+    "name": "大医师鼠",
+    "prompt": "hamster doctor with medical banner",
+    "index": 6,
+    "file": "care-4-6.png",
+    "seed": 0
+  },
+  {
+    "key": "care-4",
+    "name": "大医师鼠",
+    "prompt": "hamster doctor with medical banner",
+    "index": 7,
+    "file": "care-4-7.png",
+    "seed": 0
+  }
+]

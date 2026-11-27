@@ -1,0 +1,1154 @@
+{
+  "schema": 1,
+  "template": "collector",
+  "title": "仓鼠零食工厂",
+  "style": "暖色手绘扁平风：深紫底色 + 琥珀花生与珊瑚饼干，圆角方块零食，柔和描边，轻微纸质颗粒",
+  "orientation": "portrait",
+  "slots": {
+    "hamster": {
+      "file": "assets/hamster.svg",
+      "label": "仓鼠",
+      "size": [
+        256,
+        256
+      ],
+      "transparent": true
+    },
+    "snack_peanut": {
+      "file": "assets/snack_peanut.svg",
+      "label": "花生",
+      "size": [
+        192,
+        192
+      ],
+      "transparent": true
+    },
+    "snack_cookie": {
+      "file": "assets/snack_cookie.svg",
+      "label": "饼干",
+      "size": [
+        192,
+        192
+      ],
+      "transparent": true
+    },
+    "snack_seed": {
+      "file": "assets/snack_seed.svg",
+      "label": "瓜子",
+      "size": [
+        192,
+        192
+      ],
+      "transparent": true
+    },
+    "stage_bg": {
+      "file": "assets/stage_bg.png",
+      "label": "舞台背景",
+      "size": [
+        660,
+        340
+      ],
+      "transparent": false
+    }
+  },
+  "rules": {
+    "boardSize": 5,
+    "levels": [
+      {
+        "name": "工厂开张",
+        "steps": 5,
+        "target": 40,
+        "hint": "swap",
+        "tip": "滑动相邻的两颗零食，三个排成一线就能消除。"
+      },
+      {
+        "name": "第一笔订单",
+        "steps": 6,
+        "target": 74,
+        "hint": "cascade",
+        "tip": "先消下面的，上面的零食掉下来还会继续消 —— 掉落连击不花步数。"
+      },
+      {
+        "name": "零食试吃会",
+        "steps": 6,
+        "target": 82,
+        "tip": ""
+      },
+      {
+        "name": "挑食订单",
+        "steps": 7,
+        "target": 118,
+        "want": 0,
+        "need": 6,
+        "hint": "order",
+        "tip": "这关的订单要花生：只算真正消掉的花生，强化追加的通用进度不算。"
+      },
+      {
+        "name": "零食节",
+        "steps": 7,
+        "target": 132,
+        "tip": ""
+      }
+    ],
+    "tools": [
+      {
+        "name": "打包机",
+        "needsCell": true,
+        "desc": "点它，再点盘上一格：那一整行和一整列都打掉"
+      },
+      {
+        "name": "打包仓鼠",
+        "needsCell": false,
+        "desc": "点它：仓鼠啃掉最多那种零食的 10 格"
+      },
+      {
+        "name": "大礼盒",
+        "needsCell": true,
+        "desc": "点它，再点盘上一格：那一片 5×5 全炸开"
+      }
+    ],
+    "sound": true,
+    "save": true,
+    "autoplay": true,
+    "rpg": {
+      "hp": 100,
+      "armorMax": 60,
+      "partsMax": 26,
+      "energyMax": 130,
+      "yieldPer": {
+        "energy": 4,
+        "armor": 2,
+        "parts": 1
+      },
+      "cascade": [
+        1,
+        1.5,
+        2,
+        3
+      ],
+      "turret": {
+        "cost": 8,
+        "dmg": 7
+      },
+      "ult": {
+        "cost": 60,
+        "dmg": 22
+      },
+      "slots": 5,
+      "squad": [
+        "tank-2",
+        "shot-2"
+      ],
+      "tankRedirect": 0.2,
+      "tankReduce": 0.3,
+      "chapter": {
+        "name": "工厂开张",
+        "onField": 2,
+        "tools": [
+          1,
+          1,
+          1
+        ],
+        "waves": [
+          [
+            {
+              "type": "crate"
+            }
+          ],
+          [
+            {
+              "type": "crate"
+            },
+            {
+              "type": "shell"
+            }
+          ],
+          [
+            {
+              "type": "crate"
+            },
+            {
+              "type": "thief"
+            }
+          ],
+          [
+            {
+              "type": "shell"
+            },
+            {
+              "type": "thief"
+            }
+          ],
+          [
+            {
+              "type": "boss"
+            },
+            {
+              "type": "crate"
+            }
+          ]
+        ]
+      },
+      "foes": {
+        "crate": {
+          "name": "纸箱鼠",
+          "hp": 34,
+          "chargeMs": 4300,
+          "atk": 13,
+          "box": 1
+        },
+        "shell": {
+          "name": "抛壳鼠",
+          "hp": 42,
+          "chargeMs": 4500,
+          "atk": 14,
+          "pierce": 1
+        },
+        "thief": {
+          "name": "拾荒鼠",
+          "hp": 26,
+          "chargeMs": 7000,
+          "atk": 0,
+          "steal": 3
+        },
+        "boss": {
+          "name": "质检机",
+          "hp": 110,
+          "chargeMs": 5600,
+          "atk": 18,
+          "boss": 1
+        }
+      },
+      "roster": {
+        "cannon": {
+          "need": 6
+        },
+        "sniper": {
+          "need": 9
+        }
+      },
+      "realtime": true,
+      "armorStepCap": 6,
+      "graceMs": 8000,
+      "pickEveryN": 2,
+      "levels": [
+        {
+          "name": "工厂开张",
+          "onField": 2,
+          "tools": [
+            1,
+            1,
+            1
+          ],
+          "mod": {
+            "note": "",
+            "hpMul": 0.85,
+            "atkMul": 0.9
+          },
+          "waves": [
+            [
+              {
+                "type": "crate"
+              }
+            ],
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              }
+            ],
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "crate"
+              }
+            ],
+            [
+              {
+                "type": "shell"
+              },
+              {
+                "type": "crate"
+              }
+            ],
+            [
+              {
+                "type": "boss"
+              },
+              {
+                "type": "crate"
+              }
+            ]
+          ],
+          "enemyTier": 1,
+          "brief": "",
+          "tut": true
+        },
+        {
+          "name": "订单加急",
+          "onField": 3,
+          "tools": [
+            1,
+            1,
+            1
+          ],
+          "mod": {
+            "chargeMul": 0.8,
+            "hpMul": 0.95,
+            "note": "加急单：敌人出手更快",
+            "atkMul": 1
+          },
+          "waves": [
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              }
+            ],
+            [
+              {
+                "type": "shell"
+              },
+              {
+                "type": "shell"
+              }
+            ],
+            [
+              {
+                "type": "thief"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "crate"
+              }
+            ],
+            [
+              {
+                "type": "boss"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "thief"
+              }
+            ]
+          ],
+          "enemyTier": 1,
+          "brief": "敌人出手加快"
+        },
+        {
+          "name": "挑食订单",
+          "onField": 3,
+          "tools": [
+            1,
+            1,
+            1
+          ],
+          "mod": {
+            "yieldMul": {
+              "parts": 0.4
+            },
+            "armorMaxDelta": -10,
+            "note": "瓜子断供：零件产出腰斩",
+            "hpMul": 1,
+            "atkMul": 1
+          },
+          "waves": [
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              }
+            ],
+            [
+              {
+                "type": "shell"
+              },
+              {
+                "type": "thief"
+              },
+              {
+                "type": "shell"
+              }
+            ],
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "thief"
+              },
+              {
+                "type": "boss"
+              }
+            ],
+            [
+              {
+                "type": "boss"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "thief"
+              }
+            ]
+          ],
+          "enemyTier": 2,
+          "brief": "瓜子断供"
+        },
+        {
+          "name": "鼠海",
+          "onField": 4,
+          "tools": [
+            1,
+            1,
+            1
+          ],
+          "mod": {
+            "hpMul": 1,
+            "atkMul": 0.9,
+            "note": "鼠海：更多，但更脆"
+          },
+          "waves": [
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "thief"
+              }
+            ],
+            [
+              {
+                "type": "shell"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "glue"
+              }
+            ],
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "thief"
+              },
+              {
+                "type": "crate"
+              }
+            ],
+            [
+              {
+                "type": "shell"
+              },
+              {
+                "type": "thief"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              }
+            ],
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "thief"
+              }
+            ],
+            [
+              {
+                "type": "shell"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "boss"
+              },
+              {
+                "type": "glue"
+              }
+            ]
+          ],
+          "enemyTier": 2,
+          "brief": "敌人更多更脆"
+        },
+        {
+          "name": "质检日",
+          "onField": 5,
+          "tools": [
+            1,
+            1,
+            1
+          ],
+          "mod": {
+            "atkMul": 1.15,
+            "note": "质检日：第 2 波就来质检机（T3，血薄）",
+            "hpMul": 1.3
+          },
+          "waves": [
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "thief"
+              }
+            ],
+            [
+              {
+                "type": "boss"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "glue"
+              }
+            ],
+            [
+              {
+                "type": "shell"
+              },
+              {
+                "type": "boss"
+              },
+              {
+                "type": "thief"
+              },
+              {
+                "type": "crate"
+              }
+            ],
+            [
+              {
+                "type": "boss"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "boss"
+              },
+              {
+                "type": "glue"
+              }
+            ]
+          ],
+          "enemyTier": 2,
+          "brief": "质检机提前登场"
+        },
+        {
+          "name": "夜班",
+          "onField": 3,
+          "tools": [
+            1,
+            1,
+            1
+          ],
+          "mod": {
+            "noUlt": true,
+            "yieldMul": {
+              "energy": 0.8
+            },
+            "note": "停电：大招停用，能量略降（T2 但人多）",
+            "hpMul": 1.1,
+            "atkMul": 1.05
+          },
+          "waves": [
+            [
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "thief"
+              }
+            ],
+            [
+              {
+                "type": "thief"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              }
+            ],
+            [
+              {
+                "type": "shell"
+              },
+              {
+                "type": "shell"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "thief"
+              }
+            ],
+            [
+              {
+                "type": "boss"
+              },
+              {
+                "type": "crate"
+              },
+              {
+                "type": "shell"
+              }
+            ]
+          ],
+          "enemyTier": 2,
+          "brief": "工厂停电：大招停用"
+        }
+      ],
+      "roundScale": 1.15,
+      "compose": {
+        "maxSameLine": 2
+      },
+      "catchUp": {
+        "enable": true,
+        "gap": 3,
+        "talentTier": false,
+        "talentScale": {
+          "0": 0.8,
+          "1": 1,
+          "2": 1.12,
+          "3": 1.22,
+          "4": 1.32
+        }
+      },
+      "foeScale": {
+        "hp": 1.14,
+        "atk": 1.06
+      },
+      "eliteChance": 0.12
+    },
+    "artPixelScale": 2,
+    "unitSize": 64,
+    "formation": {
+      "ally": [
+        [
+          0.08,
+          0.4
+        ],
+        [
+          0.38,
+          0.4
+        ],
+        [
+          0.08,
+          0.66
+        ],
+        [
+          0.38,
+          0.66
+        ],
+        [
+          0.08,
+          0.92
+        ],
+        [
+          0.38,
+          0.92
+        ]
+      ],
+      "foe": [
+        [
+          0.92,
+          0.66
+        ],
+        [
+          0.62,
+          0.66
+        ],
+        [
+          0.92,
+          0.4
+        ],
+        [
+          0.62,
+          0.4
+        ],
+        [
+          0.92,
+          0.92
+        ],
+        [
+          0.62,
+          0.92
+        ]
+      ]
+    },
+    "floor": {
+      "top": 0.09,
+      "bottom": 0.915,
+      "left": 0,
+      "right": 0.99
+    },
+    "talents": {
+      "tank": {
+        "name": "硬化",
+        "levels": [
+          {
+            "dr": 0.06
+          },
+          {
+            "dr": 0.09
+          },
+          {
+            "dr": 0.12
+          }
+        ]
+      },
+      "blade": {
+        "name": "嗜血",
+        "levels": [
+          {
+            "heal": 8
+          },
+          {
+            "heal": 12,
+            "atk": 0.03
+          },
+          {
+            "heal": 16,
+            "atk": 0.06
+          }
+        ]
+      },
+      "shot": {
+        "name": "穿甲",
+        "levels": [
+          {
+            "pierce": 0.15
+          },
+          {
+            "pierce": 0.22,
+            "crit": 0.05
+          },
+          {
+            "pierce": 0.3,
+            "crit": 0.08
+          }
+        ]
+      },
+      "hex": {
+        "name": "余烬",
+        "levels": [
+          {
+            "burn": 2
+          },
+          {
+            "burn": 2.6,
+            "stack": 2
+          },
+          {
+            "burn": 3.6,
+            "stack": 3,
+            "amp": 0.06
+          }
+        ]
+      },
+      "care": {
+        "name": "复苏",
+        "levels": [
+          {
+            "overflow": 0.4
+          },
+          {
+            "overflow": 0.6,
+            "armor": 8
+          },
+          {
+            "overflow": 0.85,
+            "armor": 8,
+            "haste": 0.06
+          }
+        ]
+      }
+    },
+    "shard": {
+      "decompBase": 2,
+      "decompPerExtraSlot": 2,
+      "decompPerLevel": 1,
+      "cap": 12,
+      "legacyMod": 2
+    },
+    "gacha": {
+      "item": {
+        "cost": 20,
+        "tenCost": 180,
+        "pityGear": 10,
+        "shardCost": 5
+      },
+      "rat": {
+        "cost": 60,
+        "tenCost": 540,
+        "shardCost": 12,
+        "tier2": 0.08,
+        "tier3": 0.005,
+        "tier2Pity": 10,
+        "slots": {
+          "p0": 0.3,
+          "p1": 0.42,
+          "p2": 0.22,
+          "p3": 0.06
+        },
+        "grade": {
+          "g1": 0.62,
+          "g2": 0.3,
+          "g3": 0.08
+        }
+      }
+    },
+    "stagePitch": 1,
+    "stageReach": 1.2,
+    "rosterCap": 12,
+    "ratStats": {
+      "none": {
+        "magMul": 0.8,
+        "resP": 0.02,
+        "resM": 0.02
+      },
+      "tank": {
+        "magMul": 0.4,
+        "resP": 0.1,
+        "resM": 0.03
+      },
+      "blade": {
+        "magMul": 0.55,
+        "resP": 0.06,
+        "resM": 0.03
+      },
+      "shot": {
+        "magMul": 0.75,
+        "resP": 0.04,
+        "resM": 0.04
+      },
+      "hex": {
+        "magMul": 1.6,
+        "resP": 0.03,
+        "resM": 0.08
+      },
+      "care": {
+        "magMul": 1,
+        "resP": 0.05,
+        "resM": 0.05
+      }
+    },
+    "foeRes": {
+      "crate": {
+        "resP": 0.25,
+        "resM": 0.05
+      },
+      "shell": {
+        "resP": 0.15,
+        "resM": 0.1
+      },
+      "thief": {
+        "resP": 0.05,
+        "resM": 0.2
+      },
+      "boss": {
+        "resP": 0.18,
+        "resM": 0.18
+      },
+      "glue": {
+        "resP": 0.05,
+        "resM": 0.28
+      }
+    },
+    "boxCap": 60,
+    "skills": {
+      "enable": true,
+      "cdMul": 1.08,
+      "list": {
+        "chongya": {
+          "name": "冲击钻",
+          "kind": "phys",
+          "mul": [
+            1.6,
+            2,
+            2.4
+          ],
+          "targets": [
+            1,
+            1,
+            1
+          ],
+          "cd": [
+            8000,
+            7000,
+            6000
+          ],
+          "desc": "撞最近敌人并击退"
+        },
+        "qiexiao": {
+          "name": "横扫切削",
+          "kind": "phys",
+          "mul": [
+            1.2,
+            1.45,
+            1.7
+          ],
+          "targets": [
+            1,
+            2,
+            3
+          ],
+          "cd": [
+            7000,
+            6500,
+            6000
+          ],
+          "desc": "横扫身前多个目标"
+        },
+        "chuanjia": {
+          "name": "穿甲钉",
+          "kind": "phys",
+          "mul": [
+            1.4,
+            1.7,
+            2
+          ],
+          "targets": [
+            1,
+            2,
+            3
+          ],
+          "cd": [
+            8000,
+            7500,
+            7000
+          ],
+          "desc": "直线贯穿，无视 50% 护甲"
+        },
+        "duantou": {
+          "name": "断头台",
+          "kind": "phys",
+          "mul": [
+            1.8,
+            2.2,
+            2.6
+          ],
+          "targets": [
+            1,
+            1,
+            1
+          ],
+          "cd": [
+            10000,
+            9000,
+            8000
+          ],
+          "desc": "斩血量最低者，<30% 血再 ×1.5"
+        },
+        "huoqiu": {
+          "name": "火球术",
+          "kind": "mag",
+          "mul": [
+            1.6,
+            1.9,
+            2.2
+          ],
+          "targets": [
+            1,
+            1,
+            1
+          ],
+          "cd": [
+            9000,
+            8500,
+            8000
+          ],
+          "desc": "单体 + 灼烧 2/3/4 每秒"
+        },
+        "bingshuang": {
+          "name": "冰霜新星",
+          "kind": "mag",
+          "mul": [
+            1,
+            1.2,
+            1.4
+          ],
+          "targets": [
+            1,
+            2,
+            3
+          ],
+          "cd": [
+            10000,
+            9000,
+            8000
+          ],
+          "desc": "减速攻速 −5/−8/−12%"
+        },
+        "shandian": {
+          "name": "闪电链",
+          "kind": "mag",
+          "mul": [
+            1.2,
+            1.4,
+            1.6
+          ],
+          "targets": [
+            2,
+            3,
+            4
+          ],
+          "cd": [
+            9000,
+            8000,
+            7000
+          ],
+          "desc": "依次跳跃，每跳 −15%"
+        },
+        "huangyou": {
+          "name": "黄油护甲",
+          "kind": "buff",
+          "mul": [
+            0.1,
+            0.15,
+            0.2
+          ],
+          "targets": [
+            1,
+            2,
+            5
+          ],
+          "cd": [
+            12000,
+            12000,
+            12000
+          ],
+          "desc": "护甲上限提升 4 秒"
+        },
+        "jiaban": {
+          "name": "加班冲刺",
+          "kind": "buff",
+          "mul": [
+            0.12,
+            0.18,
+            0.24
+          ],
+          "targets": [
+            1,
+            2,
+            5
+          ],
+          "cd": [
+            12000,
+            12000,
+            12000
+          ],
+          "desc": "攻速提升 5 秒"
+        },
+        "xingyun": {
+          "name": "幸运签",
+          "kind": "buff",
+          "mul": [
+            0.08,
+            0.12,
+            0.16
+          ],
+          "targets": [
+            1,
+            2,
+            5
+          ],
+          "cd": [
+            12000,
+            12000,
+            12000
+          ],
+          "desc": "暴击率提升 5 秒"
+        },
+        "tangfen": {
+          "name": "糖分补给",
+          "kind": "buff",
+          "mul": [
+            0.06,
+            0.09,
+            0.12
+          ],
+          "targets": [
+            1,
+            2,
+            5
+          ],
+          "cd": [
+            14000,
+            14000,
+            14000
+          ],
+          "desc": "回血并清除灼烧"
+        }
+      }
+    },
+    "promote": {
+      "eatSkillChance": 0.3
+    },
+    "fuse": {
+      "cost": 30,
+      "keepMain": 0.7,
+      "keepSub": 0.55,
+      "eatSkill": 0.08,
+      "eatTalent": 0.025,
+      "refundIfNone": 3
+    },
+    "minSep": 0.82
+  }
+}

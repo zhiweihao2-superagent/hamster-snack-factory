@@ -1,0 +1,242 @@
+[
+  {
+    "name": "tank",
+    "prompt": "hamster holding a big round shield",
+    "file": "tank-0.png",
+    "seed": 0
+  },
+  {
+    "name": "tank",
+    "prompt": "hamster holding a big round shield",
+    "file": "tank-1.png",
+    "seed": 0
+  },
+  {
+    "name": "tank",
+    "prompt": "hamster holding a big round shield",
+    "file": "tank-2.png",
+    "seed": 0
+  },
+  {
+    "name": "tank",
+    "prompt": "hamster holding a big round shield",
+    "file": "tank-3.png",
+    "seed": 0
+  },
+  {
+    "name": "blade",
+    "prompt": "hamster warrior holding a small knife",
+    "file": "blade-0.png",
+    "seed": 0
+  },
+  {
+    "name": "blade",
+    "prompt": "hamster warrior holding a small knife",
+    "file": "blade-1.png",
+    "seed": 0
+  },
+  {
+    "name": "blade",
+    "prompt": "hamster warrior holding a small knife",
+    "file": "blade-2.png",
+    "seed": 0
+  },
+  {
+    "name": "blade",
+    "prompt": "hamster warrior holding a small knife",
+    "file": "blade-3.png",
+    "seed": 0
+  },
+  {
+    "name": "shot",
+    "prompt": "hamster holding a small crossbow",
+    "file": "shot-0.png",
+    "seed": 0
+  },
+  {
+    "name": "shot",
+    "prompt": "hamster holding a small crossbow",
+    "file": "shot-1.png",
+    "seed": 0
+  },
+  {
+    "name": "shot",
+    "prompt": "hamster holding a small crossbow",
+    "file": "shot-2.png",
+    "seed": 0
+  },
+  {
+    "name": "shot",
+    "prompt": "hamster holding a small crossbow",
+    "file": "shot-3.png",
+    "seed": 0
+  },
+  {
+    "name": "hex",
+    "prompt": "hamster wizard holding a fire staff",
+    "file": "hex-0.png",
+    "seed": 0
+  },
+  {
+    "name": "hex",
+    "prompt": "hamster wizard holding a fire staff",
+    "file": "hex-1.png",
+    "seed": 0
+  },
+  {
+    "name": "hex",
+    "prompt": "hamster wizard holding a fire staff",
+    "file": "hex-2.png",
+    "seed": 0
+  },
+  {
+    "name": "hex",
+    "prompt": "hamster wizard holding a fire staff",
+    "file": "hex-3.png",
+    "seed": 0
+  },
+  {
+    "name": "care",
+    "prompt": "hamster doctor holding a syringe",
+    "file": "care-0.png",
+    "seed": 0
+  },
+  {
+    "name": "care",
+    "prompt": "hamster doctor holding a syringe",
+    "file": "care-1.png",
+    "seed": 0
+  },
+  {
+    "name": "care",
+    "prompt": "hamster doctor holding a syringe",
+    "file": "care-2.png",
+    "seed": 0
+  },
+  {
+    "name": "care",
+    "prompt": "hamster doctor holding a syringe",
+    "file": "care-3.png",
+    "seed": 0
+  },
+  {
+    "name": "none",
+    "prompt": "cute hamster standing",
+    "file": "none-0.png",
+    "seed": 0
+  },
+  {
+    "name": "none",
+    "prompt": "cute hamster standing",
+    "file": "none-1.png",
+    "seed": 0
+  },
+  {
+    "name": "none",
+    "prompt": "cute hamster standing",
+    "file": "none-2.png",
+    "seed": 0
+  },
+  {
+    "name": "none",
+    "prompt": "cute hamster standing",
+    "file": "none-3.png",
+    "seed": 0
+  },
+  {
+    "name": "tank4",
+    "prompt": "armored hamster with tower shield",
+    "file": "tank4-0.png",
+    "seed": 0
+  },
+  {
+    "name": "tank4",
+    "prompt": "armored hamster with tower shield",
+    "file": "tank4-1.png",
+    "seed": 0
+  },
+  {
+    "name": "tank4",
+    "prompt": "armored hamster with tower shield",
+    "file": "tank4-2.png",
+    "seed": 0
+  },
+  {
+    "name": "tank4",
+    "prompt": "armored hamster with tower shield",
+    "file": "tank4-3.png",
+    "seed": 0
+  },
+  {
+    "name": "blade4",
+    "prompt": "fierce hamster with big sword",
+    "file": "blade4-0.png",
+    "seed": 0
+  },
+  {
+    "name": "blade4",
+    "prompt": "fierce hamster with big sword",
+    "file": "blade4-1.png",
+    "seed": 0
+  },
+  {
+    "name": "blade4",
+    "prompt": "fierce hamster with big sword",
+    "file": "blade4-2.png",
+    "seed": 0
+  },
+  {
+    "name": "blade4",
+    "prompt": "fierce hamster with big sword",
+    "file": "blade4-3.png",
+    "seed": 0
+  },
+  {
+    "name": "shot4",
+    "prompt": "hamster with cannon",
+    "file": "shot4-0.png",
+    "seed": 0
+  },
+  {
+    "name": "shot4",
+    "prompt": "hamster with cannon",
+    "file": "shot4-1.png",
+    "seed": 0
+  },
+  {
+    "name": "shot4",
+    "prompt": "hamster with cannon",
+    "file": "shot4-2.png",
+    "seed": 0
+  },
+  {
+    "name": "shot4",
+    "prompt": "hamster with cannon",
+    "file": "shot4-3.png",
+    "seed": 0
+  },
+  {
+    "name": "hex4",
+    "prompt": "hamster mage with glowing orb",
+    "file": "hex4-0.png",
+    "seed": 0
+  },
+  {
+    "name": "hex4",
+    "prompt": "hamster mage with glowing orb",
+    "file": "hex4-1.png",
+    "seed": 0
+  },
+  {
+    "name": "hex4",
+    "prompt": "hamster mage with glowing orb",
+    "file": "hex4-2.png",
+    "seed": 0
+  },
+  {
+    "name": "hex4",
+    "prompt": "hamster mage with glowing orb",
+    "file": "hex4-3.png",
+    "seed": 0
+  }
+]

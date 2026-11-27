@@ -1,0 +1,45 @@
+目录：art\tessera\picks
+数量：36
+
+file                    size       colors  semi  cover  feet    cx
+blade-2.png             16x16          28     0  0.762   yes  0.46
+blade-3.png             16x16          25     0  0.715   yes  0.46
+blade-4.png             16x16          26     0  0.777   yes  0.45
+care-2.png              16x16          36     0  0.711   yes  0.49
+care-3.png              16x16          24     0  0.703   yes  0.45
+care-4.png              16x16          21     0  0.730   yes  0.47
+foe-boss-1.png          16x16          19     0  0.707   yes  0.43
+foe-boss-2.png          16x16          19     0  0.688   yes  0.42
+foe-boss-3.png          16x16          15     0  0.559   yes  0.45
+foe-boss-4.png          16x16          28     0  0.703   yes  0.44
+foe-crate-1.png         16x16          26     0  0.738   yes  0.47
+foe-crate-2.png         16x16          25     0  0.695   yes  0.45
+foe-crate-3.png         16x16          21     0  0.746   yes  0.47
+foe-crate-4.png         16x16          26     0  0.746   yes  0.45
+foe-glue-1.png          16x16          21     0  0.691   yes  0.42
+foe-glue-2.png          16x16          23     0  0.711   yes  0.45
+foe-glue-3.png          16x16          21     0  0.762   yes  0.46
+foe-glue-4.png          16x16          23     0  0.738   yes  0.44
+foe-shell-1.png         16x16          18     0  0.617   yes  0.45
+foe-shell-2.png         16x16          18     0  0.707   yes  0.46
+foe-shell-3.png         16x16          19     0  0.703   yes  0.43
+foe-shell-4.png         16x16          23     0  0.711   yes  0.52
+foe-thief-1.png         16x16          23     0  0.703   yes  0.46
+foe-thief-2.png         16x16          25     0  0.754   yes  0.46
+foe-thief-3.png         16x16          27     0  0.766   yes  0.48
+foe-thief-4.png         16x16          15     0  0.727   yes  0.46
+hex-2.png               16x16          32     0  0.707   yes  0.48
+hex-3.png               16x16          32     0  0.816   yes  0.48
+hex-4.png               16x16          26     0  0.715   yes  0.47
+none-1.png              16x16          19     0  0.711   yes  0.46
+shot-2.png              16x16          28     0  0.648   yes  0.48
+shot-3.png              16x16          22     0  0.738   yes  0.47
+shot-4.png              16x16          24     0  0.758   yes  0.46
+tank-2.png              16x16          28     0  0.707   yes  0.46
+tank-3.png              16x16          24     0  0.727   yes  0.44
+tank-4.png              16x16          29     0  0.699   yes  0.45
+
+颜色数 中位 24 / 最大 36
+占比   中位 0.71 / 最小 0.56 / 最大 0.82
+
+问题：无

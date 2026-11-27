@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- 仓鼠占位图：可被 AI 生成的图替换（game_studio_generate_asset → apply） -->
+  <g>
+    <ellipse cx="78" cy="72" rx="30" ry="30" fill="#c98f5e"/>
+    <ellipse cx="178" cy="72" rx="30" ry="30" fill="#c98f5e"/>
+    <rect x="46" y="64" width="164" height="150" rx="58" fill="#e5b982" stroke="#a9762c" stroke-width="4"/>
+    <ellipse cx="128" cy="168" rx="52" ry="42" fill="#f4dcc0"/>
+    <circle cx="100" cy="130" r="12" fill="#2a2338"/>
+    <circle cx="156" cy="130" r="12" fill="#2a2338"/>
+    <rect x="106" y="182" width="44" height="40" rx="10" fill="#e8ac50" stroke="#a9762c" stroke-width="3"/>
+    <ellipse cx="128" cy="152" rx="9" ry="7" fill="#8d5c3c"/>
+  </g>
+</svg>

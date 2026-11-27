@@ -1,0 +1,21 @@
+﻿import { resolve, dirname } from 'node:path'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+const here = dirname(fileURLToPath(import.meta.url))
+const dir = resolve(here, '..')
+const { launchBrowser } = await import(pathToFileURL(resolve('D:/deepseek/杂项/dsh-game-studio/src/playtest.ts')).href)
+const { browser } = await launchBrowser()
+const page = await browser.newPage({ viewport: { width: 390, height: 844 } })
+const errors = []
+page.on('pageerror', e => errors.push(String(e.message ?? e)))
+await page.goto(pathToFileURL(resolve(dir, 'dist/index.html')).href)
+await page.waitForFunction('typeof window.__artDiag === "function"')
+await page.keyboard.press('Enter')
+await page.waitForTimeout(1200)
+const a = await page.evaluate('window.__artDiag()')
+await page.waitForTimeout(1500)
+const b = await page.evaluate('window.__artDiag()')
+console.log('after 1.2s:', JSON.stringify(a))
+console.log('after 2.7s:', JSON.stringify(b))
+console.log('errors', errors)
+await browser.close()
+if (errors.length) process.exit(1)

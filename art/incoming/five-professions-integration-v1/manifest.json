@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "sprite_size": [
+    64,
+    64
+  ],
+  "alpha": "binary",
+  "hop_landing": "idle-1.png",
+  "roles": [
+    {
+      "profession": "tank",
+      "display_name": "盾牌",
+      "id": "tank-2",
+      "directory": "tank/tank-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "tank",
+      "display_name": "盾牌",
+      "id": "tank-3",
+      "directory": "tank/tank-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "tank",
+      "display_name": "盾牌",
+      "id": "tank-4",
+      "directory": "tank/tank-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "blade",
+      "display_name": "近战",
+      "id": "blade-2",
+      "directory": "blade/blade-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "blade",
+      "display_name": "近战",
+      "id": "blade-3",
+      "directory": "blade/blade-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "blade",
+      "display_name": "近战",
+      "id": "blade-4",
+      "directory": "blade/blade-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "shot",
+      "display_name": "远程",
+      "id": "shot-2",
+      "directory": "shot/shot-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "shot",
+      "display_name": "远程",
+      "id": "shot-3",
+      "directory": "shot/shot-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "shot",
+      "display_name": "远程",
+      "id": "shot-4",
+      "directory": "shot/shot-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "hex",
+      "display_name": "魔法",
+      "id": "hex-2",
+      "directory": "hex/hex-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "hex",
+      "display_name": "魔法",
+      "id": "hex-3",
+      "directory": "hex/hex-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "hex",
+      "display_name": "魔法",
+      "id": "hex-4",
+      "directory": "hex/hex-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "care",
+      "display_name": "医疗",
+      "id": "care-2",
+      "directory": "care/care-2",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "care",
+      "display_name": "医疗",
+      "id": "care-3",
+      "directory": "care/care-3",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    },
+    {
+      "profession": "care",
+      "display_name": "医疗",
+      "id": "care-4",
+      "directory": "care/care-4",
+      "frames": [
+        "idle-1.png",
+        "idle-2.png",
+        "action-windup.png",
+        "action-strike.png",
+        "hop-air.png"
+      ],
+      "preview": "preview.gif"
+    }
+  ]
+}

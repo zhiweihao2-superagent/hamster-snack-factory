@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>舞台编辑器 · 仓鼠零食工厂</title>
+<style>
+  :root { --bg:#17121f; --panel:#221b30; --line:#3a3050; --ink:#e9e2f5; --muted:#9a8fb4; --amber:#e8ac50; --ok:#79c98a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.5 "PingFang SC","Microsoft YaHei",system-ui,sans-serif; }
+  header { display:flex; align-items:center; gap:14px; padding:12px 16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:5; }
+  header h1 { font-size:15px; margin:0; font-weight:600; }
+  header .hint { color:var(--muted); font-size:12px; }
+  main { display:grid; grid-template-columns:400px minmax(560px,1fr); gap:16px; padding:16px; align-items:start; }
+  .stage-wrap { position:relative; width:390px; height:344px; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  canvas { display:block; width:390px; height:344px; touch-action:none; cursor:crosshair; }
+  aside { display:flex; flex-direction:column; gap:12px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px; }
+  .card h2 { font-size:13px; margin:0 0 8px; color:var(--amber); font-weight:600; display:flex; gap:8px; align-items:center; }
+  .row { display:flex; align-items:center; gap:8px; margin:6px 0; font-size:13px; }
+  .row label { width:86px; color:var(--muted); }
+  input[type=range] { flex:1; }
+  input[type=number], input[type=text] { background:#171223; color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:3px 6px; }
+  input[type=number] { width:70px; }
+  button { background:var(--amber); color:#241d2e; border:0; border-radius:8px; padding:7px 13px; font-weight:600; cursor:pointer; font-size:13px; }
+  button.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
+  button:active { transform:translateY(1px); }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  td, th { text-align:left; padding:3px 4px; border-bottom:1px solid #2b2440; vertical-align:middle; }
+  th { color:var(--muted); font-weight:500; font-size:11px; }
+  .tag { color:var(--amber); white-space:nowrap; }
+  .drop { border:1px dashed var(--line); border-radius:10px; padding:12px; text-align:center; color:var(--muted); font-size:12px; cursor:pointer; }
+  .drop.over { border-color:var(--amber); color:var(--amber); }
+  .status { font-size:12px; color:var(--muted); min-height:18px; }
+  .status.ok { color:var(--ok); }
+  .sprites { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .spr { border:1px solid var(--line); border-radius:8px; padding:6px; }
+  .spr .cap { font-size:11px; color:var(--muted); margin-bottom:4px; display:flex; justify-content:space-between; }
+  .spr .now { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .spr .now img { width:48px; height:48px; image-rendering:pixelated; background:#171223; border-radius:6px; }
+  .spr .cands { display:grid; grid-template-columns:repeat(8,1fr); gap:2px; }
+  .spr .cands img { width:100%; image-rendering:pixelated; cursor:pointer; border:2px solid transparent; border-radius:4px; background:#171223; }
+  .spr .cands img.sel { border-color:var(--amber); }
+  .tabs { display:flex; gap:8px; margin-bottom:8px; }
+  .tabs button { padding:4px 10px; font-size:12px; }
+  .tabs button.on { background:var(--amber); color:#241d2e; }
+  .tabs button.off { background:transparent; color:var(--muted); border:1px solid var(--line); }
+</style>
+</head>
+<body>
+<header>
+  <h1>舞台编辑器</h1>
+  <span class="hint">左：拖圆点改站位 / 拖地面四边 / 拖图换背景　右：关卡表 · 职业数值 · 精灵</span>
+  <span id="status" class="status"></span>
+</header>
+
+<main>
+  <div>
+    <div class="stage-wrap"><canvas id="cv" width="390" height="344"></canvas></div>
+    <div class="row" style="margin-top:10px">
+      <button id="saveStage">保存站位 / 地面</button>
+      <button id="reset" class="ghost">还原</button>
+    </div>
+    <div class="card" style="margin-top:10px">
+      <h2>背景图（覆盖 assets/stage_bg.png）</h2>
+      <div id="drop" class="drop">把 PNG 拖到这里，或点击选择<br><span style="opacity:.7">建议 660×336（或 330×168 的 2 倍）</span></div>
+      <input id="file" type="file" accept="image/png" hidden>
+    </div>
+  </div>
+
+  <aside>
+    <div class="card">
+      <h2>地面范围（rules.floor，相对舞台 0–1）</h2>
+      <div class="row"><label>上 top</label><input id="ft" type="range" min="0" max="0.9" step="0.005"><input id="ftn" type="number" min="0" max="0.9" step="0.005"></div>
+      <div class="row"><label>下 bottom</label><input id="fb" type="range" min="0.1" max="1" step="0.005"><input id="fbn" type="number" min="0.1" max="1" step="0.005"></div>
+      <div class="row"><label>左 left</label><input id="fl" type="range" min="0" max="0.5" step="0.005"><input id="fln" type="number" min="0" max="0.5" step="0.005"></div>
+      <div class="row"><label>右 right</label><input id="fr" type="range" min="0.5" max="1" step="0.005"><input id="frn" type="number" min="0.5" max="1" step="0.005"></div>
+    </div>
+
+    <div class="card">
+      <h2>站位坐标（拖左边圆点，或直接填数）</h2>
+      <table id="tbl"><thead><tr><th>槽</th><th>x</th><th>y</th><th></th></tr></thead><tbody></tbody></table>
+      <div class="row" style="margin-top:8px">
+        <button id="addAlly" class="ghost">+ 我方槽</button>
+        <button id="addFoe" class="ghost">+ 敌方槽</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>关卡表 <button id="saveLevels" style="margin-left:auto">保存关卡</button></h2>
+      <table id="ltbl">
+        <thead><tr><th>关</th><th>名字</th><th>特色（一句话）</th><th>同屏</th><th>敌阶</th><th>血×</th><th>攻×</th><th>速×</th><th>停电</th><th>教学</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>职业数值 <button id="saveClasses" style="margin-left:auto">保存数值</button></h2>
+      <div class="tabs" id="lineTabs"></div>
+      <table id="ctbl">
+        <thead><tr><th>形态</th><th>生命</th><th>出手间隔</th><th>基础伤</th><th>充能需求</th><th>技能伤</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="status" style="margin-top:6px">充能需求只对吃零件/能量的职业生效（肉盾=0）。改动写进 rules.classes。</div>
+    </div>
+
+    <div class="card">
+      <h2>精灵（点候选即替换）</h2>
+      <div class="sprites" id="sprites"></div>
+    </div>
+  </aside>
+</main>
+
+<script>
+/* ================= 状态 ================= */
+const W = 390, H = 344;
+const STAGE = { giftY: 6, giftH: 326, pad: 16 };
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const statusEl = document.getElementById('status');
+
+let state = { ally: [], foe: [] };
+let floor = { top: 0.19, bottom: 0.86, left: 0.05, right: 0.95 };
+let bg = null, drag = null;
+let levels = [];
+let classDefaults = {}, overrides = {};
+let spriteKeys = [], candidates = {}, picks = {};
+
+const setStatus = (t, ok) => { statusEl.textContent = t; statusEl.className = 'status' + (ok ? ' ok' : ''); };
+const box = () => ({
+  left: STAGE.pad + (390 - STAGE.pad * 2) * floor.left,
+  right: STAGE.pad + (390 - STAGE.pad * 2) * floor.right,
+  top: STAGE.giftY + STAGE.giftH * floor.top,
+  bottom: STAGE.giftY + STAGE.giftH * floor.bottom
+});
+const toPx = (nx, ny) => { const b = box(); return { x: b.left + (b.right - b.left) * nx, y: b.top + (b.bottom - b.top) * ny }; };
+const fromPx = (px, py) => { const b = box(); return { x: (px - b.left) / (b.right - b.left), y: (py - b.top) / (b.bottom - b.top) }; };
+
+/* ================= 画布 ================= */
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#241d33'; ctx.fillRect(0, STAGE.giftY, 390, STAGE.giftH);
+  if (bg) ctx.drawImage(bg, 0, STAGE.giftY, 390, STAGE.giftH);
+  ctx.strokeStyle = '#3a3050'; ctx.strokeRect(.5, STAGE.giftY + .5, 389, STAGE.giftH - 1);
+
+  const b = box();
+  ctx.fillStyle = 'rgba(232,172,80,.07)';
+  ctx.fillRect(b.left, b.top, b.right - b.left, b.bottom - b.top);
+  ctx.strokeStyle = 'rgba(232,172,80,.65)';
+  ctx.strokeRect(b.left + .5, b.top + .5, b.right - b.left - 1, b.bottom - b.top - 1);
+  ctx.strokeStyle = 'rgba(120,200,255,.16)';
+  for (let i = 0; i <= 10; i++) {
+    const t = i / 10;
+    const x = b.left + (b.right - b.left) * t, y = b.top + (b.bottom - b.top) * t;
+    ctx.beginPath(); ctx.moveTo(x, b.top); ctx.lineTo(x, b.bottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(b.left, y); ctx.lineTo(b.right, y); ctx.stroke();
+  }
+  const dot = (side, i, nx, ny) => {
+    const p = toPx(nx, ny);
+    ctx.beginPath(); ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+    ctx.fillStyle = side === 'ally' ? 'rgba(121,201,138,.9)' : 'rgba(217,109,85,.9)';
+    ctx.fill();
+    ctx.fillStyle = '#12101a'; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(String(i), p.x, p.y + 3); ctx.textAlign = 'left';
+  };
+  state.ally.forEach((p, i) => dot('ally', i, p[0], p[1]));
+  state.foe.forEach((p, i) => dot('foe', i, p[0], p[1]));
+}
+
+/* ================= 站位表 ================= */
+function renderTable() {
+  const tbody = document.querySelector('#tbl tbody');
+  tbody.innerHTML = '';
+  const add = (side, arr) => arr.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="tag">${side === 'ally' ? '我' : '敌'}${i}</td>` +
+      `<td><input type="number" step="0.01" value="${p[0].toFixed(2)}" data-s="${side}" data-i="${i}" data-k="0"></td>` +
+      `<td><input type="number" step="0.01" value="${p[1].toFixed(2)}" data-s="${side}" data-i="${i}" data-k="1"></td>` +
+      `<td><button class="ghost" data-del="${side}:${i}" style="padding:1px 7px">×</button></td>`;
+    tbody.appendChild(tr);
+  });
+  add('ally', state.ally); add('foe', state.foe);
+  tbody.querySelectorAll('input').forEach((inp) => inp.addEventListener('change', () => {
+    const s = inp.dataset.s, i = +inp.dataset.i, k = +inp.dataset.k;
+    state[s][i][k] = Math.min(1, Math.max(0, Number(inp.value) || 0));
+    draw(); renderTable();
+  }));
+  tbody.querySelectorAll('[data-del]').forEach((btn) => btn.addEventListener('click', () => {
+    const [s, i] = btn.dataset.del.split(':');
+    state[s].splice(+i, 1); draw(); renderTable();
+  }));
+}
+
+/* ================= 地面滑条 ================= */
+const floorMap = [['ft', 'ftn', 'top'], ['fb', 'fbn', 'bottom'], ['fl', 'fln', 'left'], ['fr', 'frn', 'right']];
+function syncFloor() { floorMap.forEach(([a, b, k]) => { document.getElementById(a).value = floor[k]; document.getElementById(b).value = floor[k]; }); }
+function readFloor() {
+  floorMap.forEach(([a, b, k]) => { floor[k] = Number(document.getElementById(a).value); document.getElementById(b).value = floor[k]; });
+  draw();
+}
+['ft', 'fb', 'fl', 'fr'].forEach((id) => document.getElementById(id).addEventListener('input', readFloor));
+['ftn', 'fbn', 'fln', 'frn'].forEach((id) => document.getElementById(id).addEventListener('change', readFloor));
+
+/* ================= 拖拽 ================= */
+const localPt = (e) => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * (cv.width / r.width), y: (e.clientY - r.top) * (cv.height / r.height) }; };
+cv.addEventListener('pointerdown', (e) => {
+  const p = localPt(e);
+  let best = null, bestD = 14;
+  for (const side of ['ally', 'foe']) state[side].forEach((n, i) => {
+    const q = toPx(n[0], n[1]); const d = Math.hypot(q.x - p.x, q.y - p.y);
+    if (d < bestD) { bestD = d; best = { type: side, i }; }
+  });
+  if (!best) {
+    const b = box();
+    if (Math.abs(p.y - b.top) < 8) best = { type: 'edge', which: 'top' };
+    else if (Math.abs(p.y - b.bottom) < 8) best = { type: 'edge', which: 'bottom' };
+    else if (Math.abs(p.x - b.left) < 8) best = { type: 'edge', which: 'left' };
+    else if (Math.abs(p.x - b.right) < 8) best = { type: 'edge', which: 'right' };
+  }
+  if (best) { drag = best; cv.setPointerCapture(e.pointerId); }
+});
+cv.addEventListener('pointermove', (e) => {
+  if (!drag) return;
+  const p = localPt(e);
+  if (drag.type === 'edge') {
+    const fx = (p.x - STAGE.pad) / (390 - STAGE.pad * 2), fy = (p.y - STAGE.giftY) / STAGE.giftH;
+    if (drag.which === 'top') floor.top = Math.min(floor.bottom - .05, Math.max(0, fy));
+    if (drag.which === 'bottom') floor.bottom = Math.max(floor.top + .05, Math.min(1, fy));
+    if (drag.which === 'left') floor.left = Math.min(floor.right - .1, Math.max(0, fx));
+    if (drag.which === 'right') floor.right = Math.max(floor.left + .1, Math.min(1, fx));
+    syncFloor();
+  } else {
+    const n = fromPx(p.x, p.y);
+    state[drag.type][drag.i] = [Math.min(1, Math.max(0, n.x)), Math.min(1, Math.max(0, n.y))];
+    renderTable();
+  }
+  draw();
+});
+['pointerup', 'pointercancel'].forEach((ev) => cv.addEventListener(ev, () => { drag = null; }));
+
+document.getElementById('addAlly').onclick = () => { state.ally.push([0.1 + Math.random() * 0.2, 0.2 + Math.random() * 0.6]); draw(); renderTable(); };
+document.getElementById('addFoe').onclick = () => { state.foe.push([0.75 + Math.random() * 0.2, 0.2 + Math.random() * 0.6]); draw(); renderTable(); };
+
+/* ================= 保存：站位 / 背景 ================= */
+document.getElementById('saveStage').onclick = async () => {
+  setStatus('保存中…');
+  const res = await fetch('/api/save', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ formation: state, floor }) }).then((x) => x.json());
+  setStatus(res.ok ? `已保存；compose: ${res.compose.out || 'ok'}` : '保存失败：' + res.error, !!res.ok);
+};
+document.getElementById('reset').onclick = async () => {
+  const r = await fetch('/api/state').then((x) => x.json());
+  state = { ally: (r.formation?.ally || []).map((p) => [...p]), foe: (r.formation?.foe || []).map((p) => [...p]) };
+  floor = r.floor ? { ...r.floor } : { ...floor };
+  syncFloor(); renderTable(); draw(); setStatus('已还原为 game.json 的当前值');
+};
+
+const drop = document.getElementById('drop'), fileInput = document.getElementById('file');
+drop.addEventListener('click', () => fileInput.click());
+drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); upload(e.dataTransfer.files[0]); });
+fileInput.addEventListener('change', () => upload(fileInput.files[0]));
+async function upload(file) {
+  if (!file) return;
+  setStatus('上传背景…');
+  const res = await fetch('/api/bg', { method: 'POST', headers: { 'content-type': 'image/png' }, body: await file.arrayBuffer() }).then((x) => x.json());
+  if (res.ok) {
+    setStatus(`背景已替换（${res.bytes} B），记得回对话里说"构建"`, true);
+    const img = new Image(); img.onload = () => { bg = img; draw(); }; img.src = res.url;
+  } else setStatus('上传失败：' + res.error);
+}
+
+/* ================= 关卡表 ================= */
+const esc = (s) => String(s == null ? '' : s).replace(/"/g, '&quot;');
+function renderLevels() {
+  const tbody = document.querySelector('#ltbl tbody');
+  tbody.innerHTML = '';
+  levels.forEach((l, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      `<td class="tag">${i + 1}</td>` +
+      `<td><input type="text" style="width:88px" value="${esc(l.name)}" data-lv="${i}" data-f="name"></td>` +
+      `<td><input type="text" style="width:150px" value="${esc(l.brief)}" data-lv="${i}" data-f="brief"></td>` +
+      `<td><input type="number" style="width:52px" value="${l.onField}" data-lv="${i}" data-f="onField"></td>` +
+      `<td><input type="number" style="width:52px" value="${l.enemyTier}" data-lv="${i}" data-f="enemyTier"></td>` +
+      `<td><input type="number" step="0.05" style="width:60px" value="${l.hpMul}" data-lv="${i}" data-f="hpMul"></td>` +
+      `<td><input type="number" step="0.05" style="width:60px" value="${l.atkMul}" data-lv="${i}" data-f="atkMul"></td>` +
+      `<td><input type="number" step="0.05" style="width:60px" value="${l.chargeMul}" data-lv="${i}" data-f="chargeMul"></td>` +
+      `<td style="text-align:center"><input type="checkbox" ${l.noUlt ? 'checked' : ''} data-lv="${i}" data-f="noUlt"></td>` +
+      `<td style="text-align:center"><input type="checkbox" ${l.tut ? 'checked' : ''} data-lv="${i}" data-f="tut"></td>`;
+    tbody.appendChild(tr);
+  });
+  tbody.querySelectorAll('input').forEach((inp) => inp.addEventListener('change', () => {
+    const i = +inp.dataset.lv, f = inp.dataset.f;
+    if (inp.type === 'checkbox') levels[i][f] = inp.checked;
+    else if (f === 'name' || f === 'brief') levels[i][f] = inp.value;
+    else levels[i][f] = Number(inp.value);
+  }));
+}
+document.getElementById('saveLevels').onclick = async () => {
+  setStatus('保存关卡…');
+  const res = await fetch('/api/levels', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ levels }) }).then((x) => x.json());
+  setStatus(res.ok ? `关卡已保存；compose: ${res.compose.out || 'ok'}` : '保存失败：' + res.error, !!res.ok);
+};
+
+/* ================= 职业数值 ================= */
+const LINES = ['tank', 'blade', 'shot', 'hex', 'care'];
+const LINE_NAME = { tank: '肉盾', blade: '近战', shot: '远程', hex: '魔法', care: '增益' };
+const TIER_NAME = {
+  'tank-2': '铁皮鼠', 'tank-3': '铆甲鼠', 'tank-4': '堡垒鼠',
+  'blade-2': '扳钳鼠', 'blade-3': '尖牙鼠', 'blade-4': '破城鼠',
+  'shot-2': '炮筒鼠', 'shot-3': '连发鼠', 'shot-4': '狙炮鼠',
+  'hex-2': '火种鼠', 'hex-3': '咒炉鼠', 'hex-4': '熔炉鼠',
+  'care-2': '医务鼠', 'care-3': '药剂鼠', 'care-4': '大医师鼠'
+};
+let curLine = 'tank';
+const cur = (key, field) => {
+  const ov = overrides[key] || {};
+  return typeof ov[field] === 'number' ? ov[field] : (classDefaults[key] || {})[field];
+};
+const numOr = (v, d) => (typeof v === 'number' && isFinite(v)) ? v : d;
+
+function renderTabs() {
+  const wrap = document.getElementById('lineTabs');
+  wrap.innerHTML = '';
+  LINES.forEach((ln) => {
+    const b = document.createElement('button');
+    b.textContent = LINE_NAME[ln];
+    b.className = ln === curLine ? 'on' : 'off';
+    b.onclick = () => { curLine = ln; renderTabs(); renderClasses(); };
+    wrap.appendChild(b);
+  });
+}
+function renderClasses() {
+  const tbody = document.querySelector('#ctbl tbody');
+  tbody.innerHTML = '';
+  [2, 3, 4].forEach((t) => {
+    const key = curLine + '-' + t;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="tag">T${t} ${TIER_NAME[key] || key}</td>` +
+      ['hp', 'atkMs', 'baseDmg', 'need', 'dmg'].map((f) =>
+        `<td><input type="number" style="width:74px" value="${numOr(cur(key, f), 0)}" data-k="${key}" data-f="${f}"></td>`).join('');
+    tbody.appendChild(tr);
+  });
+  tbody.querySelectorAll('input').forEach((inp) => inp.addEventListener('change', () => {
+    const key = inp.dataset.k, f = inp.dataset.f, v = Number(inp.value);
+    overrides[key] = overrides[key] || {};
+    overrides[key][f] = isFinite(v) ? v : 0;
+  }));
+}
+document.getElementById('saveClasses').onclick = async () => {
+  setStatus('保存数值…');
+  const res = await fetch('/api/classes', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ classes: overrides }) }).then((x) => x.json());
+  setStatus(res.ok ? `数值已保存；compose: ${res.compose.out || 'ok'}` : '保存失败：' + res.error, !!res.ok);
+};
+
+/* ================= 精灵 ================= */
+function renderSprites() {
+  const wrap = document.getElementById('sprites');
+  wrap.innerHTML = '';
+  spriteKeys.forEach((key) => {
+    const list = candidates[key] || [];
+    const picked = (picks[key] || 1) - 1;
+    const div = document.createElement('div');
+    div.className = 'spr';
+    const cands = list.map((f, i) =>
+      `<img src="/thumb?f=${encodeURIComponent(f)}" title="${f}" data-k="${key}" data-i="${i}" class="${i === picked ? 'sel' : ''}">`).join('');
+    div.innerHTML = `<div class="cap"><span>${TIER_NAME[key] || key}</span><span>${picked + 1}/${list.length}</span></div>` +
+      `<div class="now"><img src="/thumb?f=${encodeURIComponent(key + '-' + picked + '.png')}"><span style="font-size:11px;color:#9a8fb4">当前</span></div>` +
+      `<div class="cands">${cands}</div>`;
+    wrap.appendChild(div);
+  });
+  wrap.querySelectorAll('.cands img').forEach((img) => img.addEventListener('click', async () => {
+    const key = img.dataset.k, i = +img.dataset.i;
+    setStatus(`替换 ${TIER_NAME[key] || key} 的精灵…`);
+    const res = await fetch('/api/pick', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ key, index: i }) }).then((x) => x.json());
+    if (res.ok) { picks = res.picks; renderSprites(); setStatus(`已替换 ${TIER_NAME[key] || key}（含敌方变体），回对话里说"构建"`, true); }
+    else setStatus('替换失败：' + (res.python || res.error));
+  }));
+}
+
+/* ================= 初始化 ================= */
+(async function init() {
+  const [st, lv, cl, sp] = await Promise.all([
+    fetch('/api/state').then((x) => x.json()),
+    fetch('/api/levels').then((x) => x.json()),
+    fetch('/api/classes').then((x) => x.json()),
+    fetch('/api/sprites').then((x) => x.json())
+  ]);
+  state = {
+    ally: (st.formation?.ally || [[0.03, 0.1], [0.16, 0.1], [0.03, 0.5], [0.16, 0.5], [0.03, 0.9]]).map((p) => [...p]),
+    foe: (st.formation?.foe || [[0.97, 0.5], [0.84, 0.5]]).map((p) => [...p])
+  };
+  if (st.floor) floor = { ...floor, ...st.floor };
+  levels = lv.levels || [];
+  classDefaults = cl.defaults || {};
+  overrides = cl.overrides || {};
+  spriteKeys = sp.keys || [];
+  candidates = sp.candidates || {};
+  picks = sp.picks || {};
+
+  syncFloor(); renderTable(); draw(); renderLevels(); renderTabs(); renderClasses(); renderSprites();
+  if (st.bg.exists) { const img = new Image(); img.onload = () => { bg = img; draw(); }; img.src = st.bg.url; }
+  setStatus(`已连接：${st.title}`, true);
+})();
+</script>
+</body>
+</html>

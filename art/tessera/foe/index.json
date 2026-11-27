@@ -1,0 +1,962 @@
+[
+  {
+    "key": "crate-1",
+    "name": "纸箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing a cardboard box on its head",
+    "index": 0,
+    "file": "crate-1-0.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-1",
+    "name": "纸箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing a cardboard box on its head",
+    "index": 1,
+    "file": "crate-1-1.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-1",
+    "name": "纸箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing a cardboard box on its head",
+    "index": 2,
+    "file": "crate-1-2.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-1",
+    "name": "纸箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing a cardboard box on its head",
+    "index": 3,
+    "file": "crate-1-3.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-1",
+    "name": "纸箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing a cardboard box on its head",
+    "index": 4,
+    "file": "crate-1-4.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-1",
+    "name": "纸箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing a cardboard box on its head",
+    "index": 5,
+    "file": "crate-1-5.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-2",
+    "name": "铁箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing an iron box helmet",
+    "index": 0,
+    "file": "crate-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-2",
+    "name": "铁箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing an iron box helmet",
+    "index": 1,
+    "file": "crate-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-2",
+    "name": "铁箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing an iron box helmet",
+    "index": 2,
+    "file": "crate-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-2",
+    "name": "铁箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing an iron box helmet",
+    "index": 3,
+    "file": "crate-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-2",
+    "name": "铁箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing an iron box helmet",
+    "index": 4,
+    "file": "crate-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-2",
+    "name": "铁箱鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, wearing an iron box helmet",
+    "index": 5,
+    "file": "crate-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-3",
+    "name": "保险柜鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, sitting inside a metal safe box",
+    "index": 0,
+    "file": "crate-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-3",
+    "name": "保险柜鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, sitting inside a metal safe box",
+    "index": 1,
+    "file": "crate-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-3",
+    "name": "保险柜鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, sitting inside a metal safe box",
+    "index": 2,
+    "file": "crate-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-3",
+    "name": "保险柜鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, sitting inside a metal safe box",
+    "index": 3,
+    "file": "crate-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-3",
+    "name": "保险柜鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, sitting inside a metal safe box",
+    "index": 4,
+    "file": "crate-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-3",
+    "name": "保险柜鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, sitting inside a metal safe box",
+    "index": 5,
+    "file": "crate-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-4",
+    "name": "金库鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, carrying a vault door as shield",
+    "index": 0,
+    "file": "crate-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-4",
+    "name": "金库鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, carrying a vault door as shield",
+    "index": 1,
+    "file": "crate-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-4",
+    "name": "金库鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, carrying a vault door as shield",
+    "index": 2,
+    "file": "crate-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-4",
+    "name": "金库鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, carrying a vault door as shield",
+    "index": 3,
+    "file": "crate-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-4",
+    "name": "金库鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, carrying a vault door as shield",
+    "index": 4,
+    "file": "crate-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "crate-4",
+    "name": "金库鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, carrying a vault door as shield",
+    "index": 5,
+    "file": "crate-4-5.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-1",
+    "name": "抛壳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, throwing metal shell casings",
+    "index": 0,
+    "file": "shell-1-0.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-1",
+    "name": "抛壳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, throwing metal shell casings",
+    "index": 1,
+    "file": "shell-1-1.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-1",
+    "name": "抛壳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, throwing metal shell casings",
+    "index": 2,
+    "file": "shell-1-2.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-1",
+    "name": "抛壳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, throwing metal shell casings",
+    "index": 3,
+    "file": "shell-1-3.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-1",
+    "name": "抛壳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, throwing metal shell casings",
+    "index": 4,
+    "file": "shell-1-4.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-1",
+    "name": "抛壳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, throwing metal shell casings",
+    "index": 5,
+    "file": "shell-1-5.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-2",
+    "name": "铰钳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a big metal pincer claw",
+    "index": 0,
+    "file": "shell-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-2",
+    "name": "铰钳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a big metal pincer claw",
+    "index": 1,
+    "file": "shell-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-2",
+    "name": "铰钳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a big metal pincer claw",
+    "index": 2,
+    "file": "shell-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-2",
+    "name": "铰钳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a big metal pincer claw",
+    "index": 3,
+    "file": "shell-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-2",
+    "name": "铰钳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a big metal pincer claw",
+    "index": 4,
+    "file": "shell-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-2",
+    "name": "铰钳鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a big metal pincer claw",
+    "index": 5,
+    "file": "shell-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-3",
+    "name": "断牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a broken fang and a hook blade",
+    "index": 0,
+    "file": "shell-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-3",
+    "name": "断牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a broken fang and a hook blade",
+    "index": 1,
+    "file": "shell-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-3",
+    "name": "断牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a broken fang and a hook blade",
+    "index": 2,
+    "file": "shell-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-3",
+    "name": "断牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a broken fang and a hook blade",
+    "index": 3,
+    "file": "shell-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-3",
+    "name": "断牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a broken fang and a hook blade",
+    "index": 4,
+    "file": "shell-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-3",
+    "name": "断牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a broken fang and a hook blade",
+    "index": 5,
+    "file": "shell-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-4",
+    "name": "血牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a long fang blade",
+    "index": 0,
+    "file": "shell-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-4",
+    "name": "血牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a long fang blade",
+    "index": 1,
+    "file": "shell-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-4",
+    "name": "血牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a long fang blade",
+    "index": 2,
+    "file": "shell-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-4",
+    "name": "血牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a long fang blade",
+    "index": 3,
+    "file": "shell-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-4",
+    "name": "血牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a long fang blade",
+    "index": 4,
+    "file": "shell-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "shell-4",
+    "name": "血牙鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a long fang blade",
+    "index": 5,
+    "file": "shell-4-5.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-1",
+    "name": "拾荒鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, dragging a sack",
+    "index": 0,
+    "file": "thief-1-0.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-1",
+    "name": "拾荒鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, dragging a sack",
+    "index": 1,
+    "file": "thief-1-1.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-1",
+    "name": "拾荒鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, dragging a sack",
+    "index": 2,
+    "file": "thief-1-2.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-1",
+    "name": "拾荒鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, dragging a sack",
+    "index": 3,
+    "file": "thief-1-3.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-1",
+    "name": "拾荒鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, dragging a sack",
+    "index": 4,
+    "file": "thief-1-4.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-1",
+    "name": "拾荒鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, dragging a sack",
+    "index": 5,
+    "file": "thief-1-5.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-2",
+    "name": "弹弓鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a slingshot",
+    "index": 0,
+    "file": "thief-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-2",
+    "name": "弹弓鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a slingshot",
+    "index": 1,
+    "file": "thief-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-2",
+    "name": "弹弓鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a slingshot",
+    "index": 2,
+    "file": "thief-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-2",
+    "name": "弹弓鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a slingshot",
+    "index": 3,
+    "file": "thief-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-2",
+    "name": "弹弓鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a slingshot",
+    "index": 4,
+    "file": "thief-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-2",
+    "name": "弹弓鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a slingshot",
+    "index": 5,
+    "file": "thief-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-3",
+    "name": "痰盂炮手",
+    "prompt": "grey mouse with pointed snout and long pink tail, aiming a metal bucket cannon",
+    "index": 0,
+    "file": "thief-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-3",
+    "name": "痰盂炮手",
+    "prompt": "grey mouse with pointed snout and long pink tail, aiming a metal bucket cannon",
+    "index": 1,
+    "file": "thief-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-3",
+    "name": "痰盂炮手",
+    "prompt": "grey mouse with pointed snout and long pink tail, aiming a metal bucket cannon",
+    "index": 2,
+    "file": "thief-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-3",
+    "name": "痰盂炮手",
+    "prompt": "grey mouse with pointed snout and long pink tail, aiming a metal bucket cannon",
+    "index": 3,
+    "file": "thief-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-3",
+    "name": "痰盂炮手",
+    "prompt": "grey mouse with pointed snout and long pink tail, aiming a metal bucket cannon",
+    "index": 4,
+    "file": "thief-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-3",
+    "name": "痰盂炮手",
+    "prompt": "grey mouse with pointed snout and long pink tail, aiming a metal bucket cannon",
+    "index": 5,
+    "file": "thief-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-4",
+    "name": "废料迫击炮",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a scrap mortar launcher",
+    "index": 0,
+    "file": "thief-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-4",
+    "name": "废料迫击炮",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a scrap mortar launcher",
+    "index": 1,
+    "file": "thief-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-4",
+    "name": "废料迫击炮",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a scrap mortar launcher",
+    "index": 2,
+    "file": "thief-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-4",
+    "name": "废料迫击炮",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a scrap mortar launcher",
+    "index": 3,
+    "file": "thief-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-4",
+    "name": "废料迫击炮",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a scrap mortar launcher",
+    "index": 4,
+    "file": "thief-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "thief-4",
+    "name": "废料迫击炮",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a scrap mortar launcher",
+    "index": 5,
+    "file": "thief-4-5.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-1",
+    "name": "质检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with one red eye and antenna",
+    "index": 0,
+    "file": "boss-1-0.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-1",
+    "name": "质检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with one red eye and antenna",
+    "index": 1,
+    "file": "boss-1-1.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-1",
+    "name": "质检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with one red eye and antenna",
+    "index": 2,
+    "file": "boss-1-2.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-1",
+    "name": "质检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with one red eye and antenna",
+    "index": 3,
+    "file": "boss-1-3.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-1",
+    "name": "质检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with one red eye and antenna",
+    "index": 4,
+    "file": "boss-1-4.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-1",
+    "name": "质检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with one red eye and antenna",
+    "index": 5,
+    "file": "boss-1-5.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-2",
+    "name": "电检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with a tesla coil on its back",
+    "index": 0,
+    "file": "boss-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-2",
+    "name": "电检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with a tesla coil on its back",
+    "index": 1,
+    "file": "boss-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-2",
+    "name": "电检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with a tesla coil on its back",
+    "index": 2,
+    "file": "boss-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-2",
+    "name": "电检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with a tesla coil on its back",
+    "index": 3,
+    "file": "boss-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-2",
+    "name": "电检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with a tesla coil on its back",
+    "index": 4,
+    "file": "boss-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-2",
+    "name": "电检机",
+    "prompt": "grey mouse with pointed snout and long pink tail, robot mouse with a tesla coil on its back",
+    "index": 5,
+    "file": "boss-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-3",
+    "name": "高压检测塔",
+    "prompt": "grey mouse with pointed snout and long pink tail, tall robot mouse scanner tower with red beam",
+    "index": 0,
+    "file": "boss-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-3",
+    "name": "高压检测塔",
+    "prompt": "grey mouse with pointed snout and long pink tail, tall robot mouse scanner tower with red beam",
+    "index": 1,
+    "file": "boss-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-3",
+    "name": "高压检测塔",
+    "prompt": "grey mouse with pointed snout and long pink tail, tall robot mouse scanner tower with red beam",
+    "index": 2,
+    "file": "boss-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-3",
+    "name": "高压检测塔",
+    "prompt": "grey mouse with pointed snout and long pink tail, tall robot mouse scanner tower with red beam",
+    "index": 3,
+    "file": "boss-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-3",
+    "name": "高压检测塔",
+    "prompt": "grey mouse with pointed snout and long pink tail, tall robot mouse scanner tower with red beam",
+    "index": 4,
+    "file": "boss-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-3",
+    "name": "高压检测塔",
+    "prompt": "grey mouse with pointed snout and long pink tail, tall robot mouse scanner tower with red beam",
+    "index": 5,
+    "file": "boss-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-4",
+    "name": "报废熔炉",
+    "prompt": "grey mouse with pointed snout and long pink tail, molten furnace robot mouse with glowing cracks",
+    "index": 0,
+    "file": "boss-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-4",
+    "name": "报废熔炉",
+    "prompt": "grey mouse with pointed snout and long pink tail, molten furnace robot mouse with glowing cracks",
+    "index": 1,
+    "file": "boss-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-4",
+    "name": "报废熔炉",
+    "prompt": "grey mouse with pointed snout and long pink tail, molten furnace robot mouse with glowing cracks",
+    "index": 2,
+    "file": "boss-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-4",
+    "name": "报废熔炉",
+    "prompt": "grey mouse with pointed snout and long pink tail, molten furnace robot mouse with glowing cracks",
+    "index": 3,
+    "file": "boss-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-4",
+    "name": "报废熔炉",
+    "prompt": "grey mouse with pointed snout and long pink tail, molten furnace robot mouse with glowing cracks",
+    "index": 4,
+    "file": "boss-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "boss-4",
+    "name": "报废熔炉",
+    "prompt": "grey mouse with pointed snout and long pink tail, molten furnace robot mouse with glowing cracks",
+    "index": 5,
+    "file": "boss-4-5.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-1",
+    "name": "喷胶鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a dripping glue gun",
+    "index": 0,
+    "file": "glue-1-0.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-1",
+    "name": "喷胶鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a dripping glue gun",
+    "index": 1,
+    "file": "glue-1-1.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-1",
+    "name": "喷胶鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a dripping glue gun",
+    "index": 2,
+    "file": "glue-1-2.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-1",
+    "name": "喷胶鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a dripping glue gun",
+    "index": 3,
+    "file": "glue-1-3.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-1",
+    "name": "喷胶鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a dripping glue gun",
+    "index": 4,
+    "file": "glue-1-4.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-1",
+    "name": "喷胶鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, holding a dripping glue gun",
+    "index": 5,
+    "file": "glue-1-5.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-2",
+    "name": "补丁鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with patch kit and stitched fur",
+    "index": 0,
+    "file": "glue-2-0.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-2",
+    "name": "补丁鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with patch kit and stitched fur",
+    "index": 1,
+    "file": "glue-2-1.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-2",
+    "name": "补丁鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with patch kit and stitched fur",
+    "index": 2,
+    "file": "glue-2-2.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-2",
+    "name": "补丁鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with patch kit and stitched fur",
+    "index": 3,
+    "file": "glue-2-3.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-2",
+    "name": "补丁鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with patch kit and stitched fur",
+    "index": 4,
+    "file": "glue-2-4.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-2",
+    "name": "补丁鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with patch kit and stitched fur",
+    "index": 5,
+    "file": "glue-2-5.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-3",
+    "name": "焊接鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a welding torch and sparks",
+    "index": 0,
+    "file": "glue-3-0.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-3",
+    "name": "焊接鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a welding torch and sparks",
+    "index": 1,
+    "file": "glue-3-1.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-3",
+    "name": "焊接鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a welding torch and sparks",
+    "index": 2,
+    "file": "glue-3-2.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-3",
+    "name": "焊接鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a welding torch and sparks",
+    "index": 3,
+    "file": "glue-3-3.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-3",
+    "name": "焊接鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a welding torch and sparks",
+    "index": 4,
+    "file": "glue-3-4.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-3",
+    "name": "焊接鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, with a welding torch and sparks",
+    "index": 5,
+    "file": "glue-3-5.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-4",
+    "name": "焊炉母鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, mother mouse beside a small welding furnace",
+    "index": 0,
+    "file": "glue-4-0.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-4",
+    "name": "焊炉母鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, mother mouse beside a small welding furnace",
+    "index": 1,
+    "file": "glue-4-1.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-4",
+    "name": "焊炉母鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, mother mouse beside a small welding furnace",
+    "index": 2,
+    "file": "glue-4-2.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-4",
+    "name": "焊炉母鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, mother mouse beside a small welding furnace",
+    "index": 3,
+    "file": "glue-4-3.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-4",
+    "name": "焊炉母鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, mother mouse beside a small welding furnace",
+    "index": 4,
+    "file": "glue-4-4.png",
+    "seed": 0
+  },
+  {
+    "key": "glue-4",
+    "name": "焊炉母鼠",
+    "prompt": "grey mouse with pointed snout and long pink tail, mother mouse beside a small welding furnace",
+    "index": 5,
+    "file": "glue-4-5.png",
+    "seed": 0
+  }
+]

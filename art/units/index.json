@@ -1,0 +1,135 @@
+{
+  "px": 108,
+  "basePx": 27,
+  "scale": 4,
+  "forms": [
+    {
+      "id": "worker",
+      "line": "none",
+      "tier": 1,
+      "name": "白板鼠",
+      "file": "none-1.png",
+      "px": 108
+    },
+    {
+      "id": "tank-2",
+      "line": "tank",
+      "tier": 2,
+      "name": "铁皮鼠",
+      "file": "tank-2.png",
+      "px": 108
+    },
+    {
+      "id": "tank-3",
+      "line": "tank",
+      "tier": 3,
+      "name": "铆甲鼠",
+      "file": "tank-3.png",
+      "px": 108
+    },
+    {
+      "id": "tank-4",
+      "line": "tank",
+      "tier": 4,
+      "name": "堡垒鼠",
+      "file": "tank-4.png",
+      "px": 108
+    },
+    {
+      "id": "blade-2",
+      "line": "blade",
+      "tier": 2,
+      "name": "扳钳鼠",
+      "file": "blade-2.png",
+      "px": 108
+    },
+    {
+      "id": "blade-3",
+      "line": "blade",
+      "tier": 3,
+      "name": "尖牙鼠",
+      "file": "blade-3.png",
+      "px": 108
+    },
+    {
+      "id": "blade-4",
+      "line": "blade",
+      "tier": 4,
+      "name": "破城鼠",
+      "file": "blade-4.png",
+      "px": 108
+    },
+    {
+      "id": "shot-2",
+      "line": "shot",
+      "tier": 2,
+      "name": "炮筒鼠",
+      "file": "shot-2.png",
+      "px": 108
+    },
+    {
+      "id": "shot-3",
+      "line": "shot",
+      "tier": 3,
+      "name": "连发鼠",
+      "file": "shot-3.png",
+      "px": 108
+    },
+    {
+      "id": "shot-4",
+      "line": "shot",
+      "tier": 4,
+      "name": "狙炮鼠",
+      "file": "shot-4.png",
+      "px": 108
+    },
+    {
+      "id": "hex-2",
+      "line": "hex",
+      "tier": 2,
+      "name": "火种鼠",
+      "file": "hex-2.png",
+      "px": 108
+    },
+    {
+      "id": "hex-3",
+      "line": "hex",
+      "tier": 3,
+      "name": "咒炉鼠",
+      "file": "hex-3.png",
+      "px": 108
+    },
+    {
+      "id": "hex-4",
+      "line": "hex",
+      "tier": 4,
+      "name": "熔炉鼠",
+      "file": "hex-4.png",
+      "px": 108
+    },
+    {
+      "id": "care-2",
+      "line": "care",
+      "tier": 2,
+      "name": "医务鼠",
+      "file": "care-2.png",
+      "px": 108
+    },
+    {
+      "id": "care-3",
+      "line": "care",
+      "tier": 3,
+      "name": "药剂鼠",
+      "file": "care-3.png",
+      "px": 108
+    },
+    {
+      "id": "care-4",
+      "line": "care",
+      "tier": 4,
+      "name": "大医师鼠",
+      "file": "care-4.png",
+      "px": 108
+    }
+  ]
+}

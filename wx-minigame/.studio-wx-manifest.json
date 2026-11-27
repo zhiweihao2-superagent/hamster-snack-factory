@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "managedImages": [
+    "hamster.png",
+    "snack_cookie.png",
+    "snack_peanut.png",
+    "snack_seed.png"
+  ],
+  "managedAudio": []
+}
