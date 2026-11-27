@@ -1240,19 +1240,23 @@ function drawRatDetail(){
   ctx.lineWidth = 1; ctx.strokeStyle = "rgba(232,172,80,.35)"; ctx.stroke();
 
   /* 头像：和仓鼠栏卡片同一张（head-base，16 原生 ×4 = 64 展示） */
-  var headImg = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["head-base", "none-1"]) : null;
+  /* 详情页用 64 立绘（原画），不再用裁头图 */
+  var headImg = (typeof artFromMap === "function")
+    ? artFromMap(unitArtMap(), [(rat.line || "none") + "-" + (rat.tier || 1), "none-1"]) : null;
   var box = 92, ax = pad + 12, ay = cardY + 14;
   rr(ax, ay, box, box, 12);
   ctx.fillStyle = "rgba(255,255,255,.03)"; ctx.fill();
   if (headImg){
     ctx.save(); ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(headImg, ax + 6, ay + 6, box - 12, box - 12);
+    var drawSide = 64;                       /* 原画就是 64，按 1:1 画 */
+    ctx.drawImage(headImg,
+      Math.round(ax + (box - drawSide) / 2),
+      Math.round(ay + (box - drawSide) / 2), drawSide, drawSide);
     ctx.restore();
   }
   if (rat.line && rat.line !== "none") drawClassGlyph(rat.line, ax + box - 14, ay + box - 14, 22);
 
   var tx = ax + box + 14;
-  if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, W - pad - 30, cardY + 28, 36);
   txt(st.name, tx, cardY + 30, Math.round(W * 0.045), C.ink, "left", true);
   txt(ratLineLabel(rat) + (onSquad ? " · 上场中" : ""), tx, cardY + 50,
       Math.max(10, Math.round(W * 0.026)), onSquad ? "#79c98a" : C.muted, "left");
@@ -2368,18 +2372,18 @@ function drawShop(){
     if (SHOP.rats.length){ SHOP.detail = SHOP.sel >= 0 ? SHOP.sel : 0; SHOP.page = 'rat'; }
   }, gearN > 0);
 
-  /* 货架：三个固定类目，各占一格 */
-  var cardX = pad, cardW = W - pad * 2, cardH = Math.round(H * 0.083), gap = Math.round(H * 0.012);
-  var y = Math.round(H * 0.116);
+  /* 货架：一行三张小卡（原来三张大卡占掉 1/3 屏，太浪费） */
+  var cardX = pad, cardW = W - pad * 2;
+  var rowY = Math.round(H * 0.108);
+  var ogx = 6;
+  var colN = Math.max(1, SHOP.offers.length);
+  var ow = Math.floor((cardW - ogx * (colN - 1)) / colN);
+  var oh = 76;
   for (var i = 0; i < SHOP.offers.length; i++){
-    var sec = SHOP_SECTIONS[i] || { label: '' };
-    txt(sec.label, pad, y + i * (cardH + gap + 15) - 5,
-        Math.max(10, Math.round(W * 0.029)), '#8f86a6', 'left', true);
-    drawOfferCard(cardX, y + i * (cardH + gap + 15), cardW, cardH, SHOP.offers[i], i);
+    drawOfferCard(cardX + i * (ow + ogx), rowY, ow, oh, SHOP.offers[i], i);
   }
 
-  /* 我的仓鼠：3 列 × 2 行，最多 6 只全看得到（原来只画 4 只，第 5 只永远点不到） */
-  var ratsY = y + 3 * (cardH + gap + 15) + Math.round(H * 0.012);
+  var ratsY = rowY + oh + Math.round(H * 0.030);
   var onCount = squadOnCount();
   txt('我的仓鼠 ' + SHOP.rats.length + '/' + rosterCap() + ' · 上场 ' + onCount + '/' + fieldCap(),
       pad, ratsY - 6, Math.max(9, Math.round(W * 0.025)), C.muted, 'left');
@@ -2526,9 +2530,9 @@ function drawShardStrip(x, y, w){
   });
 }
 
+/* 紧凑货架卡：图标居中、名字最多两行、价格在底部 —— 一行能放三张 */
 function drawOfferCard(x, y, w, h, o, idx){
   var affordable = SHOP.coins >= o.price && !o.sold;
-  /* 推荐角标：这张证正好是"选中鼠的下一阶同线"就标出来，省得玩家对着图鉴找 */
   var rec = false;
   if (o.kind === 'gear' && !o.sold){
     var selRat = SHOP.rats[SHOP.sel];
@@ -2537,50 +2541,47 @@ function drawOfferCard(x, y, w, h, o, idx){
       if (o.tier === curT + 1 && (curT === 1 || selRat.line === o.line)) rec = true;
     }
   }
-  rr(x, y, w, h, 10);
-  ctx.fillStyle = o.sold ? 'rgba(255,255,255,.02)' : C.panel;
+  rr(x, y, w, h, 9);
+  ctx.fillStyle = o.sold ? "rgba(255,255,255,.02)" : C.panel;
   ctx.fill();
   ctx.lineWidth = rec ? 2 : 1;
-  ctx.strokeStyle = o.sold ? '#332b45'
-    : (rec ? 'rgba(232,172,80,.9)' : (affordable ? 'rgba(232,172,80,.5)' : C.line));
+  ctx.strokeStyle = o.sold ? "#332b45" : (rec ? "rgba(232,172,80,.9)" : (affordable ? "rgba(232,172,80,.45)" : C.line));
   ctx.stroke();
-  if (rec){
-    var bw2 = 40, bh2 = 16, bx2 = x + w - bw2 - 8, by2 = y + 6;
-    rr(bx2, by2, bw2, bh2, 8);
-    ctx.fillStyle = 'rgba(232,172,80,.9)'; ctx.fill();
-    txt('推荐', bx2 + bw2 / 2, by2 + 12, 9, '#241d2e', 'center', true);
-  }
 
-  /* 图标：转职证用线徽章、配件用物件图标（没有就用文字顶上） */
-  var icId = (o.kind === 'gear') ? ('gear-' + o.line)
-           : (o.kind === 'shard' ? 'buff-parts' : (o.kind === 'mod' ? ('mod-' + o.mod) : null));
-  var ic = (typeof iconImg === 'function') ? iconImg(icId) : null;
-  var textX = x + 12;
+  /* 图标 */
+  var icId = (o.kind === "gear") ? ("gear-" + o.line)
+           : (o.kind === "shard" ? "buff-parts" : (o.kind === "mod" ? ("mod-" + o.mod) : null));
+  var ic = (typeof iconImg === "function") ? iconImg(icId) : null;
+  var isz = 30, icx = x + w / 2, icy = y + 26;
   if (ic){
-    var isz = Math.min(34, Math.round(h * 0.62));
-    ctx.save();
-    ctx.imageSmoothingEnabled = false;
-    ctx.globalAlpha = o.sold ? 0.35 : 1;
-    ctx.drawImage(ic, x + 10, y + (h - isz) / 2, isz, isz);
+    ctx.save(); ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(ic, Math.round(icx - isz / 2), Math.round(icy - isz / 2), isz, isz);
     ctx.restore();
-    textX = x + 10 + isz + 8;
+  } else {
+    txt((o.name || "").slice(0, 2), icx, icy + 5, Math.max(10, Math.round(W * 0.028)), "#8f86a6", "center", true);
   }
 
-  var nameSize = Math.max(11, Math.round(W * 0.036));
-  txt(offerTitle(o), textX, y + Math.round(h * 0.34), nameSize, o.sold ? '#5b5374' : C.ink, 'left', true);
-  txt(offerDesc(o), textX, y + Math.round(h * 0.64), Math.max(9, Math.round(W * 0.027)),
-      o.sold ? '#4a4160' : C.muted, 'left');
+  /* 名字：最多两行，超出省略 */
+  var nameFs = Math.max(8, Math.round(W * 0.022));
+  var nm = (typeof offerTitle === "function") ? offerTitle(o) : (o.name || "");
+  var l1 = nm.slice(0, 5), l2 = nm.length > 5 ? nm.slice(5, 10) : "";
+  txt(l1, x + w / 2, y + 50, nameFs, C.ink, "center", true);
+  if (l2) txt(l2, x + w / 2, y + 50 + nameFs + 1, nameFs, C.ink, "center", true);
 
-  var price = o.sold ? '已买' : ('💰 ' + o.price);
-  txt(price, x + w - 12, y + Math.round(h * 0.5), Math.max(11, Math.round(W * 0.034)),
-      o.sold ? '#5b5374' : (affordable ? C.amber : C.bad), 'right', true);
+  /* 价格 / 已买 */
+  txt(o.sold ? "已买" : ("💰 " + o.price), x + w / 2, y + h - 7, Math.max(9, Math.round(W * 0.024)),
+      o.sold ? "#5b5374" : (affordable ? C.amber : C.bad), "center", true);
 
-  if (!o.sold){
-    shopHit(x, y, w, h, function(){ buyOffer(idx); });
+  if (rec && !o.sold){
+    var bw2 = 30, bh2 = 12, bx2 = x + w - bw2 - 4, by2 = y + 4;
+    rr(bx2, by2, bw2, bh2, 6);
+    ctx.fillStyle = "rgba(232,172,80,.9)"; ctx.fill();
+    txt("推荐", bx2 + bw2 / 2, by2 + 9, 8, "#241d2e", "center", true);
   }
+
+  if (!o.sold) shopHit(x, y, w, h, function(){ buyOffer(idx); });
 }
 
-/* 选中鼠的数值面板（改动前/后的实际效果都在这） */
 function drawRatStats(x, y, w){
   var ratIconOwner = SHOP.rats[SHOP.sel];
   if (ratIconOwner && ratIconOwner.line && ratIconOwner.line !== 'none'){
@@ -2715,22 +2716,22 @@ function drawRatCard(x, y, w, h, idx){
   ctx.stroke();
 
   /* 头像（只要头）+ 矢量纹章 */
-  var headS = 32;
+  var headS = 34;
   var headImg = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["head-base", "none-1"]) : null;
   if (headImg){
     ctx.save(); ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(headImg, Math.round(x + 8), Math.round(y + 7), headS, headS);
+    ctx.drawImage(headImg, Math.round(x + 8), Math.round(y + 9), headS, headS);
     ctx.restore();
   }
   var gs = 18;
-  var hasGlyph = drawClassGlyph(rat.line, x + 8 + headS + 11, y + 7 + headS / 2, gs);
+  var hasGlyph = drawClassGlyph(rat.line, x + 8 + headS + 12, y + 9 + headS / 2, gs);
 
   /* 名字与头像同高 */
   var tx = x + 8 + headS + (hasGlyph ? 26 : 12);
   var nameFs = Math.max(11, Math.round(W * 0.032));
   var name = ratLabel(rat);
   if (name.length > 5) name = name.slice(0, 5);
-  txt(name, tx, y + 24, nameFs, C.ink, "left", true);
+  txt(name, tx, y + 9 + Math.round(headS * 0.52), nameFs, C.ink, "left", true);
   txt("★" + ratScore(rat), x + w - 10, y + 22, Math.max(9, Math.round(W * 0.024)), "#ffd166", "right", true);
 
   /* 职业 + 阶 + 一句描述 */
