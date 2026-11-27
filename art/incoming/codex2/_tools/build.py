@@ -125,8 +125,8 @@ def build_one(src: Path, dst: Path, size: int, kind: str, palette: str, foot: in
               char_h: int | None = None) -> dict:
     icrop = ICON_CROPS.get(src.stem) if kind == "icon" else None
     if kind == "char":
-        # 引信鼠是灰毛 + 细肢，降采样后麻点最重，角色帧统一走 3×3 中值
-        dn = 3 if "foe-blast" in str(src) else 0
+        # A2 那批灰毛细肢麻点重，用 3×3 中值；A2b 原图干净且脸只有 4px，中值会把眼睛糊掉
+        dn = 3 if ("foe-blast" in str(src) and "A2b" not in str(src)) else 0
         return P.process(src, dst, size=size, mode="char", foot=foot,
                          colors=24, palette=palette, char_h=char_h, snap_tol=10, outline_w=1,
                          denoise=dn)

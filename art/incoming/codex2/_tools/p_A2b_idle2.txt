@@ -1,0 +1,51 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. All four PNGs must come out of the image generation model.
+
+You will call the image generation tool FOUR times: the IDLE frame of four upgrade tiers of the SAME character.
+
+=== CRITICAL: THIS SPRITE WILL BE SHRUNK TO 64x64 ===
+Every shape must survive an 8x reduction. So: BIG, SIMPLE, HIGH-CONTRAST FORMS ONLY.
+- Nothing in the drawing may be thinner than 1/24 of the character's height.
+- The head must be BIG: about 45% of the total height. Wide face, both eyes big and set wide apart.
+- Eyes: large round bright red #e8402c discs with a hard dark pupil and a BIG white highlight block. Keep at least one clear grey pixel between the eye and the snout so the face never merges into a dark blob.
+- Muzzle: one simple pale rounded wedge #b9bdc4, a small pink nose block, TWO tiny white teeth. Mouth CLOSED (a short line at most). NO open mouth, NO dark mouth cavity — an open mouth becomes a black smudge at 64x64.
+- No shading gradients on the face. Flat grey cheeks.
+
+=== THE TWO ATTACHED REFERENCES ARE THE TARGET STYLE ===
+Copy their POSE, BODY TYPE and SILHOUETTE:
+- FRONT-FACING THREE-QUARTER: the rat faces the CAMERA, turned only slightly. BOTH eyes and BOTH ears visible, chest and belly presented to us. Its snout may dip toward the lower right 20 degrees at most. NOT a side profile.
+- CHUBBY AND SQUAT: fat round belly, SHORT THICK arms, SHORT THICK legs with big visible feet, all limbs solidly attached. A plump bomb-carrier.
+- The body FILLS MOST of the square frame (about 8% margin).
+- TAIL is SHORT: out from behind the right hip, ONE small curl, then stop. Never wider than the body, never touching the frame edge.
+
+=== COLOURS ===
+Fur grey #8a8f96, belly and muzzle #b9bdc4, ears inner pink #f09ca8, paws pink, eyes red #e8402c, dynamite bright red #c8342a, fuse yellow #e8c14a, all outlines #3a241e.
+
+=== THE BOMB — THIS IS THE MOST IMPORTANT PART ===
+FAT STUBBY dynamite sticks, each one about ONE THIRD as wide as the belly and clearly filled with bright red #c8342a.
+Each stick has ONE dark brown #3a241e band across its middle and a rounded cap at the visible end.
+The sticks lie HORIZONTALLY across the LOWER belly, held by a single THIN strap that passes BEHIND them — the strap must never cover the sticks, never split them into thin slices, and never run across the whole waist as a belt.
+A short yellow #e8c14a fuse comes off the bundle with a bright spark dot.
+The bomb must sit BELOW THE CHIN and must NEVER cover the mouth, the snout or the eyes.
+Chunky sticks, not thin sausages: the red must be the dominant colour of the bundle at 64x64.
+
+Tier 1: ONE thick stick at the lower belly.
+Tier 2: TWO thick sticks side by side at the lower belly.
+Tier 3: THREE thick sticks side by side at the lower belly, the middle one slightly forward.
+Tier 4: FIVE thick sticks stacked in two short rows of three and two at the lower belly, the bundle visibly bigger than the others, a little grey soot smudge on one cheek. The face, the snout and both eyes stay completely clear and clean.
+
+=== STYLE ===
+Hard-edged PIXEL ART sprite with visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Thick dark-brown outline #3a241e around the silhouette and between every colour region.
+Flat solid colours. NO gradients, NO soft shading, NO anti-aliasing, NO blur.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame.
+All four images: SAME rat, SAME pose, SAME size, SAME palette. Only the dynamite count differs.
+
+=== OUTPUT ===
+Each at high resolution (at least 1000x1000), transparent background.
+Save to exactly, one generation per file (overwrite the old ones):
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-1\raw\idle-1.png   (Tier 1, one stick)
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-2\raw\idle-1.png   (Tier 2, two sticks)
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-3\raw\idle-1.png   (Tier 3, three sticks)
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-4\raw\idle-1.png   (Tier 4, five sticks)
+Keep native high resolution, do NOT resize or downscale.
+When all four are saved, reply with just the four paths.

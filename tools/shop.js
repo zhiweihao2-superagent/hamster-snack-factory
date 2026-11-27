@@ -2756,7 +2756,8 @@ function drawRatCard(x, y, w, h, idx){
       var tg = (d.targets || [1,1,1])[lv - 1] || 1;
       var cd = Math.round(((d.cd || [0,0,0])[lv - 1] || 0) / 1000);
 
-      txt((d.name || sk[i].id) + romanS[lv - 1], x + 10, sy + i * lineH,
+      var hasIc = drawSkillIcon(sk[i].id, x + 17, sy + i * lineH - 3, 15);
+      txt((d.name || sk[i].id) + romanS[lv - 1], x + (hasIc ? 27 : 10), sy + i * lineH,
           Math.max(8, Math.round(W * 0.022)), kindCol, "left", true);
       txt(tg + "体 · " + cd + "s", x + w - 10, sy + i * lineH,
           Math.max(8, Math.round(W * 0.021)), C.muted, "right");
