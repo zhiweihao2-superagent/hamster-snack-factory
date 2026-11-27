@@ -57,6 +57,10 @@ def sheet_A2b() -> Path | None:
     return _sheet_charset("A2b-*", "sheet-A2b.png")
 
 
+def sheet_A2c() -> Path | None:
+    return _sheet_charset("A2c-*", "sheet-A2c.png")
+
+
 def _sheet_charset(pattern: str, name: str) -> Path | None:
     """一个角色组（多阶 × 5 帧）的对照表。缺帧的格子留空。"""
     dirs = [d for d in sorted(ROOT.glob(pattern)) if (d / "idle-1.png").exists()]
@@ -110,7 +114,7 @@ def sheet_icons(name: str, dirpath: Path) -> Path | None:
 
 def main() -> None:
     made = []
-    for fn in (sheet_A1, sheet_A2, sheet_A2b, sheet_A3):
+    for fn in (sheet_A1, sheet_A2, sheet_A2b, sheet_A2c, sheet_A3):
         p = fn()
         if p:
             made.append(p.name)

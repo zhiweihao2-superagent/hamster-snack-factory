@@ -93,10 +93,10 @@ When it is saved, reply with just the path.
 """
 
 FUSE = {
-    "idle-2": "The bundle shares ONE single fuse: a narrow VERTICAL column of yellow #e8c14a standing on top of the bundle, with one small bright yellow dot at its tip.",
-    "action-windup": "The bundle shares ONE single fuse: a narrow VERTICAL column of yellow #e8c14a on top of the bundle, with a BRIGHT yellow-white burst at its tip and two spark blocks flying off.",
-    "action-strike": "The bundle shares ONE single fuse: a narrow VERTICAL column of yellow #e8c14a on top of the bundle, with a BIG bright yellow-white burst at its tip and three spark blocks flying off.",
-    "hop-air": "The bundle shares ONE single fuse: a narrow VERTICAL column of yellow #e8c14a on top of the bundle, with a small bright yellow dot at its tip and one spark block trailing.",
+    "idle-2": "The bundle shares ONE single fuse: a narrow VERTICAL column of yellow #e8c14a standing on top of the bundle, with one small bright yellow dot at its tip. The fuse is SHORT: at most 2 blocks tall, and its spark dot sits just above the top edge of the bundle, well below the chest and never touching the muzzle or the chin.",
+    "action-windup": "The bundle shares ONE single fuse: a narrow VERTICAL column of yellow #e8c14a on top of the bundle, with a BRIGHT yellow-white burst at its tip and two spark blocks flying off. The fuse is SHORT: at most 2 blocks tall, and its spark dot sits just above the top edge of the bundle, well below the chest and never touching the muzzle or the chin.",
+    "action-strike": "The bundle shares ONE single fuse: a narrow VERTICAL column of yellow #e8c14a on top of the bundle, with a BIG bright yellow-white burst at its tip and three spark blocks flying off. The fuse is SHORT: at most 2 blocks tall, and its spark dot sits just above the top edge of the bundle, well below the chest and never touching the muzzle or the chin.",
+    "hop-air": "The bundle shares ONE single fuse: a narrow VERTICAL column of yellow #e8c14a on top of the bundle, with a small bright yellow dot at its tip and one spark block trailing. The fuse is SHORT: at most 2 blocks tall, and its spark dot sits just above the top edge of the bundle, well below the chest and never touching the muzzle or the chin.",
 }
 
 if __name__ == "__main__":

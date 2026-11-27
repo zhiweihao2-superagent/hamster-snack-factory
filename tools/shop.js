@@ -2352,18 +2352,39 @@ function drawShop(){
 
   /* 顶栏 */
   var hY = Math.round(H * 0.072);
-  txt('第 ' + SHOP.level + ' 关 补给站', pad, hY, Math.round(W * 0.043), C.ink, 'left', true);
+  if (!SHOP.mainTab) SHOP.mainTab = 'team';
+  txt(SHOP.mainTab === 'shop' ? '商店' : '我的队伍', pad, hY, Math.round(W * 0.043), C.ink, 'left', true);
   txt('金币 ' + SHOP.coins, W - pad, hY, Math.round(W * 0.04), C.amber, 'right', true);
   /* 第二行：左边小字信息，右边三枚入口（图鉴 / 抽奖 / 炼妖） */
   if (window.BUILD_TAG){
     txt(window.BUILD_TAG, pad, hY + 34, Math.max(8, Math.round(W * 0.021)), '#6a6480', 'left');
   }
-  txt('碎片 ' + (SHOP.shard | 0) + ' · 最高第 ' + SHOP.best + ' 关', pad, hY + 20,
-      Math.max(9, Math.round(W * 0.026)), '#c7b6ff', 'left', true);
+  /* 主页面签：队伍 / 商店 */
+  var tabW = 58, tabH = 22, tabY2 = hY + 12;
+  function mainTabBtn(x, label, key){
+    var on = (SHOP.mainTab === key);
+    rr(x, tabY2, tabW, tabH, 11);
+    ctx.fillStyle = on ? C.amber : C.panel2; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = on ? C.amber : C.line; ctx.stroke();
+    txt(label, x + tabW / 2, tabY2 + 15, Math.max(9, Math.round(W * 0.025)),
+        on ? '#241d2e' : C.ink, 'center', true);
+    shopHit(x, tabY2, tabW, tabH, function(){
+      if (SHOP.mainTab !== key){ SHOP.mainTab = key; sfx('tap'); }
+    });
+  }
+  mainTabBtn(pad, '队伍', 'team');
+  mainTabBtn(pad + tabW + 6, '商店', 'shop');
+  txt('碎片 ' + (SHOP.shard | 0) + ' · 最高第 ' + SHOP.best + ' 关',
+      pad + 2 * (tabW + 6) + 4, tabY2 + 15, Math.max(9, Math.round(W * 0.024)), '#c7b6ff', 'left');
+
+
+
+  /* 商店页整块交给 drawStorePage，队伍页不画货架 */
+  if (SHOP.mainTab === 'shop'){ drawStorePage(pad); return; }
 
   /* 图鉴入口：五职业 × 四阶，看看每条线升到四级长什么样、拿什么武器 */
   var cbw = 50, cbh = 22;
-  var cbx = W - pad - cbw, cby = hY + 8;
+  var cbx = W - pad - cbw, cby = tabY2 + tabH + 6;
   rr(cbx, cby, cbw, cbh, 12);
   ctx.fillStyle = C.panel2; ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(232,172,80,.45)'; ctx.stroke();
@@ -2383,9 +2404,8 @@ function drawShop(){
         hot ? '#e4dcff' : '#c7b6ff', 'center', true);
     shopHit(ex, cby, ebw, ebh, onTap);
   }
-  entryBtn(e1x, '炼妖', function(){ SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap'); });
-  entryBtn(e2x, '抽奖', function(){ SHOP.page = 'gacha'; sfx('tap'); });
-  /* 仓鼠盒：盒里有东西就高亮，数字直接写在按钮上 */
+  entryBtn(e2x, '炼妖', function(){ SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap'); });
+    /* 仓鼠盒：盒里有东西就高亮，数字直接写在按钮上 */
   var boxN = boxList().length;
   entryBtn(e3x, boxN ? ('盒' + boxN) : '仓鼠盒', function(){ SHOP.page = 'box'; sfx('tap'); }, boxN > 0);
   var gearN = gearCountAll();
@@ -2395,18 +2415,8 @@ function drawShop(){
     if (SHOP.rats.length){ SHOP.detail = SHOP.sel >= 0 ? SHOP.sel : 0; SHOP.page = 'rat'; }
   }, gearN > 0);
 
-  /* 货架：一行三张小卡（原来三张大卡占掉 1/3 屏，太浪费） */
   var cardX = pad, cardW = W - pad * 2;
-  var rowY = Math.round(H * 0.108);
-  var ogx = 6;
-  var colN = Math.max(1, SHOP.offers.length);
-  var ow = Math.floor((cardW - ogx * (colN - 1)) / colN);
-  var oh = 76;
-  for (var i = 0; i < SHOP.offers.length; i++){
-    drawOfferCard(cardX + i * (ow + ogx), rowY, ow, oh, SHOP.offers[i], i);
-  }
-
-  var ratsY = rowY + oh + Math.round(H * 0.030);
+  var ratsY = Math.round(H * 0.178);
   var onCount = squadOnCount();
   txt('我的仓鼠 ' + SHOP.rats.length + '/' + rosterCap() + ' · 上场 ' + onCount + '/' + fieldCap(),
       pad, ratsY - 6, Math.max(9, Math.round(W * 0.025)), C.muted, 'left');
@@ -2484,22 +2494,6 @@ function drawShop(){
     SHOP.coins -= 8; SHOP.refreshLeft--; rollOffers(); shopSave(); sfx('tap');
   });
 
-  /* 摇奖机 */
-  var canSlot = SHOP.coins >= SLOT.price;
-  if (SLOT.rolling && performance.now() - SLOT.t0 > 820) slotResolve();
-  rr(bx2, by, b2w, btnH, btnH / 2);
-  ctx.fillStyle = canSlot || SLOT.rolling ? 'rgba(232,172,80,.18)' : '#241d2e';
-  ctx.fill();
-  ctx.lineWidth = SLOT.rolling ? 2 : 1;
-  ctx.strokeStyle = SLOT.rolling ? C.amber : (canSlot ? 'rgba(232,172,80,.6)' : '#332b45');
-  ctx.stroke();
-  var slotLabel = SLOT.rolling
-    ? '…摇…'
-    : ('摇一次 ' + SLOT.price + '💰');
-  txt(slotLabel, bx2 + b2w / 2, by + btnH * 0.64,
-      Math.max(10, Math.round(W * 0.031)), canSlot || SLOT.rolling ? C.amber : '#5b5374', 'center', true);
-  shopHit(bx2, by, b2w, btnH, function(){ slotRoll(); });
-
   /* 出货率 + 上次结果（明示概率，五连保底） */
   var oddsY = by - 10;
   var lastTxt = SLOT.last ? ('上次：' + SLOT.last + ' ｜ ') : '';
@@ -2554,6 +2548,68 @@ function drawShardStrip(x, y, w){
 }
 
 /* 紧凑货架卡：图标居中、名字最多两行、价格在底部 —— 一行能放三张 */
+/* 商店页：只放"花钱"的东西 —— 今日货架、摇一次、抽奖入口、刷新、下一关 */
+function drawStorePage(pad){
+  var cardW = W - pad * 2;
+  var rowY = Math.round(H * 0.155);
+  var ogx = 6;
+  var colN = Math.max(1, SHOP.offers.length);
+  var ow = Math.floor((cardW - ogx * (colN - 1)) / colN);
+  var oh = 86;
+  txt('今日货架', pad, rowY - 10, Math.max(10, Math.round(W * 0.026)), '#8f86a6', 'left', true);
+  for (var i = 0; i < SHOP.offers.length; i++){
+    drawOfferCard(pad + i * (ow + ogx), rowY, ow, oh, SHOP.offers[i], i);
+  }
+
+  /* 摇奖机 */
+  var sy = rowY + oh + 26;
+  var canSlot = SHOP.coins >= SLOT.price;
+  if (SLOT.rolling && performance.now() - SLOT.t0 > 820) slotResolve();
+  rr(pad, sy, cardW, 44, 22);
+  ctx.fillStyle = canSlot || SLOT.rolling ? 'rgba(232,172,80,.18)' : '#241d2e';
+  ctx.fill();
+  ctx.lineWidth = SLOT.rolling ? 2 : 1;
+  ctx.strokeStyle = SLOT.rolling ? C.amber : (canSlot ? 'rgba(232,172,80,.6)' : '#332b45');
+  ctx.stroke();
+  txt(SLOT.rolling ? '…摇…' : ('摇一次 ' + SLOT.price + '💰'),
+      W / 2, sy + 28, Math.max(12, Math.round(W * 0.034)),
+      canSlot || SLOT.rolling ? C.amber : '#5b5374', 'center', true);
+  shopHit(pad, sy, cardW, 44, function(){ slotRoll(); });
+
+  var lastTxt = SLOT.last ? ('上次：' + SLOT.last + ' ｜ ') : '';
+  txt(lastTxt + SLOT_ODDS, pad, sy + 58, Math.max(8, Math.round(W * 0.022)), '#8f86a6', 'left');
+
+  /* 抽奖入口 */
+  var gy = sy + 74;
+  rr(pad, gy, cardW, 48, 24);
+  ctx.fillStyle = 'rgba(199,182,255,.2)'; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(199,182,255,.8)'; ctx.stroke();
+  txt('抽奖 · 仓鼠池 / 道具池', W / 2, gy + 30, Math.max(11, Math.round(W * 0.031)),
+      '#e4dcff', 'center', true);
+  shopHit(pad, gy, cardW, 48, function(){ SHOP.page = 'gacha'; sfx('tap'); });
+
+  /* 底部：刷新 + 下一关 */
+  var btnH = 46, bw2 = Math.round((W - pad * 2 - 10) / 2), by = H - 96;
+  rr(pad, by, bw2, btnH, 23);
+  ctx.fillStyle = C.panel2; ctx.fill();
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = SHOP.coins >= 8 && SHOP.refreshLeft > 0 ? C.line : '#332b45';
+  ctx.stroke();
+  txt('刷新 8 · 剩' + SHOP.refreshLeft, pad + bw2 / 2, by + 28,
+      Math.max(10, Math.round(W * 0.029)), SHOP.refreshLeft > 0 ? C.muted : '#5b5374', 'center', true);
+  shopHit(pad, by, bw2, btnH, function(){
+    if (SHOP.refreshLeft <= 0 || SHOP.coins < 8) return;
+    SHOP.coins -= 8; SHOP.refreshLeft--; rollOffers(); shopSave(); sfx('tap');
+  });
+
+  var bx2 = pad + bw2 + 10;
+  rr(bx2, by, bw2, btnH, 23);
+  ctx.fillStyle = SHOP.advance === false ? C.panel2 : C.amber; ctx.fill();
+  txt('下一关 ▶', bx2 + bw2 / 2, by + 28, Math.max(11, Math.round(W * 0.033)),
+      SHOP.advance === false ? '#5b5374' : '#241d2e', 'center', true);
+  shopHit(bx2, by, bw2, btnH, function(){ if (SHOP.advance === false) return; sfx('tap'); startNextLevel(); });
+}
+
 function drawOfferCard(x, y, w, h, o, idx){
   var affordable = SHOP.coins >= o.price && !o.sold;
   var rec = false;
