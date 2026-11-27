@@ -1,0 +1,34 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. The PNG must come out of the image generation model.
+
+You will call the image generation tool ONCE.
+
+=== HARD PIXEL RULES — follow every line literally ===
+1. Draw it as `hard-edged pixel art on a 32x32 grid, every pixel drawn as a 2x2 block`. The finished image must read as a 32x32 sprite scaled up by about 40 — blocky like a Game Boy sprite.
+2. `flat colors only — NO gradients, NO shading, NO anti-aliasing, NO soft edges`. Every edge is a straight stair-step between two flat colours.
+3. Use `exactly 6 colors: grey fur #8a8f96, light grey belly #c4c7cd, pink ears #f09ca8, dark red dynamite #c8342a, yellow fuse #e8c14a, outline #3a241e` — plus, for the eye highlights only, one pure white #fff8ee.
+4. `1-pixel dark brown outline #3a241e around the whole silhouette` — meaning one block of the 32x32 grid, i.e. 2x2 image pixels thick. The same dark outline separates the ear from the head and the dynamite from the belly.
+5. `eyes: 2x2 solid red block with exactly one white pixel as highlight, clearly separated from the head outline` — each eye is a 2x2 block of red #e8402c with a single 1x1 block of white in its upper corner, and there is at least one block of plain grey fur between the eye and the outline of the head.
+6. `no fine details smaller than 2x2 pixels` — this is the most important rule. Do NOT draw 1-pixel whiskers, 1-pixel teeth, 1-pixel claws, thin shadows, fur strands, cheek blush or any tiny speck. If a feature cannot be drawn 2x2 pixels big, leave it out.
+7. Copy the OUTLINE THICKNESS and the FLAT-COLOUR STYLE of the attached reference image — not its pose, not its props.
+
+=== THE CHARACTER ===
+A cartoon GREY RAT enemy, front-facing and slightly turned: faces the CAMERA, both eyes and both ears visible, belly toward us. NOT a side profile.
+- A plump pear: width about 0.80 of the height. Big round head about 42% of the total height, fat round belly, short thick arms, short thick legs with big flat feet, all limbs attached to the body.
+- Silhouette must stay crisp and simple. At a glance it must read as: grey rat + red eyes + a row of red firecrackers on the belly.
+- Two big round ears with pink inner blocks.
+- Ears pink #f09ca8, belly and muzzle light grey #c4c7cd, the rest grey #8a8f96, everything outlined #3a241e.
+
+### THE FIRECRACKER BUNDLE
+`TWO` thick bright red #c8342a firecracker sticks lying side by side across the LOWER belly. Each stick is 3 blocks thick with ONE dark brown #3a241e band and a rounded cap. A short yellow #e8c14a fuse with a small spark.
+The bundle sits BELOW THE CHIN, is never wider than the belly, and never covers the mouth, snout or eyes.
+
+### COMPOSITION
+The character is centred in a square frame with a clear margin of about 12% on all four sides. Nothing touches the frame edge.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame plate.
+
+=== OUTPUT ===
+High resolution (at least 1000x1000) — the block grid enlarged, hard edges, no blur.
+Save to exactly:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2c-foe-blast-2\raw\idle-1.png
+Keep native high resolution, do NOT resize or downscale.
+When it is saved, reply with just the path.

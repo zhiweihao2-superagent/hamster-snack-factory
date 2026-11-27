@@ -1241,8 +1241,7 @@ function drawRatDetail(){
 
   /* 头像：和仓鼠栏卡片同一张（head-base，16 原生 ×4 = 64 展示） */
   /* 详情页用 64 立绘（原画），不再用裁头图 */
-  var headImg = (typeof artFromMap === "function")
-    ? artFromMap(unitArtMap(), [(rat.line || "none") + "-" + (rat.tier || 1), "none-1"]) : null;
+  var headImg = ratArt64(rat);
   var box = 92, ax = pad + 12, ay = cardY + 14;
   rr(ax, ay, box, box, 12);
   ctx.fillStyle = "rgba(255,255,255,.03)"; ctx.fill();
@@ -1535,12 +1534,22 @@ function drawClassIcon(line, cx, cy, size){
   return true;
 }
 
-function ratArtImg(rat){
+/* 取某只鼠的 64×64 形象：优先 UNIT_FRAMES 的 idle1（新美术），再退回静态贴图 */
+function ratArt64(rat){
   if (!rat) return null;
-  var line = rat.line || 'none';
-  var tier = rat.tier || 1;
-  var keys = [line + '-' + tier, 'none-1', line + '-2'];
-  return (typeof artFromMap === 'function') ? artFromMap(unitArtMap(), keys) : null;
+  var key = (rat.line || 'none') + '-' + (rat.tier || 1);
+  try {
+    if (typeof unitFrameImg === 'function'){
+      var f = unitFrameImg(key, 'idle1');
+      if (f) return f;
+    }
+  } catch (e) {}
+  return (typeof artFromMap === 'function')
+    ? artFromMap(unitArtMap(), [key, 'none-1', 'none-1']) : null;
+}
+
+function ratArtImg(rat){
+  return ratArt64(rat);
 }
 
 /* 在 (cx, cy) 画一只鼠（贴图优先，矢量兜底），size 为边长 */
@@ -1833,7 +1842,7 @@ function drawGachaReveal(){
       ctx.restore();
 
       if (k >= 1){
-        drawRatAt(r.rat, cx, cy - (list.length > 1 ? 6 : 10), cell * (list.length > 1 ? 0.72 : 0.8), 1);
+        drawRatAt(r.rat, cx, cy - (list.length > 1 ? 4 : 8), 64, 1);
         if (list.length === 1){
           txt((LINE_NAME[r.rat.line] || '') + ' · ' + (TIER_LABEL[r.rat.tier || 1] || ''),
               cx, cy + cell * 0.42, Math.round(W * 0.032), C.ink, 'center', true);
@@ -1971,8 +1980,8 @@ function drawFuseAnim(){
   var spread = (1 - ease) * (W * 0.34) + 6;
 
   if (age < 520){
-    drawRatAt(a.main, cx - spread, cy, 96, 1);
-    drawRatAt(a.sub, cx + spread, cy, 96, 1);
+    drawRatAt(a.main, cx - spread, cy, 64, 1);
+    drawRatAt(a.sub, cx + spread, cy, 64, 1);
     /* 拖尾 */
     ctx.strokeStyle = 'rgba(232,172,80,.35)';
     ctx.lineWidth = 2;
@@ -1993,7 +2002,7 @@ function drawFuseAnim(){
   } else {
     var p = Math.min(1, (age - 700) / 420);
     var scale = 0.6 + 0.4 * p;
-    drawRatAt(a.res, cx, cy, 120 * scale, Math.min(1, p * 1.6));
+    drawRatAt(a.res, cx, cy, 128 * scale, Math.min(1, p * 1.6));
     ctx.save();
     ctx.globalAlpha = 1 - p;
     ctx.strokeStyle = '#ffd166';
@@ -2214,7 +2223,7 @@ function drawFuse(){
     rr(cx - slotS / 2 - 6, slotY, slotS + 12, slotS + 24, 10);
     ctx.fillStyle = rat ? 'rgba(255,255,255,.05)' : 'rgba(255,255,255,.02)'; ctx.fill();
     ctx.lineWidth = 1; ctx.strokeStyle = rat ? col : 'rgba(255,255,255,.12)'; ctx.stroke();
-    if (rat) drawRatAt(rat, cx, slotY + slotS / 2 + 2, slotS, 1);
+    if (rat) drawRatAt(rat, cx, slotY + slotS / 2 + 2, 64, 1);
     else txt('?', cx, slotY + slotS / 2 + 8, 22, 'rgba(255,255,255,.2)', 'center', true);
     txt(label, cx, slotY + slotS + 16, Math.max(8, Math.round(W * 0.023)),
         rat ? col : '#5b5374', 'center', true);

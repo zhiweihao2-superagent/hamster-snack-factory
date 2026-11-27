@@ -585,6 +585,19 @@
   "errs": []
  },
  {
+  "file": "A2c-foe-blast-2/idle-1.png",
+  "size": "64x64",
+  "foot_row": 61,
+  "cx": 32.0,
+  "top": 12,
+  "colors": 8,
+  "coverage": 34.0,
+  "height": 50,
+  "outline_px": 448,
+  "ok": true,
+  "errs": []
+ },
+ {
   "file": "A3-fx-blast/frame-1.png",
   "size": "32x32",
   "foot_row": 29,
