@@ -1,5 +1,7 @@
 # 仓鼠零食工厂 · dsh-game-studio 工程版
 
+**在线试玩（手机可直接开）**：https://zhiweihao2-superagent.github.io/hamster-snack-factory/
+
 原 `hamster-snack-factory-main.zip` 里的单文件 HTML5 三消（5×5、五关、礼盒三工具）已经收编成
 [dsh-game-studio](https://github.com/ZSeven-W/dsh-game-studio) 的标准工程格式：
 `game.json` + `game.js` + `assets/` + `dist/index.html`，并且在同一条流水线上补齐了
