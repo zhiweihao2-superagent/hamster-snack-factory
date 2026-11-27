@@ -1287,38 +1287,120 @@ function separateUnits(f){
   }
 }
 
+/* ---------- 走位（规整版） ----------
+   目标：两队各自保持横排阵型推进，不交叉、不绕后、不挤成一团。
+   规则：
+   1) 每只鼠有自己的车道：槽位 0/1 第 1 排，2/3 第 2 排，4/5 第 3 排；
+   2) 车道 y 取阵型表里的固定值，不再追着敌人上下跑；
+   3) 横向只朝"自己该到的 x"移动：近战贴到敌人前沿前一个身位，远程留在本方半场；
+   4) 同一车道内不许超车：x 不能越过同车道排在自己前面的那只；
+   5) 双方只在本方半场 + 中线缓冲区活动，不会绕到对方背后。
+   把 rules.orderedMove 置为 false 可退回旧的"追最近敌人"逻辑。 */
+function laneRowOf(o){
+  var slot = (o && typeof o.slot === "number") ? o.slot : 0;
+  return Math.floor(slot / 2);
+}
+function laneYOf(o, isFoe, f){
+  var row = laneRowOf(o);
+  var rows = [0.40, 0.66, 0.92];
+  var frac = rows[Math.min(rows.length - 1, row)];
+  return clamp(f.top + (f.bottom - f.top) * frac, f.top + 8, f.bottom - 2);
+}
+function frontXOf(isFoe){
+  var best = null;
+  var list = isFoe ? R.units : R.enemies;
+  for (var i = 0; i < list.length; i++){
+    var u = list[i];
+    if (!u || !u.alive) continue;
+    var x = unitX(u);
+    if (best === null) best = x;
+    else best = isFoe ? Math.max(best, x) : Math.min(best, x);
+  }
+  return best;
+}
+
 function walkTick(dtMs){
   var step = STAGE.speed * dtMs / 1000;
   var f = floorRect();
+  var ordered = !(RULES && RULES.orderedMove === false);
+  var guard = Math.round(STAGE2.sprite * 0.45);
+  var minX = f.left + guard, maxX = f.right - guard;
+  var midX = (f.left + f.right) / 2;
 
   function move(o, isFoe, idx, total){
     if (!o || !o.alive) return;
     var _px = o.x, _py = o.y;
     ensurePos(o, idx, isFoe, total);
     ensurePosClamped(o, f);
-    var t = targetOf(o, isFoe);
-    if (!t){                                   /* 场上没目标：往中间压一点 */
-      o.x = clamp(o.x + (isFoe ? -step : step) * 0.5, f.left, f.right);
+
+    if (!ordered){
+      var t0 = targetOf(o, isFoe);
+      if (!t0){
+        o.x = clamp(o.x + (isFoe ? -step : step) * 0.5, f.left, f.right);
+        return;
+      }
+      var wantOld = o.range === "far" ? STAGE2.reach * 1.8
+                   : (o.range === "mid" ? STAGE2.reach * 1.25 : STAGE2.reach * 0.82);
+      wantOld = Math.min(wantOld, (f.right - f.left) * 0.38);
+      var laneOld = ((o.slot || 0) - 2) * 12 * (isFoe ? -1 : 1);
+      var laneYO = clamp(unitY(t0) + laneOld, f.top, f.bottom);
+      var dxO = unitX(t0) - o.x, dyO = laneYO - o.y;
+      var dO = Math.sqrt(dxO * dxO + dyO * dyO) || 1;
+      var errO = dO - wantOld;
+      if (Math.abs(errO) < 3) return;
+      var dirO = errO > 0 ? 1 : -1;
+      o.x = clamp(o.x + (dxO / dO) * step * dirO, minX, maxX);
+      o.y = clamp(o.y + (dyO / dO) * step * dirO, f.top + 6, f.bottom - 2);
+      if (Math.abs(o.x - _px) + Math.abs(o.y - _py) > 0.35) o.movedAt = performance.now();
       return;
     }
-    /* 想站的距离：近战贴脸、中距拉开、远程远远吊着 */
-    var want = o.range === 'far' ? STAGE2.reach * 1.8
-             : (o.range === 'mid' ? STAGE2.reach * 1.25 : STAGE2.reach * 0.82);
-    /* 地板只有 350 宽：想要的站距不能超过地板宽度的 38%，否则会一路退到墙边 */
-    want = Math.min(want, (f.right - f.left) * 0.38);
-    /* 每只鼠站自己的一条"车道"，避免 5 只叠成一列（64px 下尤其明显） */
-    var lane = ((o.slot || 0) - 2) * 12 * (isFoe ? -1 : 1);
-    var laneY = clamp(unitY(t) + lane, f.top, f.bottom);
-    var dx = unitX(t) - o.x, dy = laneY - o.y;
-    var d = Math.sqrt(dx * dx + dy * dy) || 1;
-    var err = d - want;
-    if (Math.abs(err) < 3) return;             /* 到位：站住打 */
-    var dir = err > 0 ? 1 : -1;
-    /* 沿两点连线走（近战会真的斜着抄近路），到边界就贴着边 */
-    var guard = Math.round(STAGE2.sprite * 0.45);
-    var minX = f.left + guard, maxX = f.right - guard;
-    o.x = clamp(o.x + (dx / d) * step * dir, minX, maxX);
-    o.y = clamp(o.y + (dy / d) * step * dir, f.top + 6, f.bottom - 2);
+
+    var front = frontXOf(isFoe);
+    var targetX;
+    if (front === null){
+      targetX = isFoe ? midX + 40 : midX - 40;
+    } else {
+      var reach = STAGE2.reach;
+      if (o.range === "far"){
+        targetX = isFoe ? Math.max(front + reach * 1.5, midX + 20)
+                        : Math.min(front - reach * 1.5, midX - 20);
+      } else if (o.range === "mid"){
+        targetX = isFoe ? Math.max(front + reach * 0.95, midX + 10)
+                        : Math.min(front - reach * 0.95, midX - 10);
+      } else {
+        targetX = isFoe ? front + reach * 0.78 : front - reach * 0.78;
+      }
+    }
+    if (isFoe) targetX = Math.max(targetX, midX + 6);
+    else targetX = Math.min(targetX, midX - 6);
+
+    var gap = Math.round(STAGE2.sprite * 0.82);
+    var list = isFoe ? R.enemies : R.units;
+    /* 同车道里"更靠敌方"的那只当排头；自己不是排头就被它压住，不许超车 */
+    var aheadX = null, selfIsAhead = true;
+    for (var i = 0; i < list.length; i++){
+      var mate = list[i];
+      if (!mate || !mate.alive || mate === o) continue;
+      if (laneRowOf(mate) !== laneRowOf(o)) continue;
+      var mx = unitX(mate);
+      if (isFoe){
+        if (mx < unitX(o) - 0.5){ selfIsAhead = false; if (aheadX === null || mx < aheadX) aheadX = mx; }
+      } else {
+        if (mx > unitX(o) + 0.5){ selfIsAhead = false; if (aheadX === null || mx > aheadX) aheadX = mx; }
+      }
+    }
+    if (!selfIsAhead && aheadX !== null){
+      if (isFoe) targetX = Math.max(targetX, aheadX + gap);
+      else targetX = Math.min(targetX, aheadX - gap);
+    }
+
+    var laneY = laneYOf(o, isFoe, f);
+    var dx = targetX - o.x;
+    var dy = laneY - o.y;
+    var movedX = Math.abs(dx) > 1.5 ? clamp(dx, -step, step) : 0;
+    var movedY = Math.abs(dy) > 1.5 ? clamp(dy, -step * 0.6, step * 0.6) : 0;
+    o.x = clamp(o.x + movedX, minX, maxX);
+    o.y = clamp(o.y + movedY, f.top + 6, f.bottom - 2);
     if (Math.abs(o.x - _px) + Math.abs(o.y - _py) > 0.35) o.movedAt = performance.now();
   }
 
@@ -2772,7 +2854,9 @@ function foeFrameName(o, now){
   if (!o) return null;
   if (o.animStrike && now - o.animStrike < 160) return 'strike';
   if (o.windup && o.windup > 0) return 'windup';
-  if (o.movedAt && now - o.movedAt < 180) return 'hop';
+  if (o.movedAt && now - o.movedAt < 200){
+    return (Math.floor(now / 150) % 2 === 0) ? 'hop' : 'idle1';
+  }
   return (Math.floor(now / 400) % 2 === 0) ? 'idle1' : 'idle2';
 }
 
@@ -2783,7 +2867,10 @@ function unitFrameName(u, isFoe, now){
   if (u.atkMs && u.timerMs !== undefined) nextAt = u.atkMs - (u.timerMs || 0);
   else if (u.need && u.atkMs) nextAt = Math.max(0, u.atkMs - (u.timerMs || 0));
   if (u.atkMs && nextAt > 0 && nextAt < 200) return 'windup';
-  if (u.movedAt && now - u.movedAt < 180) return 'hop';
+  if (u.movedAt && now - u.movedAt < 200){
+    /* 移动：接触帧(idle1) 与 空中帧(hop) 交替，形成"跳着走"的节奏 */
+    return (Math.floor(now / 150) % 2 === 0) ? 'hop' : 'idle1';
+  }
   return (Math.floor(now / 400) % 2 === 0) ? 'idle1' : 'idle2';
 }
 
@@ -2824,6 +2911,13 @@ function unitArtImg(key, isFoe, o, now){
   }
   var map = unitArtMap();
   return artFromMap(map, isFoe ? foeArtKeys(o || { cls: key.split('-')[0], tier: 1 }) : [key]);
+}
+
+/* 跳跃离地量：移动中按 150ms 一拍做抛物线，最高 3px；不移动就是 0 */
+function hopLift(o, now){
+  if (!o || !o.movedAt || now - o.movedAt > 200) return 0;
+  /* 和帧选择同一节拍：hop（空中）抬 3px，idle1（触地）回 0 —— 这样"飘"的感觉消失 */
+  return (Math.floor(now / 150) % 2 === 0) ? 3 : 0;
 }
 
 function drawArtImage(img, x, gy, s, dead){
@@ -3021,10 +3115,12 @@ function drawUnitSprite(o, isFoe, now){
 
   /* 本体：优先用 Tessera 出的像素贴图（64×64，NEAREST）；
      没贴图（或还没加载完）就退回代码绘制的像素化矢量 —— 两条路视觉上都还是像素风。 */
+  var lift = hopLift(o, now);
+  var gyDraw = gy - lift;
   var art = unitArtImg(unitArtKey(o), isFoe, o, now);
   if (art) ART_DIAG.draws++; else ART_DIAG.misses++;
-  if (art) drawArtImage(art, x, gy, s, dead);
-  else drawSpriteArt(o, isFoe, now, x, gy, s, dead);
+  if (art) drawArtImage(art, x, gyDraw, s, dead);
+  else drawSpriteArt(o, isFoe, now, x, gyDraw, s, dead);
   /* 纸箱鼠还没被破箱时，头上顶个纸箱（贴图统一后靠这几笔保住识别度） */
   if (isFoe && o.type === 'crate' && o.box > 0 && !dead) drawCrateTag(x, gy, s);
 
@@ -3827,6 +3923,29 @@ window.__enemySelfTest = function(){
 };
 
 window.__foeMake = function(type, tier, elite){ return foeMake(type, tier, elite); };
+/* 调试口：当前每个单位用的动画帧 + 离地量（验证"跳着走"） */
+window.__animInfo = function(){
+  var now = performance.now();
+  var out = [];
+  var push = function(list, isFoe){
+    for (var i = 0; i < list.length; i++){
+      var u = list[i];
+      if (!u || !u.alive) continue;
+      out.push({
+        who: (u.name || ('#' + i)) + (isFoe ? '(敌)' : ''),
+        slot: u.slot,
+        x: Math.round(unitX(u)), y: Math.round(unitY(u)),
+        frame: isFoe ? foeFrameName(u, now) : unitFrameName(u, isFoe, now),
+        lift: hopLift(u, now),
+        moving: !!(u.movedAt && now - u.movedAt < 200)
+      });
+    }
+  };
+  push(R.units, false);
+  push(R.enemies, true);
+  return out;
+};
+
 window.__hitTest = function(kind, dmg){
   var foe = R.enemies.filter(function(f){ return f && f.alive; })[0];
   if (!foe) return { err: 'no foe' };
