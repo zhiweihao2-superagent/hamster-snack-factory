@@ -1,0 +1,56 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. The PNG must come out of the image generation model.
+
+You will call the image generation tool ONCE, producing ONE animation frame.
+
+=== THE ATTACHED IMAGE IS THIS EXACT RAT ===
+The attached PNG is the idle frame of this character, already approved. Draw THE SAME RAT: same body, same head size,
+same face, same eyes, same colours, same firecracker bundle, same 2x2 pixel blocks, same 2px dark outline.
+Change ONLY the pose, exactly as described under THE POSE.
+
+=== HARD PIXEL RULES — follow every line literally ===
+1. `hard-edged pixel art on a 32x32 grid, every pixel drawn as a 2x2 block`. It must read as a 32x32 sprite scaled up by 40.
+2. `flat colors only — NO gradients, NO shading, NO anti-aliasing, NO soft edges`.
+3. `exactly 6 colors: grey fur #8a8f96, light grey belly #c4c7cd, pink ears #f09ca8, dark red dynamite #c8342a, yellow fuse #e8c14a, outline #3a241e` — plus pure white #fff8ee for the eye highlights and the two front teeth only.
+4. `1-pixel dark brown outline #3a241e around the whole silhouette` — one block of the 32x32 grid = 2x2 image pixels thick.
+5. `eyes: 2x2 solid red block with exactly one white pixel as highlight`, at least one block of grey fur between an eye and the head outline.
+6. `no fine details smaller than 2x2 pixels` — no 1-pixel whiskers, claws, thin shadows, fur strands, blush or specks.
+7. Copy the OUTLINE THICKNESS and FLAT-COLOUR STYLE of the attached reference — not its pose.
+
+=== DO NOT BREAK THE SHAPE ===
+- The silhouette stays a plump pear, slightly taller than wide, width about 0.80 of the height.
+- The HEAD stays a big ROUND circle at the same diameter. Never flatten it into an oval or a wedge.
+- Total figure height may change by 10% at most compared with the anchor.
+- Two big round ears, same size and shape as the anchor; never stretched, pointed or lengthened.
+
+=== THE MUZZLE (must match the anchor exactly) ===
+There is NO dark line, NO dark "T" or "⊥" mark and NO dark mouth anywhere on the face.
+Only these three flat 2x2 blocks: the pink #f09ca8 nose, and TWO separate white #fff8ee front teeth under it,
+one slightly left and one slightly right, with at least one block of light grey between them.
+
+=== THE TAIL ===
+SHORT and SMALL, about two thirds of a natural tail: the root stays glued to the right hip with no gap,
+one small curl, then stop. Never wider than the lower body, tip at least 3 blocks inside the right frame edge.
+
+=== THE CHARACTER ===
+A cartoon GREY RAT enemy, front-facing and slightly turned: faces the CAMERA, both eyes and both ears visible,
+belly toward us. NOT a side profile. Plump pear body, big round head about 42% of the height, fat round belly,
+short thick arms, short thick legs with big flat feet, all limbs attached to the body.
+
+=== THE FIRECRACKER BUNDLE ===
+`THREE` thick bright red #c8342a firecracker sticks lying HORIZONTALLY in one row across the LOWER belly, each 3 blocks thick with ONE dark brown #3a241e band.
+The bundle shares ONE single fuse: a narrow VERTICAL column of yellow #e8c14a on top of the bundle, with a small bright yellow dot at its tip and one spark block trailing.
+The bundle sits BELOW THE CHIN, is never wider than the belly, and never covers the muzzle, nose, teeth or eyes.
+
+=== COMPOSITION ===
+Centred in a square frame with a clear margin of about 12% on all four sides. Nothing touches the frame edge.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame plate.
+
+=== THE POSE — hop-air ===
+AIRBORNE. The whole rat is lifted with clear empty space under the feet, both legs folded up under the belly, both paws raised in front of the chest, ears flipped up, tail trailing. Same body, same head, same bundle.
+
+=== OUTPUT ===
+High resolution (at least 1000x1000), block grid enlarged, hard edges, no blur.
+Save to exactly (overwrite the old file):
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2c-foe-blast-3\raw\hop-air.png
+Keep native high resolution, do NOT resize or downscale.
+When it is saved, reply with just the path.

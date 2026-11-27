@@ -1164,8 +1164,15 @@ function drawGearBag(x, y, w, rat, idx){
     rr(x + 12, by, bw, bh, 13);
     ctx.fillStyle = 'rgba(232,172,80,.16)'; ctx.fill();
     ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(232,172,80,.6)'; ctx.stroke();
+    /* 证书图标：cert-<阶>（青/银/金/深红），有就画在左边 */
+    var certImg = (typeof artFromMap === 'function') ? artFromMap(unitArtMap(), ['cert-' + (o.tier - 1)]) : null;
+    if (certImg){
+      ctx.save(); ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(certImg, x + 16, by + 2, 22, 22);
+      ctx.restore();
+    }
     txt('使用 ' + (LINE_NAME[o.line] || o.line) + (TIER_LABEL[o.tier] || '') + '证 ×' + o.count,
-        x + 22, by + 18, Math.max(10, Math.round(W * 0.027)), '#ffd98a', 'left', true);
+        x + 44, by + 18, Math.max(10, Math.round(W * 0.027)), '#ffd98a', 'left', true);
     txt('→ ' + (LINE_NAME[o.line] || o.line) + ' · ' + (TIER_LABEL[o.tier] || ''),
         x + w - 22, by + 18, Math.max(9, Math.round(W * 0.024)), C.muted, 'right');
     (function(key){
@@ -1370,8 +1377,15 @@ function drawRatDetail(){
         rr(pad, by2, W - pad * 2, 30, 15);
         ctx.fillStyle = "rgba(232,172,80,.16)"; ctx.fill();
         ctx.strokeStyle = "rgba(232,172,80,.6)"; ctx.lineWidth = 1; ctx.stroke();
+        /* 证书图标（青/银/金/深红）：cert-<阶-1> */
+        var cImg = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["cert-" + (o2.tier - 1)]) : null;
+        if (cImg){
+          ctx.save(); ctx.imageSmoothingEnabled = true;
+          ctx.drawImage(cImg, pad + 4, by2 + 3, 24, 24);
+          ctx.restore();
+        }
         txt("使用 " + (LINE_NAME[o2.line] || o2.line) + (TIER_LABEL[o2.tier] || "") + "证 ×" + o2.count,
-            pad + 10, by2 + 20, Math.max(10, Math.round(W * 0.026)), "#ffd98a", "left", true);
+            pad + (cImg ? 32 : 10), by2 + 20, Math.max(10, Math.round(W * 0.026)), "#ffd98a", "left", true);
         txt("→ " + (LINE_NAME[o2.line] || o2.line) + " · " + (TIER_LABEL[o2.tier] || ""),
             W - pad - 10, by2 + 20, Math.max(9, Math.round(W * 0.023)), C.muted, "right");
         (function(key){

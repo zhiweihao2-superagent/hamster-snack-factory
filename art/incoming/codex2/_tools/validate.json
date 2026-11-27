@@ -585,6 +585,19 @@
   "errs": []
  },
  {
+  "file": "A2c-foe-blast-1/idle-1.png",
+  "size": "64x64",
+  "foot_row": 61,
+  "cx": 32.0,
+  "top": 12,
+  "colors": 7,
+  "coverage": 35.3,
+  "height": 50,
+  "outline_px": 366,
+  "ok": true,
+  "errs": []
+ },
+ {
   "file": "A2c-foe-blast-2/idle-1.png",
   "size": "64x64",
   "foot_row": 61,
@@ -594,6 +607,32 @@
   "coverage": 34.0,
   "height": 50,
   "outline_px": 448,
+  "ok": true,
+  "errs": []
+ },
+ {
+  "file": "A2c-foe-blast-3/idle-1.png",
+  "size": "64x64",
+  "foot_row": 61,
+  "cx": 31.5,
+  "top": 12,
+  "colors": 7,
+  "coverage": 36.5,
+  "height": 50,
+  "outline_px": 428,
+  "ok": true,
+  "errs": []
+ },
+ {
+  "file": "A2c-foe-blast-4/idle-1.png",
+  "size": "64x64",
+  "foot_row": 61,
+  "cx": 32.0,
+  "top": 12,
+  "colors": 7,
+  "coverage": 37.8,
+  "height": 50,
+  "outline_px": 434,
   "ok": true,
   "errs": []
  },
