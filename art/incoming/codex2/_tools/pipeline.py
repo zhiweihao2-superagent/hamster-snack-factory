@@ -117,6 +117,20 @@ def cutout_background(rgba: np.ndarray, tol: int = 26) -> np.ndarray:
 
 
 # ---------------------------------------------------------------- 量化
+def quantize_fixed(rgba: np.ndarray, palette: list[tuple[int, int, int]]) -> np.ndarray:
+    """把每个不透明像素直接映射到给定调色板里最近的一色（不做 dither、不做中值）。
+    "硬像素"路线用它：原图带抗锯齿中间调，最近色映射后全部塌成平面色，边缘变硬。"""
+    pal = np.array(palette, dtype=np.int32)
+    out = rgba.copy()
+    a = out[:, :, 3] > 0
+    if not a.any():
+        return out
+    px = out[:, :, :3][a].astype(np.int32)
+    d = ((px[:, None, :] - pal[None, :, :]) ** 2).sum(axis=2)
+    out[:, :, :3][a] = pal[d.argmin(axis=1)].astype(np.uint8)
+    return out
+
+
 def quantize_rgb(rgba: np.ndarray, n: int, palette_name: str, snap_tol: int = 62) -> np.ndarray:
     """在 #3a241e 上合成后做 MEDIANCUT 量化（Dither NONE），再把靠近品牌色的调色板槽位吸附成品牌色。"""
     img = Image.fromarray(rgba, "RGBA")
@@ -378,7 +392,7 @@ def align(rgba: np.ndarray, mode: str, foot_y: int, center_x: int | None = None)
 def process(src: Path, out: Path, size: int, mode: str, foot: int,
             colors: int, palette: str, char_h: int | None, snap_tol: int = 30, outline_w: int = 1,
             icon_crop: tuple[float, float] | None = None, denoise: int = 0,
-            white_thresh: int = 0) -> dict:
+            white_thresh: int = 0, fixed_palette: list[tuple[int, int, int]] | None = None) -> dict:
     raw = Image.open(src).convert("RGBA")
     arr = np.array(raw)
     arr = cutout_background(arr)
@@ -390,9 +404,12 @@ def process(src: Path, out: Path, size: int, mode: str, foot: int,
         arr = np.dstack([np.array(rgb), arr[:, :, 3]])
     if white_thresh > 0:
         arr = boost_white(arr, white_thresh)
-    arr = quantize_rgb(arr, colors, palette, snap_tol)
-    if white_thresh > 0:
-        arr = boost_white(arr, white_thresh)
+    if fixed_palette:
+        arr = quantize_fixed(arr, fixed_palette)          # 硬像素路线：直接塌成固定色
+    else:
+        arr = quantize_rgb(arr, colors, palette, snap_tol)
+        if white_thresh > 0:
+            arr = boost_white(arr, white_thresh)
     arr = binarize_alpha(arr)
     if outline_w > 0:
         arr = enforce_outline(arr, width=outline_w)
