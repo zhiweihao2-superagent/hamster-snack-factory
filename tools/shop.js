@@ -2586,113 +2586,115 @@ function drawSkillDots(rat, x, y){
   }
 }
 
+/* ---------- 仓鼠卡（仓鼠栏） ----------
+   统一用"白板鼠头"当图标（不再画各职业立绘），省出的空间显示技能：
+   名字 / 职业·阶 / 天赋 / 技能名（最多 2 条 + 更多） */
 function drawRatCard(x, y, w, h, idx){
   var rat = SHOP.rats[idx];
   if (!rat) return;
   var onSquad = SHOP.squad.indexOf(idx) >= 0;
   var selected = SHOP.sel === idx;
   rr(x, y, w, h, 10);
-  ctx.fillStyle = selected ? 'rgba(232,172,80,.12)' : C.panel;
+  ctx.fillStyle = selected ? "rgba(232,172,80,.12)" : C.panel;
   ctx.fill();
   ctx.lineWidth = selected ? 2 : 1;
-  ctx.strokeStyle = selected ? C.amber : (onSquad ? 'rgba(121,201,138,.55)' : C.line);
+  ctx.strokeStyle = selected ? C.amber : (onSquad ? "rgba(121,201,138,.55)" : C.line);
   ctx.stroke();
 
-  var artS = Math.round(Math.min(h * 0.62, w * 0.34));
-  var id = ratId(rat);
-  var artKey = (rat.line || 'none') + '-' + (rat.tier || 1);
-  var artImg = (typeof iconImg === 'function') ? artFromMap(unitArtMap(), [artKey]) : null;
-  if (artImg){
+  var iconS = Math.round(Math.min(38, h - 44));
+  var headImg = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["none-1"]) : null;
+  if (headImg){
     ctx.save();
     ctx.imageSmoothingEnabled = false;
-    var a2 = Math.round(Math.min(artS, h - 12));
-    ctx.drawImage(artImg, Math.round(x + 8), Math.round(y + (h - a2) / 2), a2, a2);
+    ctx.drawImage(headImg, Math.round(x + 8), Math.round(y + (h - iconS) / 2), iconS, iconS);
     ctx.restore();
-  } else {
-    drawHamsterArt(x + 8, y + Math.round((h - artS) / 2), artS, { line: rat.line, name: ratLabel(rat) });
   }
 
-  var tx = x + artS + 12;
+  var tx = x + iconS + 16;
   var nameFs = Math.max(10, Math.round(W * 0.031));
-  var subFs = Math.max(8, Math.round(W * 0.023));
-  /* 卡片只有 ~110px 宽：名字最多 4 个字，天赋只显示第一条 + "+n" */
+  var subFs = Math.max(8, Math.round(W * 0.022));
   var name = ratLabel(rat);
   if (name.length > 4) name = name.slice(0, 4);
-  txt(name, tx, y + Math.round(h * 0.30), nameFs, C.ink, 'left', true);
-  txt(ratLineLabel(rat), tx, y + Math.round(h * 0.52), subFs, C.muted, 'left');
+  txt(name, tx, y + Math.round(h * 0.26), nameFs, C.ink, "left", true);
+
+  txt(ratLineLabel(rat), tx, y + Math.round(h * 0.44) + 4, subFs, C.muted, "left");
 
   var ts = rat.talents || [];
-  var roman = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
+  var roman = ["Ⅰ", "Ⅱ", "Ⅲ"];
   var talText;
-  if (!ts.length) talText = '未觉醒';
+  if (!ts.length) talText = "未觉醒";
   else {
     var t0 = ts[0];
     talText = (TALENT_DEF[t0.id] ? TALENT_DEF[t0.id].name : t0.id).slice(0, 2) + roman[(t0.lv || 1) - 1];
-    if (ts.length > 1) talText += '+' + (ts.length - 1);
+    if (ts.length > 1) talText += "+" + (ts.length - 1);
   }
-  txt(talText, tx, y + Math.round(h * 0.74), subFs + 1, '#ffd98a', 'left', true);
+  txt(talText, tx, y + Math.round(h * 0.63), subFs + 1, "#ffd98a", "left", true);
 
-  /* 价值速览：右上角 ★评分 + 技能类型色点 */
+  var sk = rat.skills || [];
+  if (sk.length){
+    var romanS = ["Ⅰ", "Ⅱ", "Ⅲ"];
+    var parts = [];
+    for (var si = 0; si < sk.length && si < 2; si++){
+      parts.push(skillName(sk[si].id).slice(0, 3) + romanS[(sk[si].lv || 1) - 1]);
+    }
+    if (sk.length > 2) parts.push("+" + (sk.length - 2));
+    txt(parts.join(" "), tx, y + Math.round(h * 0.82), Math.max(8, Math.round(W * 0.021)), "#8fb8ff", "left");
+  } else {
+    txt("无技能", tx, y + Math.round(h * 0.82), Math.max(8, Math.round(W * 0.021)), "#5b5374", "left");
+  }
+
   var score = ratScore(rat);
-  txt('★' + score, x + w - 8, y + h - 8, Math.max(9, Math.round(W * 0.024)),
-      score >= 8 ? '#ffd166' : (score >= 5 ? '#e8ac50' : '#8f86a6'), 'right', true);
-  drawSkillDots(rat, x + 8, y + h - 11);
+  txt("★" + score, x + w - 8, y + 15, Math.max(9, Math.round(W * 0.024)),
+      score >= 8 ? "#ffd166" : (score >= 5 ? "#e8ac50" : "#8f86a6"), "right", true);
 
-  /* NEW 角标：刚抽到、还没看过 */
   if (isFresh(idx)){
     var nw = 26, nh = 12, nx = x + 6, ny = y + 6;
     rr(nx, ny, nw, nh, 6);
-    ctx.fillStyle = 'rgba(255,209,102,.9)'; ctx.fill();
-    txt('NEW', nx + nw / 2, ny + 9, 8, '#241d2e', 'center', true);
+    ctx.fillStyle = "rgba(255,209,102,.9)"; ctx.fill();
+    txt("NEW", nx + nw / 2, ny + 9, 8, "#241d2e", "center", true);
   }
-
-  /* 状态改成右上角小徽章，避免和名字撞 */
   if (onSquad){
-    var bw = 16, bh = 12;
-    var bxx = x + w - bw - 6, byy = y + 6;
-    rr(bxx, byy, bw, bh, 6);
-    ctx.fillStyle = 'rgba(121,201,138,.22)'; ctx.fill();
-    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(121,201,138,.8)'; ctx.stroke();
-    txt('上', bxx + bw / 2, byy + 9, 8, '#79c98a', 'center', true);
+    var bw2 = 16, bh2 = 12;
+    var bxx = x + w - bw2 / 2 - 2, byy = y + h - 14;
+    rr(bxx, byy, bw2, bh2, 6);
+    ctx.fillStyle = "rgba(121,201,138,.9)"; ctx.fill();
+    txt("上", bxx + bw2 / 2, byy + 9, 8, "#12301c", "center", true);
   }
 
   shopHit(x, y, w, h, function(){
-    /* 双击（350ms 内点同一张）→ 直接进详情；单击仍是"选中 / 上下场" */
     var tapNow = performance.now();
     if (SHOP.lastTapIdx === idx && tapNow - (SHOP.lastTapAt || 0) < 350){
       SHOP.lastTapIdx = -1; SHOP.lastTapAt = 0;
       SHOP.detail = idx; SHOP.detailScroll = 0; clearFresh(idx);
-      SHOP.page = 'rat'; sfx('tap');
+      SHOP.page = "rat"; sfx("tap");
       return;
     }
     SHOP.lastTapIdx = idx; SHOP.lastTapAt = tapNow;
-
-    // 第一次点 = 选中（只选人，不动编队）；再点已选中的那只 = 上下场
     if (SHOP.sel !== idx){
       SHOP.sel = idx;
-      sfx('tap');
+      if (isFresh(idx)) clearFresh(idx);
+      sfx("tap");
       shopSave();
       return;
     }
     var at = squadIndexOf(idx);
     if (at >= 0){
-      if (squadOnCount() > 1){ SHOP.squad[at] = -1; sfx('tap'); }
-      else sfx('invalid');                       // 至少留一只，不然开局直接判负
+      if (squadOnCount() > 1){ SHOP.squad[at] = -1; sfx("tap"); }
+      else sfx("invalid");
     } else if (squadOnCount() >= squadSlots()){
-      sfx('invalid');                            // 5 个位满了
-    } else if (squadLineCount(rat.line || 'none') >= maxSameLine(rat.line || 'none')){
-      sfx('invalid');                            // 同一条线超过上限
+      sfx("invalid");
+    } else if (squadLineCount(rat.line || "none") >= maxSameLine(rat.line || "none")){
+      sfx("invalid");
     } else {
       var slot = squadFirstEmpty();
-      SHOP.squad[slot >= 0 ? slot : squadSlots() - 1] = idx;
-      sfx('tap');
+      if (slot >= 0){ SHOP.squad[slot] = idx; sfx("tap"); }
+      else sfx("invalid");
     }
+    rebuildUnitsIfShop();
     shopSave();
   });
 }
 
-/* ---------- 9. 购买 ---------- */
-/* 统一的金币入口（摇奖 / 押注 / 关卡结算都走这里，保证会落盘） */
 function addCoins(n){
   SHOP.coins = Math.max(0, Math.round(SHOP.coins + n));
   shopSave();
