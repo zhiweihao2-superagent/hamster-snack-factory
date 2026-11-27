@@ -1,0 +1,31 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. The PNG must come out of the image generation model.
+
+You will call the image generation tool ONCE to fill in a single missing animation frame.
+
+=== CHARACTER (identical to the other four frames of this set, see attached reference) ===
+A cartoon GREY RAT enemy, a friendly-looking bomb-carrier, standing on two legs, hunched, lean and scrappy.
+- Grey fur #8a8f96, darker grey #5e6369 on the back and arms, pale grey-cream muzzle and belly.
+- LONG THIN PINK TAIL #f09ca8 trailing out to the RIGHT.
+- Pointed snout, thin whiskers, round RED eyes #e8402c with a hard dark pupil, a goofy wide grin.
+- Pink inner ears, pink paws and feet.
+- FACING LEFT: snout, eyes, chest and feet lean toward the LEFT edge. Tail trails to the RIGHT.
+- Two red #e8402c dynamite sticks lashed together on the chest with a leather strap and dark brown #3a241e bands, a lit fuse with a small orange spark.
+- NO clothing, NO hand weapon, NO shield.
+
+=== STYLE ===
+Hard-edged PIXEL ART sprite, visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Thick dark-brown outline #3a241e on the silhouette and between every colour region.
+Flat solid colours. NO gradients, NO soft shading, NO anti-aliasing, NO blur.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame.
+Match the attached reference exactly for pixel density, outline weight and palette.
+
+=== THE FRAME — `action-strike` ===
+The rat is DASHING FORWARD to the LEFT in a playful sprint: body tipped about 25 degrees to the left, one leg kicked out behind to the right, both front paws held up at chest height reaching ahead toward the left edge (a cheerful hop-dash, like a mascot running at the camera), tail streaming straight out behind for balance, ears blown back, mouth open in a happy yell, the dynamite bundle swinging forward on its strap with the fuse spark flaring.
+Keep it bouncy and comedic — a cartoon mascot dash, not a fight. Round readable silhouette, all limbs attached to the body, exactly two arms, two legs, two ears, one head, one tail.
+
+=== OUTPUT ===
+High resolution (at least 1000x1000), transparent background.
+Save to exactly:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2-foe-blast-2\raw\action-strike.png
+Keep native high resolution, do NOT resize or downscale.
+When it is saved, reply with just the path.

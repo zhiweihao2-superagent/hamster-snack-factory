@@ -1,0 +1,42 @@
+﻿You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. Every PNG must come out of the image generation model.
+
+You will call the image generation tool FIVE times, one animation frame each.
+
+=== CHARACTER (keep identical across all five frames) ===
+A cartoon GREY RAT enemy, a bomb-carrier. Same species as the attached reference image.
+- Standing on two legs, hunched, lean and scrappy, slightly smaller-bodied than our hero hamster.
+- Grey fur #8a8f96, darker grey #5e6369 on the back and arms, pale grey-cream muzzle and belly.
+- LONG THIN PINK TAIL #f09ca8 curling out behind — it trails to the RIGHT because the rat faces LEFT.
+- Pointed rat snout, long thin whiskers, big round RED eyes #e8402c with a hard dark pupil, evil grin with one small pointed tooth.
+- Pink inner ears, pink paws and feet.
+- FACING LEFT: snout, eyes, chest and feet all lean toward the LEFT edge of the image. Tail trails to the RIGHT.
+- NO clothing, NO hand weapon, NO shield. Paws empty.
+
+=== THE BOMB ===
+Three sticks of red #e8402c dynamite in a fat bundle strapped across the chest with a leather harness, three dark brown #3a241e bands, the whole bundle the size of the rat's torso. Fuse burning low. Fur singed at the edges, soot on the muzzle, eyes bloodshot and eager.
+A lit fuse curls up out of the bundle, tip glowing bright yellow #ffe27a with a hot orange spark.
+
+=== STYLE ===
+Hard-edged PIXEL ART sprite. Visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Thick dark-brown outline #3a241e on the silhouette and between every colour region.
+Flat solid colours. NO gradients, NO soft shading, NO anti-aliasing, NO blur.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame.
+Match the attached reference exactly for pixel density, outline weight and palette treatment — the reference is our shipped enemy art.
+
+=== THE FIVE FRAMES (one generation each) ===
+1. idle-1 — neutral idle: hunched, both arms hanging, tail curled, fuse sparking gently, menacing grin.
+2. idle-2 — same idle a beat later: body bobbed 1 pixel, ears twitched, tail tip flicked, fuse spark a little bigger.
+3. action-windup — winding up: crouched lower, shoulders pulled back to the RIGHT, head thrust forward-left, teeth bared, the bomb bundle swinging forward on its strap, fuse spark flaring.
+4. action-strike — attacking: lunging LEFT, body tilted hard left, both claws swiping forward-left, back leg trailing, tail whipped straight out behind for balance, mouth wide open, fuse blown back.
+5. hop-air — airborne: clearly OFF the ground, feet tucked with empty air below the toes, body stretched, arms flung up and out, tail streaming, bomb bundle lifted, spark trailing.
+
+=== OUTPUT ===
+Each frame at high resolution (at least 1000x1000), transparent background.
+Save to exactly, one generation per file:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2-foe-blast-3\raw\idle-1.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2-foe-blast-3\raw\idle-2.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2-foe-blast-3\raw\action-windup.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2-foe-blast-3\raw\action-strike.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2-foe-blast-3\raw\hop-air.png
+Keep native high resolution, do NOT resize or downscale. Create the folder if needed.
+When all five are saved, reply with just the five paths.

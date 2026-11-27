@@ -1,0 +1,47 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. Every PNG must come out of the image generation model.
+
+You will call the image generation tool ELEVEN times, one game skill icon each.
+
+=== CRITICAL CONSTRAINT ===
+These icons will be shrunk to 16x16 pixels in the finished game. So each one must be ONE bold, instantly readable symbol:
+- a single dominant shape filling the middle of the frame with a small margin around it;
+- very thick dark-brown outline #3a241e (about 1/12 of the frame width) around the whole shape AND around every internal region;
+- 2 to 4 flat colours per icon plus the outline. NO fine filigree, NO tiny secondary props, NO thin lines thinner than the outline, NO text, NO letters, NO numbers;
+- no background plate, no rounded-square badge, no frame — the symbol floats on transparency.
+
+=== STYLE ===
+Hard-edged PIXEL ART with visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Flat solid colours only. NO gradients, NO soft glow, NO blur, NO anti-aliasing, NO drop shadow.
+Fully TRANSPARENT background (alpha). No text, no watermark, no border.
+The symbol alone, centred, same inferred scale for all eleven so they look like one set.
+Use the attached reference only for the pixel density and the thick dark-brown outline weight.
+
+=== THE ELEVEN ICONS (one generation each) ===
+1. `chongya` 冲击钻 IMPACT DRILL — a short industrial drill bit pointing up-right, its spiral flutes shown as 3 chunky wedge stripes, a starburst of 3 impact sparks at the tip. Steel grey-blue #7f8ea3 body, orange #e8843e collar, yellow sparks.
+2. `qiexiao` 横扫切削 SWEEPING CUT — one big crescent slash sweeping left to right, blade edge pale steel #cfd8e3, trailing inner edge deep orange #ff9a3c, two small shard chips flying off the tip.
+3. `chuanjia` 穿甲钉 ARMOUR-PIERCING NAIL — a fat steel nail driving straight down through a dark grey plate, plate cracked with 2 splitting lines, nail head wide at the top, orange impact ring at the entry hole.
+4. `duantou` 断头台 GUILLOTINE — a heavy angled guillotine blade sliding down inside a simple dark timber frame, blade edge pale steel, one small red #e8402c droplet at the cutting edge. Keep the frame to two thick posts and one crossbeam.
+5. `huoqiu` 火球术 FIREBALL — a round lumpy fireball, yellow-white core #ffe27a, orange #ff9a3c mid, deep red #e8402c outer lobes, 3 short flame tongues trailing up-left.
+6. `bingshuang` 冰霜新星 FROST NOVA — a six-armed snowflake star of pale ice blue #bfe6f5 with a white #fff8ee centre, 3 short icy shards bursting outward, cold blue #4fa8d8 shading on the arms.
+7. `shandian` 闪电链 CHAIN LIGHTNING — one thick jagged lightning bolt striking down-right, bright yellow #ffe27a core with orange #ff9a3c rim, plus two small forked offshoots, and 2 tiny spark dots.
+8. `huangyou` 黄油护甲 BUTTER ARMOUR — a chunky block of butter shaped like a small shield, warm cream-yellow #f5d878 with a paler #fff3c4 top face, one melting drip on the lower edge, a little orange #e8843e strap across it.
+9. `jiaban` 加班冲刺 OVERTIME DASH — a running boot in profile facing right, dark leather brown #6b4630 with a cream #fae8c8 sole, three orange #e8843e speed lines trailing behind it, and a small pale clock face on the boot cuff reading late.
+10. `xingyun` 幸运签 LUCKY SLIP — a narrow paper fortune slip standing upright with a curled top corner, paper cream #fae8c8, one red #e8402c ribbon tied around it, and a small yellow four-point star above it.
+11. `tangfen` 糖分补给 SUGAR SUPPLY — a wrapped hard candy in a bright pink #f09ca8 wrapper with twisted ends, a pale cream #fae8c8 swirl stripe across it, plus one small white sugar cube beside it.
+
+=== OUTPUT ===
+Each icon at high resolution (at least 1000x1000), transparent background, square composition, symbol centred with even margin.
+Save to exactly, one generation per file:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\chongya.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\qiexiao.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\chuanjia.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\duantou.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\huoqiu.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\bingshuang.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\shandian.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\huangyou.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\jiaban.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\xingyun.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\tangfen.png
+Keep native high resolution, do NOT resize or downscale. Create the folder if needed.
+When all eleven are saved, reply with just the eleven paths.

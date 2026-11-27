@@ -1,0 +1,31 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. The PNG must come out of the image generation model.
+
+You will call the image generation tool ONCE, replacing an icon that turned into a pale smear at 16x16.
+
+=== WHY THE LAST ONE FAILED ===
+The slip was cream #fae8c8 and the star on it was pale yellow #ffe27a. At 16x16 those two colours merged into one beige blob and the star vanished.
+So this time the two must be FAR apart in value: a DARK paper and a BRIGHT star.
+
+=== HARD CONSTRAINT (icon is displayed at 16x16) ===
+- One chunky symbol filling most of the frame; every area a solid colour block at least 1/5 of the frame wide.
+- Very thick dark-brown #3a241e outline (about 1/10 of the frame) around the symbol and around the star and the band.
+- 3 flat colours plus the outline. NO gradients, NO glow, NO blur, NO anti-aliasing, NO shadow, NO text, NO letters, NO numbers, NO frame, NO background plate.
+- Fully TRANSPARENT background (alpha). Symbol centred with a small even margin.
+
+=== STYLE ===
+Hard-edged PIXEL ART with visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Match the attached reference sheet for palette treatment, outline weight and pixel density (icons from the same set).
+
+=== THE ICON — `xingyun` 幸运签 LUCKY SLIP ===
+A FAT wooden fortune tablet standing upright, blocky and tall like a domino (about 45% as wide as the frame, near full height), with a small folded corner at the top right.
+- Tablet face colour: DARK warm tan #b0703a — clearly darker than the star.
+- On the upper half of the tablet: ONE big bright yellow #ffe27a four-pointed star, about half the tablet's width, with a thick #3a241e outline, sitting on a small pale #fae8c8 square of light so it pops.
+- Wrapped around the lower third: a wide wine-red #9e2418 horizontal band with a chunky knot on the right edge.
+- Everything is chunky blocks: the star, the band and the knot must each be obvious silhouettes on their own.
+
+=== OUTPUT ===
+High resolution (at least 1000x1000), transparent background, square, symbol centred.
+Save to exactly, replacing the old file:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\xingyun.png
+Keep native high resolution, do NOT resize or downscale.
+When it is saved, reply with just the path.

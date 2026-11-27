@@ -1,0 +1,33 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. Both PNGs must come out of the image generation model.
+
+You will call the image generation tool TWO times.
+
+=== THE CHARACTER — read the attached reference images carefully ===
+The FIRST attached image is the exact character you must draw: a plain cartoon hamster, standing upright, no gear, no weapon.
+The SECOND attached image is our shipped art style reference.
+Non-negotiable silhouette rules, every frame:
+- The body stays a PLUMP ROUND PEAR. Wide, soft, bottom-heavy. NEVER stretched into a long tube, NEVER thin, NEVER hunched into a rat.
+- Small round head sitting ON TOP of the round body, with two big round cheek pouches puffing out to the sides. The cheeks are the widest part of the head.
+- Snout is SHORT and BLUNT. No pointed muzzle, no long nose bridge, no rat profile. TWO tiny white front teeth right under the nose.
+- Big round dark eye with one white highlight. Pink inner ears. Pink paws and feet. Cream face-bib and belly. Warm orange fur elsewhere.
+- Arms and legs SHORT and STUBBY, always clearly attached to the body. NO detached pink blobs, NO extra limbs, NO tail, NO pointed shapes sticking out of the back.
+- ONE hamster, alone. Exactly two arms, two feet, two ears, one head.
+
+=== STYLE ===
+Hard-edged PIXEL ART with visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Flat solid colours. Thick dark-brown outline #3a2401 is wrong — the outline is #3a241e all around the silhouette.
+NO gradients, NO soft shading, NO anti-aliasing, NO blur.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame.
+The character alone, centred, facing RIGHT (face, nose, toes toward the RIGHT edge; round rear on the LEFT).
+
+=== THE TWO FRAMES (one generation each) ===
+1. action-strike — the hamster punches FORWARD to the right with both front paws held together at chest height, thrust out ahead of the belly toward the right edge. The body still stays a plump pear, only tipped forward a little (about 10 degrees), knees slightly bent, back foot braced. Mouth open in a small determined shout, ears swept back, cheeks squeezed. Both paws are attached to the body by a visible short arm. Keep the round hamster shape — this must still read as a chubby hamster, not a rodent lunging on all fours.
+2. hop-air — the hamster hops UP: body stretched vertically and ROUND, both feet tucked up under the belly with clear empty space below them, both front paws raised in front of the chest with the little pink pads showing, ears flying up, mouth open in a happy hop. Compact, tidy, easily readable silhouette. One clean hamster. NO doubled limbs, NO crossed arms, NO overlapping bodies.
+
+=== OUTPUT ===
+Each frame at high resolution (at least 1000x1000), transparent background.
+Save to exactly, replacing the old files:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A1-none-1\raw\action-strike.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A1-none-1\raw\hop-air.png
+Keep native high resolution, do NOT resize or downscale.
+When both are saved, reply with just the two paths.

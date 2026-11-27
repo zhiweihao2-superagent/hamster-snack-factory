@@ -1,0 +1,45 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. Every PNG must come out of the image generation model.
+
+You will call the image generation tool NINE times: five talent icons, then four class-certificate icons.
+
+=== CRITICAL CONSTRAINT ===
+These icons will be shrunk to 16x16 pixels in the finished game. So each one must be ONE bold, instantly readable symbol:
+- a single dominant shape filling the middle of the frame with a small margin;
+- very thick dark-brown outline #3a241e (about 1/12 of the frame width) around the whole shape and around every internal region;
+- 2 to 4 flat colours per icon plus the outline. NO fine filigree, NO thin lines, NO text, NO letters, NO numbers, NO background plate, NO rounded-square badge, NO frame.
+
+=== STYLE ===
+Hard-edged PIXEL ART with visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Flat solid colours only. NO gradients, NO soft glow, NO blur, NO anti-aliasing, NO drop shadow.
+Fully TRANSPARENT background (alpha). No text, no watermark, no border.
+The symbol alone, centred, one consistent scale and one consistent visual weight across all nine.
+Use the attached reference only for the pixel density and the thick dark-brown outline weight.
+
+=== GROUP A — FIVE TALENTS (one generation each) ===
+1. `hardening` 硬化 HARDENING — a stout iron shield plate, front face cool grey #8a8f96, riveted rim, one deep orange #e8843e cross-brace across it, a couple of small dents. Rock solid, immovable.
+2. `bloodthirst` 嗜血 BLOODLUST — a single fat red #e8402c blood droplet with a bright cream #fae8c8 highlight, and one small pale fang biting into its top. Vicious, hungry.
+3. `ember` 余烬 EMBERS — a lumpy dark charcoal clump #4a423c with two glowing ember cracks in orange #ff9a3c and yellow #ffe27a, one thin curl of smoke rising. Almost out, still hot.
+4. `armourpierce` 穿甲 ARMOUR PIERCE — one thick steel arrowhead driving through a broken grey plate, plate split into two halves with a wedge gap, orange #e8843e impact sparks at the split. Punching clean through.
+5. `revival` 复苏 REVIVAL — a plump cream-and-orange heart #e8843e with a fresh green #7bbf5a sprout and two leaves growing out of the top, one white #fff8ee highlight. Coming back to life.
+
+=== GROUP B — FOUR CLASS CERTIFICATES (one generation each) ===
+One shared design: a rolled paper certificate seen slightly from the front — a cream #fae8c8 scroll with a curled top edge, a wine-red #9e2418 ribbon hanging down the front, and a round wax seal at the bottom of the ribbon. Distinguish the four tiers ONLY by the number of small yellow #ffe27a stars stamped on the scroll face: ONE star, TWO stars, THREE stars, FOUR stars. The stars sit in a short row on the paper, big and chunky, never letters or numbers. Higher tiers get a slightly richer scroll: tier 4 adds a thin gold #d9a83c border along the scroll edges.
+6. `cert-1` 一转证 — one star.
+7. `cert-2` 二转证 — two stars.
+8. `cert-3` 三转证 — three stars.
+9. `cert-4` 四转证 — four stars, plus the thin gold scroll border.
+
+=== OUTPUT ===
+Each icon at high resolution (at least 1000x1000), transparent background, symbol centred with even margin.
+Save to exactly, one generation per file:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B2-talents\raw\hardening.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B2-talents\raw\bloodthirst.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B2-talents\raw\ember.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B2-talents\raw\armourpierce.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B2-talents\raw\revival.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B3-certs\raw\cert-1.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B3-certs\raw\cert-2.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B3-certs\raw\cert-3.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B3-certs\raw\cert-4.png
+Keep native high resolution, do NOT resize or downscale. Create the folders if needed.
+When all nine are saved, reply with just the nine paths.

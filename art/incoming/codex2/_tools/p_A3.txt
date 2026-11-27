@@ -1,0 +1,33 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. Every PNG must come out of the image generation model.
+
+You will call the image generation tool FIVE times, one explosion effect frame each.
+
+=== SUBJECT ===
+A cartoon BOMB BLAST effect, exploding in place, centred in frame.
+Palette: hot yellow-white core #ffe27a, orange flame #ff9a3c, deep red-orange #e8402c, dark red shadow #8c2416, and grey-brown smoke #6b5f58 (last frame only).
+Outlines: every shape carries a thick dark-brown border #3a241e.
+
+=== STYLE ===
+Hard-edged PIXEL ART. Visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Flat solid colours. NO gradients, NO soft glow, NO blur, NO anti-aliasing, NO motion blur.
+Fully TRANSPARENT background (alpha). No ground, no scorch mark, no backdrop, no text, no watermark, no frame, no character, no mouse.
+The effect alone, centred, roughly circular/symmetric per frame.
+Use the attached reference image ONLY for its pixel density and its thick dark-brown outline weight — the subject is a blast, not a character.
+
+=== THE FIVE FRAMES (one generation each) ===
+1. frame-1 — IGNITION: a small spark of yellow-white at the centre, a thin curl of fuse-smoke spiralling up, three tiny spark dots flying, compact and dim. Circle of about 30% of the frame.
+2. frame-2 — FLASH: a bright flat white-yellow star burst with 8 short blunt spikes, a thin orange ring hugging it, still small but violently bright. About 55% of the frame.
+3. frame-3 — FIREBALL: a fat ragged orange-red ball of flame filling the frame, lumpy scalloped edge, yellow core with orange mid band, a few detached flame tongues flying off. About 85% of the frame.
+4. frame-4 — SHOCKWAVE RING: the fire is gone, leaving one expanding flat orange-red ring with a scalloped outer edge and a hollow transparent centre, plus 5 small ember shards on the rim. Ring diameter almost the full frame, thickness about 1/6 of the diameter.
+5. frame-5 — LINGERING SMOKE: three soft grey-brown smoke puffs drifting up and thinning, one or two dark embers, mostly empty transparent space. Only about 40% coverage, low and dissipating.
+
+=== OUTPUT ===
+Each frame at high resolution (at least 1000x1000), transparent background.
+Save to exactly:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A3-fx-blast\raw\frame-1.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A3-fx-blast\raw\frame-2.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A3-fx-blast\raw\frame-3.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A3-fx-blast\raw\frame-4.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A3-fx-blast\raw\frame-5.png
+Keep native high resolution, do NOT resize or downscale. Create the folder if needed.
+When all five are saved, reply with just the five paths.

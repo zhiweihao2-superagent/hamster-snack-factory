@@ -1,0 +1,32 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. Both PNGs must come out of the image generation model.
+
+You will call the image generation tool TWO times, replacing two existing game icons that came out too thin.
+
+=== HARD CONSTRAINT ===
+These icons are shown at 16x16 pixels in the game, so each must survive being shrunk to that size:
+- ONE filled, chunky silhouette that fills most of the frame. NO thin curved strokes, NO open crescents drawn as a 1px line, NO long skinny shapes, NO empty middle.
+- Every area must be a solid colour block at least 1/6 of the frame wide. Very thick dark-brown #3a241e outline (about 1/10 of the frame) all around and between regions.
+- 3 flat colours plus the outline. NO gradients, NO soft glow, NO blur, NO anti-aliasing, NO shadow, NO text, NO letters, NO numbers, NO frame, NO background plate.
+
+=== STYLE ===
+Hard-edged PIXEL ART with visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Fully TRANSPARENT background (alpha). Symbol centred with a small even margin.
+Match the attached reference sheet for palette, outline weight and pixel density (four other icons from the same set).
+
+=== ICON 1 — `qiexiao` 横扫切削 SWEEPING CUT ===
+A heavy curved CLEAVER blade sweeping horizontally, drawn as a SOLID FILLED wedge — like a fat crescent of steel that is thick at the left and tapers to a sharp point at the right.
+The blade body is pale steel #cfd8e3 with one darker steel #8a97a8 facet along its back edge; a short thick orange #e8843e handle stub juts out at the lower left; TWO chunky pale-orange motion chips break off above and below the tip.
+Read it as a solid blade, not as a drawn line: fill the whole crescent in.
+
+=== ICON 2 — `xingyun` 幸运签 LUCKY SLIP ===
+A FAT fortune slip, standing upright, filling the frame like a tall blocky tablet (about 40% as wide as the frame, near full height) — a solid cream #fae8c8 paper body with a thick #3a241e border, a small folded corner at the top right, and a wide wine-red #9e2418 band wrapped horizontally around its middle third with a small knot on the right side.
+On the upper third of the paper, a BIG solid yellow #ffe27a four-pointed star, at least a third of the slip's width, with a dark outline.
+The red band and the yellow star must both be clearly visible even at 16x16 — make them big and blocky, never thin lines.
+
+=== OUTPUT ===
+Each icon at high resolution (at least 1000x1000), transparent background, square, symbol centred.
+Save to exactly, replacing the old files:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\qiexiao.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B1-icons\raw\xingyun.png
+Keep native high resolution, do NOT resize or downscale.
+When both are saved, reply with just the two paths.

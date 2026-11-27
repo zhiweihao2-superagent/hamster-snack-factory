@@ -1,0 +1,33 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. The PNG must come out of the image generation model.
+
+You will call the image generation tool ONCE.
+
+=== WHY THIS ONE IS BEING REDONE ===
+The previous attempt drew the face with lines finer than the final sprite can hold, so after the game shrinks it, the snout, eye and teeth all smashed into black speckle.
+So: draw COARSE. The whole rat is a grid of about 40 x 40 chunky square blocks, each block a solid flat colour as big as a thumb. Nothing in the drawing may be thinner than one of those blocks. Big simple shapes, high readability.
+
+=== CHARACTER (see attached reference: the other frames of this same set) ===
+A cartoon GREY RAT enemy, a bomb-carrier, standing on two legs, hunched, lean and scrappy.
+- Grey fur #8a8f96, darker grey #5e6369 on the back and arms, pale grey-cream #d8d4c4 muzzle and belly.
+- LONG THIN PINK TAIL #f09ca8 trailing out to the RIGHT.
+- Pointed snout drawn as ONE solid wedge, thin whiskers drawn as two or three short straight bars (not hairline fuzz), big round RED eye #e8402c as a solid block with one dark pupil block, a wide open grin with ONE solid pale mouth shape and one small tooth.
+- Pink inner ears as two solid pink blocks, pink paws and feet.
+- FACING LEFT: snout, eye, chest and feet lean toward the LEFT edge. Tail trails to the RIGHT.
+- Two red #e8402c dynamite sticks lashed to the chest with a leather strap and two dark brown #3a241e bands, a lit fuse with a small orange spark.
+
+=== STYLE ===
+Hard-edged PIXEL ART, chunky blocks, thick dark-brown #3a241e outline on the silhouette and between every colour region.
+Flat solid colours only. NO gradients, NO shading gradients, NO anti-aliasing, NO blur, NO stray speckles, NO dotted texture.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame.
+Match the attached reference for palette and outline weight.
+
+=== THE FRAME — `action-strike` ===
+The rat dashes FORWARD to the LEFT in a playful sprint: body tipped about 25 degrees to the left, one back leg kicked out behind to the right, both front paws held up at chest height reaching ahead toward the left edge, tail streaming straight out behind for balance, ears swept back, mouth open in a happy yell, the dynamite bundle swinging forward.
+Clean bouncy mascot dash. One head, one body, two arms, two legs, two ears, one tail — all limbs visibly attached, nothing overlapping into a mush.
+
+=== OUTPUT ===
+High resolution (at least 1000x1000), transparent background.
+Save to exactly, replacing the old file:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2-foe-blast-2\raw\action-strike.png
+Keep native high resolution, do NOT resize or downscale.
+When it is saved, reply with just the path.

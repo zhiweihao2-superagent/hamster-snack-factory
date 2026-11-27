@@ -1,0 +1,34 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. All four PNGs must come out of the image generation model.
+
+You will call the image generation tool FOUR times, replacing four certificate icons whose scroll design came out too pale to read at 16x16.
+
+=== HARD CONSTRAINT ===
+These icons are shown at 16x16 pixels in the game. The previous attempt used a cream paper scroll with pale yellow stars on it — at 16x16 everything turned into one beige smear.
+So this time: HIGH CONTRAST, DARK PLATE, BRIGHT PIPS.
+- One chunky badge filling most of the frame. Every area a solid colour block at least 1/6 of the frame wide.
+- Very thick dark-brown #3a241e outline (about 1/10 of the frame) around the badge and between every region.
+- 3 flat colours plus the outline. NO gradients, NO glow, NO blur, NO anti-aliasing, NO shadow, NO text, NO letters, NO numbers, NO keys, NO ribbon tails.
+- Fully TRANSPARENT background (alpha). Badge centred with a small even margin.
+
+=== STYLE ===
+Hard-edged PIXEL ART with visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Match the attached reference sheet for palette, outline weight and pixel density (icons from the same set).
+
+=== THE FOUR CLASS-CERTIFICATE BADGES ===
+Shared design, so the four read as one ladder:
+- A round MEDAL disc with a thick dark rim, hung from a short two-tongue cloth ribbon above it.
+- The disc face is a DARK metal that contrasts with bright pips: tier 1 bronze #a86a32, tier 2 silver #b9c0c8, tier 3 gold #d9a83c, tier 4 deep crimson #9e2418 with a gold rim.
+- Stamped on the disc face: ONE to FOUR BIG bright yellow #ffe27a four-pointed stars, in a short horizontal row across the middle of the disc, each star about a quarter of the disc width, each with a dark #3a241e outline and a clear dark gap between neighbours.
+- The ribbon is wine-red #9e2418 for tiers 1-3 and deep crimson #7a2018 for tier 4.
+- On the disc face, one small cream #fae8c8 highlight arc at the upper left, nothing else.
+The four tiers differ ONLY in metal colour and the number of stars: 1, 2, 3, 4.
+
+=== OUTPUT ===
+Each icon at high resolution (at least 1000x1000), transparent background, square, badge centred.
+Save to exactly, replacing the old files:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B3-certs\raw\cert-1.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B3-certs\raw\cert-2.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B3-certs\raw\cert-3.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\B3-certs\raw\cert-4.png
+Keep native high resolution, do NOT resize or downscale.
+When all four are saved, reply with just the four paths.

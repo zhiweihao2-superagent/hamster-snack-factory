@@ -1299,6 +1299,7 @@ function drawRatDetail(){
       }
       var def = TALENT_DEF[tal.id] || {};
       var roman = ["Ⅰ", "Ⅱ", "Ⅲ"];
+      var hasT = drawTalentIcon(tal.id, pad + 26, y + 22, 22);
       txt((def.name || tal.id) + " " + (roman[(tal.lv || 1) - 1] || ""),
           pad + 44, y + 20, Math.max(12, Math.round(W * 0.032)), "#ffd98a", "left", true);
       txt(talentEffectText(tal.id, tal.lv || 1), pad + 44, y + 38,
@@ -1341,12 +1342,13 @@ function drawRatDetail(){
         ctx.fillStyle = "rgba(255,255,255,.03)"; ctx.fill();
         var col = d2.kind === "mag" ? "#8fb8ff" : (d2.kind === "buff" ? "#79c98a" : "#ffb37a");
         ctx.strokeStyle = col; ctx.globalAlpha = 0.35; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1;
+        var hasIc2 = drawSkillIcon(one.id, pad + 18, yy + 17, 18);
         txt((d2.name || one.id) + " " + (roman2[(one.lv || 1) - 1] || ""),
-            pad + 10, yy + 15, Math.max(10, Math.round(W * 0.027)), col, "left", true);
+            pad + (hasIc2 ? 38 : 10), yy + 16, Math.max(10, Math.round(W * 0.027)), col, "left", true);
         var tg = (d2.targets || [1,1,1])[(one.lv || 1) - 1] || 1;
         var cd = Math.round(((d2.cd || [0,0,0])[(one.lv || 1) - 1] || 0) / 1000);
         txt(skillKindLabel(d2.kind) + " · " + tg + " 目标 · " + cd + "s",
-            pad + 10, yy + 29, Math.max(8, Math.round(W * 0.022)), C.muted, "left");
+            pad + (hasIc2 ? 34 : 10), yy + 29, Math.max(8, Math.round(W * 0.022)), C.muted, "left");
         txt(d2.desc || "", W - pad - 10, yy + 22, Math.max(8, Math.round(W * 0.021)), "#6a6480", "right");
       }
     }
@@ -1423,6 +1425,29 @@ function drawRatDetail(){
 /* 取某只鼠的像素贴图（没有就返回 null） */
 /* 职业图标（16×16 头像+武器，Tessera 生成）：用于卡片角标，一眼看出是什么职业 */
 /* 职业纹章：纯矢量绘制（盾 / 剑 / 弓 / 法杖 / 药箱），放在头像右边 */
+/* 技能图标（32×32 档，按 18px 绘制）：skill-<id> */
+function drawSkillIcon(id, cx, cy, size){
+  if (!id) return false;
+  var img = (typeof artFromMap === 'function') ? artFromMap(unitArtMap(), ['skill-' + id]) : null;
+  if (!img) return false;
+  ctx.save();
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(img, Math.round(cx - size / 2), Math.round(cy - size / 2), size, size);
+  ctx.restore();
+  return true;
+}
+
+function drawTalentIcon(id, cx, cy, size){
+  if (!id) return false;
+  var img = (typeof artFromMap === 'function') ? artFromMap(unitArtMap(), ['talent-' + id]) : null;
+  if (!img) return false;
+  ctx.save();
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(img, Math.round(cx - size / 2), Math.round(cy - size / 2), size, size);
+  ctx.restore();
+  return true;
+}
+
 function drawClassGlyph(line, cx, cy, size){
   if (!line || line === 'none') return false;
   var s2 = size / 16;                       /* 以 16 为设计网格 */
@@ -2730,7 +2755,8 @@ function drawRatCard(x, y, w, h, idx){
       var lv = Math.min(3, sk[i].lv || 1);
       var tg = (d.targets || [1,1,1])[lv - 1] || 1;
       var cd = Math.round(((d.cd || [0,0,0])[lv - 1] || 0) / 1000);
-      txt((d.name || sk[i].id) + romanS[lv - 1], x + 10, sy + i * lineH,
+      var hasIc = drawSkillIcon(sk[i].id, x + 17, sy + i * lineH - 3, 15);
+      txt((d.name || sk[i].id) + romanS[lv - 1], x + (hasIc ? 27 : 10), sy + i * lineH,
           Math.max(8, Math.round(W * 0.022)), kindCol, "left", true);
       txt(tg + "体 · " + cd + "s", x + w - 10, sy + i * lineH,
           Math.max(8, Math.round(W * 0.021)), C.muted, "right");

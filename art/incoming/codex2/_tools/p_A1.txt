@@ -1,0 +1,41 @@
+You have an image generation tool. Use it. Do NOT write any drawing script, do NOT generate pixel maps in code, do NOT compose images programmatically. Every PNG below must come out of the image generation model.
+
+You will call the image generation tool FIVE times, once per animation frame, and save each result.
+
+=== CHARACTER (keep identical across all five frames) ===
+A plain cartoon hamster game character, no job, no class, no gear.
+- Standing upright, chubby round pear-shaped body, short stubby limbs, small round head.
+- Warm orange fur #e8843e on the head, back, arms and outer legs.
+- Cream face, chest and belly #fae8c8 forming a big soft bib from chin to feet.
+- Pink inner ears #f09ca8, tiny pink paws and feet, small pink nose.
+- Big round dark-brown eyes #2b1a14 with a single white highlight pixel, thin smile, two tiny white front teeth.
+- Round hamster cheeks. NOT a rat: no pointed snout, no long tail, no whisker spikes.
+- NO weapon, NO shield, NO clothing, NO armour, NO hat, NO bag, NO dynamite. Both paws empty.
+- FACING RIGHT: the face, nose, feet and body lean toward the RIGHT edge of the image. The back of the head and the round rear sit on the LEFT side.
+
+Match the attached reference sheet exactly for style, palette, proportions, outline weight and pixel density. The reference hamster is holding a shield — DRAW THE SAME HAMSTER WITH EMPTY PAWS INSTEAD.
+
+=== STYLE ===
+Hard-edged PIXEL ART sprite. Visible 1px pixel detail: fine stair-stepped clusters, NOT chunky 2px blocks.
+Thick dark-brown outline #3a241e on every silhouette and on every internal colour border.
+Flat solid colours only. NO gradients, NO soft shading, NO anti-aliasing, NO blur, NO glow.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no border, no frame.
+The character alone, centred.
+
+=== THE FIVE FRAMES (generate one image per frame) ===
+1. idle-1  — neutral standing idle: straight up, both paws hanging at the sides, ears relaxed, calm smiling face, feet flat.
+2. idle-2  — the SAME idle pose a half-breath later: body 1 pixel taller, ears angled slightly out, the whole hamster lifted a hair, paws still hanging. Almost the same as idle-1, only the breathing bob differs.
+3. action-windup — winding up: the body crouches and leans BACK toward the left, knees bent, both paws drawn back behind the hips, head lowered, ears swept back, eyes focused forward-right, mouth slightly open. Weight clearly loaded on the back foot.
+4. action-strike — striking: the body lunges FORWARD to the right, strongly tilted, both paws thrust out ahead of the chest toward the right, front leg extended, back leg trailing, ears blown back, mouth open in effort. Clear forward momentum, torso and paws well past the feet.
+5. hop-air — airborne: the hamster is clearly OFF the ground, feet tucked up under the body with visible air below the toes, body stretched vertically, both paws raised up in front, ears flying up, mouth open in a joyful hop.
+
+=== OUTPUT ===
+Generate each frame at high resolution (at least 1000x1000) with a transparent background.
+Save the five finished PNGs to exactly these paths, one generation per file:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A1-none-1\raw\idle-1.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A1-none-1\raw\idle-2.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A1-none-1\raw\action-windup.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A1-none-1\raw\action-strike.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A1-none-1\raw\hop-air.png
+Keep each file at its native high resolution. Do NOT resize, do NOT downscale to 64px, do NOT pixelate down, do NOT crop.
+Create the folder if needed. When all five are saved, reply with just the five paths.
