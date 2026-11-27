@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 pipeline.py — 把 Codex/imagen 产出的高分辨率原图，降采样并像素化成项目规格的 sprite。
@@ -189,6 +189,19 @@ def binarize_alpha(rgba: np.ndarray, thresh: int = 128, min_neighbors: int = 2) 
     return out
 
 
+# ---------------------------------------------------------------- 高光提纯
+def boost_white(rgba: np.ndarray, thresh: int = 220) -> np.ndarray:
+    """把接近白的像素（眼白高光、牙齿）压成纯色 #fff8ee。
+    图像模型的高光在 64px 下会被量化成浅粉/浅灰，提纯后眼睛才有神。"""
+    out = rgba.copy()
+    a = out[:, :, 3] > 0
+    rgb = out[:, :, :3].astype(np.int16)
+    lum = rgb[:, :, 0] * 0.299 + rgb[:, :, 1] * 0.587 + rgb[:, :, 2] * 0.114
+    m = a & (lum >= thresh)
+    out[m] = (255, 248, 238, 255)
+    return out
+
+
 # ---------------------------------------------------------------- 描边收敛
 def enforce_outline(rgba: np.ndarray, color: tuple[int, int, int] = (58, 36, 30),
                     width: int = 1) -> np.ndarray:
@@ -364,7 +377,8 @@ def align(rgba: np.ndarray, mode: str, foot_y: int, center_x: int | None = None)
 # ---------------------------------------------------------------- 主流程
 def process(src: Path, out: Path, size: int, mode: str, foot: int,
             colors: int, palette: str, char_h: int | None, snap_tol: int = 30, outline_w: int = 1,
-            icon_crop: tuple[float, float] | None = None, denoise: int = 0) -> dict:
+            icon_crop: tuple[float, float] | None = None, denoise: int = 0,
+            white_thresh: int = 0) -> dict:
     raw = Image.open(src).convert("RGBA")
     arr = np.array(raw)
     arr = cutout_background(arr)
@@ -374,7 +388,11 @@ def process(src: Path, out: Path, size: int, mode: str, foot: int,
         im = Image.fromarray(arr, "RGBA")
         rgb = im.convert("RGB").filter(ImageFilter.MedianFilter(denoise))
         arr = np.dstack([np.array(rgb), arr[:, :, 3]])
+    if white_thresh > 0:
+        arr = boost_white(arr, white_thresh)
     arr = quantize_rgb(arr, colors, palette, snap_tol)
+    if white_thresh > 0:
+        arr = boost_white(arr, white_thresh)
     arr = binarize_alpha(arr)
     if outline_w > 0:
         arr = enforce_outline(arr, width=outline_w)

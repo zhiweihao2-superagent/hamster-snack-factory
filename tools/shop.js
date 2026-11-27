@@ -1239,16 +1239,17 @@ function drawRatDetail(){
   ctx.fillStyle = C.panel; ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = "rgba(232,172,80,.35)"; ctx.stroke();
 
-  var art = (typeof artFromMap === "function")
-    ? artFromMap(unitArtMap(), [(rat.line || "none") + "-" + (rat.tier || 1)]) : null;
+  /* 头像：和仓鼠栏卡片同一张（head-base，16 原生 ×4 = 64 展示） */
+  var headImg = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["head-base", "none-1"]) : null;
   var box = 92, ax = pad + 12, ay = cardY + 14;
   rr(ax, ay, box, box, 12);
   ctx.fillStyle = "rgba(255,255,255,.03)"; ctx.fill();
-  if (art){
+  if (headImg){
     ctx.save(); ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(art, ax + 4, ay + 4, box - 8, box - 8);
+    ctx.drawImage(headImg, ax + 6, ay + 6, box - 12, box - 12);
     ctx.restore();
   }
+  if (rat.line && rat.line !== "none") drawClassGlyph(rat.line, ax + box - 14, ay + box - 14, 22);
 
   var tx = ax + box + 14;
   if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, W - pad - 30, cardY + 28, 36);
@@ -2386,7 +2387,11 @@ function drawShop(){
   var COLS = 2, PER_PAGE = 6;
   var gx = 6;
   var slotW = Math.round((cardW - gx * (COLS - 1)) / COLS);
-  var slotH = Math.round(H * 0.132);
+  /* 卡片高度按"剩余可用高度"算：3 行必须放得下，放不下就压缩到 92 下限 */
+  var listBottom = H - 176;
+  var avail = Math.max(240, listBottom - ratsY);
+  var slotH = Math.floor((avail - 2 * 6) / 3);
+  slotH = Math.max(84, Math.min(132, slotH));
   var gy = 6;
   var pageCount = Math.max(1, Math.ceil(SHOP.rats.length / PER_PAGE));
   SHOP.ratPage = Math.min(Math.max(0, SHOP.ratPage | 0), pageCount - 1);
@@ -2471,7 +2476,10 @@ function drawShop(){
   /* 出货率 + 上次结果（明示概率，五连保底） */
   var oddsY = by - 10;
   var lastTxt = SLOT.last ? ('上次：' + SLOT.last + ' ｜ ') : '';
-  txt(lastTxt + SLOT_ODDS, pad, oddsY, Math.max(8, Math.round(W * 0.023)), '#8f86a6', 'left');
+  /* 仓鼠一多，卡片会占满到按钮上方；这时不画出货率那行，免得和选中面板叠字 */
+  if ((SHOP.rats || []).length <= 4){
+    txt(lastTxt + SLOT_ODDS, pad, oddsY, Math.max(8, Math.round(W * 0.023)), '#8f86a6', 'left');
+  }
 
   /* 下一关 */
   rr(bx3, by, b3w, btnH, btnH / 2);
@@ -2651,8 +2659,8 @@ function drawRatStats(x, y, w){
   for (var i = 0; i < left.length; i++){
     var ly = y + 42 + i * 17;
     txt(left[i][0], x + 12, ly, fs, C.muted, 'left');
-    txt(left[i][1], x + 12 + colW - 10, ly, fs, C.ink, 'right', true);
-    txt(right[i][0], x + 22 + colW, ly, fs, C.muted, 'left');
+    txt(left[i][1], x + 12 + colW - 26, ly, fs, C.ink, 'right', true);
+    txt(right[i][0], x + 30 + colW, ly, fs, C.muted, 'left');
     txt(right[i][1], x + w - 12, ly, fs, C.ink, 'right', true);
   }
 }

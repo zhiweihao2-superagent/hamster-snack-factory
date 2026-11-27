@@ -1,0 +1,54 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. All four PNGs must come out of the image generation model.
+
+You will call the image generation tool FOUR times: the IDLE frame of four upgrade tiers of the SAME character.
+
+=== DRAW IT ON A COARSE PIXEL GRID (the most important rule) ===
+The finished sprite is 64x64, so draw the rat AS IF it were already that small:
+- the WHOLE image is a grid of about 40 pixel-blocks across, and the rat fills about 80% of it;
+- every feature is made of WHOLE BLOCKS, minimum 2x2 blocks: eyes, nose, teeth, ears, firecracker bands, paws;
+- the eye is THREE BLOCKS ONLY: ONE solid red block, ONE dark pupil block, ONE white highlight block. No lashes, no eye outline, no red rim, no shading inside the eye;
+- the eye is SMALL: about 3 blocks wide, and there are at least 3 blocks of plain grey fur between the two eyes;
+- the nose is ONE pink block; the teeth are ONE white 2x1 block right under it. Nothing else on the muzzle, no mouth line;
+- no fine detail at all: no fur strands, no cheek blush, no shadow spots, no highlights other than the single white eye block.
+Then scale the whole drawing UP to a 1000px+ image with HARD BLOCK EDGES. The result must look like an enlarged 40x40 sprite, not a painted illustration.
+
+=== BODY PROPORTIONS ===
+A plump pear, the silhouette slightly TALLER THAN WIDE: width about 0.80 of the height. Do NOT make a wide squat blob.
+- arms held CLOSE to the body, tucked against the belly, elbows never flared out sideways;
+- big round head about 42% of the total height, fat round belly, SHORT thick legs with big flat feet;
+- the character sits in the middle of the square frame with a clear margin on all four sides (about 12%).
+
+=== POSE ===
+FRONT-FACING THREE-QUARTER: faces the CAMERA, turned only slightly, BOTH eyes and BOTH ears visible, belly presented to us. NOT a side profile.
+The two attached images are our shipped enemy art — copy their pose and body type, not their props.
+TAIL: SHORT, out from behind the right hip, ONE small curl, then stop. Never wider than the body, never touching the frame edge.
+
+=== COLOURS ===
+Fur grey #8a8f96, belly and muzzle #b9bdc4, inner ears pink #f09ca8, paws pink, eyes red #e8402c, firecracker bright red #c8342a, fuse yellow #e8c14a, all outlines #3a241e.
+
+=== THE FIRECRACKER BUNDLE (the only difference between the four images) ===
+FAT bright red #c8342a party-firecracker sticks, each about one third of the belly width and at least 3 blocks thick, each with ONE dark brown #3a241e band and a rounded cap.
+They lie horizontally across the LOWER belly, held by a thin strap that passes BEHIND them — the strap never crosses or slices the sticks and never runs across the waist as a belt.
+A short yellow #e8c14a fuse with a small yellow star sparkle.
+The bundle is never wider than the belly, sits BELOW THE CHIN, and never covers the mouth, snout or eyes.
+
+Tier 1: ONE thick stick at the lower belly.
+Tier 2: TWO thick sticks side by side.
+Tier 3: THREE thick sticks side by side, the middle one slightly forward.
+Tier 4: FIVE thick sticks in two short rows (three over two), the biggest bundle, one small grey smudge on a cheek. Face, snout and both eyes stay completely clean.
+
+=== STYLE ===
+Hard-edged PIXEL ART, chunky blocks, thick dark-brown #3a241e outline around the silhouette and between every colour region.
+Flat solid colours. NO gradients, NO soft shading, NO anti-aliasing, NO blur.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame.
+All four: SAME rat, SAME pose, SAME size, SAME palette — only the firecracker count differs.
+
+=== OUTPUT ===
+Each at high resolution (at least 1000x1000), transparent background.
+Save to exactly, one generation per file (overwrite the old ones):
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-1\raw\idle-1.png   (Tier 1, one stick)
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-2\raw\idle-1.png   (Tier 2, two sticks)
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-3\raw\idle-1.png   (Tier 3, three sticks)
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-4\raw\idle-1.png   (Tier 4, five sticks)
+Keep native high resolution, do NOT resize or downscale.
+When all four are saved, reply with just the four paths.

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 build.py — 把 <资产ID>/raw/*.png 批量过 pipeline，生成交付用的最终 PNG。
@@ -129,7 +129,7 @@ def build_one(src: Path, dst: Path, size: int, kind: str, palette: str, foot: in
         dn = 3 if ("foe-blast" in str(src) and "A2b" not in str(src)) else 0
         return P.process(src, dst, size=size, mode="char", foot=foot,
                          colors=24, palette=palette, char_h=char_h, snap_tol=10, outline_w=1,
-                         denoise=dn)
+                         denoise=dn, white_thresh=(220 if "A2b" in str(src) else 0))
     return P.process(src, dst, size=size, mode=kind, foot=0,
                      colors=20, palette=palette, char_h=None, snap_tol=10, outline_w=1,
                      icon_crop=icrop)
