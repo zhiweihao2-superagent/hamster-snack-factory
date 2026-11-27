@@ -1422,6 +1422,75 @@ function drawRatDetail(){
 
 /* 取某只鼠的像素贴图（没有就返回 null） */
 /* 职业图标（16×16 头像+武器，Tessera 生成）：用于卡片角标，一眼看出是什么职业 */
+/* 职业纹章：纯矢量绘制（盾 / 剑 / 弓 / 法杖 / 药箱），放在头像右边 */
+function drawClassGlyph(line, cx, cy, size){
+  if (!line || line === 'none') return false;
+  var s2 = size / 16;                       /* 以 16 为设计网格 */
+  ctx.save();
+  ctx.translate(cx - size / 2, cy - size / 2);
+  ctx.scale(s2, s2);
+  ctx.lineWidth = 1.4;
+  var steel = '#b9c2cf', steelD = '#6f7787', wood = '#96623a', green = '#5cac6c',
+      blue = '#5ca8f4', ink = '#2a1d18';
+  ctx.lineJoin = 'round';
+  if (line === 'tank'){                       /* 盾 */
+    ctx.beginPath();
+    ctx.moveTo(3, 3); ctx.lineTo(13, 3); ctx.lineTo(13, 9);
+    ctx.quadraticCurveTo(13, 13, 8, 15);
+    ctx.quadraticCurveTo(3, 13, 3, 9);
+    ctx.closePath();
+    ctx.fillStyle = steel; ctx.fill();
+    ctx.strokeStyle = ink; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(8, 4); ctx.lineTo(8, 13);
+    ctx.strokeStyle = steelD; ctx.stroke();
+  } else if (line === 'blade'){               /* 剑 */
+    ctx.beginPath();
+    ctx.moveTo(8, 1); ctx.lineTo(10, 9); ctx.lineTo(8, 11);
+    ctx.lineTo(6, 9); ctx.closePath();
+    ctx.fillStyle = steel; ctx.fill();
+    ctx.strokeStyle = ink; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(5, 11); ctx.lineTo(11, 11);
+    ctx.strokeStyle = steelD; ctx.lineWidth = 2; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(8, 11); ctx.lineTo(8, 15);
+    ctx.strokeStyle = wood; ctx.lineWidth = 2; ctx.stroke();
+  } else if (line === 'shot'){                /* 弓 */
+    ctx.beginPath();
+    ctx.arc(5, 8, 6, -Math.PI * 0.42, Math.PI * 0.42);
+    ctx.strokeStyle = wood; ctx.lineWidth = 2; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(5, 2); ctx.lineTo(5, 14);
+    ctx.strokeStyle = ink; ctx.lineWidth = 1; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(3, 8); ctx.lineTo(14, 8);
+    ctx.strokeStyle = steel; ctx.lineWidth = 1.6; ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(14, 8); ctx.lineTo(11, 6); ctx.lineTo(11, 10);
+    ctx.closePath();
+    ctx.fillStyle = steel; ctx.fill();
+  } else if (line === 'hex'){                 /* 法杖 + 蓝晶 */
+    ctx.beginPath(); ctx.moveTo(9, 5); ctx.lineTo(9, 15);
+    ctx.strokeStyle = wood; ctx.lineWidth = 2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(9, 4, 3, 0, Math.PI * 2);
+    ctx.fillStyle = blue; ctx.fill();
+    ctx.strokeStyle = ink; ctx.lineWidth = 1; ctx.stroke();
+    ctx.beginPath(); ctx.arc(8, 3, 1, 0, Math.PI * 2);
+    ctx.fillStyle = '#d8ecff'; ctx.fill();
+  } else {                                    /* 药箱 */
+    ctx.beginPath();
+    ctx.rect(2, 5, 12, 9);
+    ctx.fillStyle = green; ctx.fill();
+    ctx.strokeStyle = ink; ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(8, 7); ctx.lineTo(8, 12);
+    ctx.moveTo(5.5, 9.5); ctx.lineTo(10.5, 9.5);
+    ctx.strokeStyle = '#f4f8ff'; ctx.lineWidth = 1.8; ctx.stroke();
+    ctx.beginPath();
+    ctx.rect(6, 3, 4, 2);
+    ctx.fillStyle = '#9ad6a4'; ctx.fill();
+    ctx.strokeStyle = ink; ctx.lineWidth = 1; ctx.stroke();
+  }
+  ctx.restore();
+  return true;
+}
+
 function classIconImg(line){
   if (!line || line === 'none') return null;
   return (typeof artFromMap === 'function') ? artFromMap(unitArtMap(), ['class-' + line]) : null;
@@ -2289,10 +2358,10 @@ function drawShop(){
   txt('我的仓鼠 ' + SHOP.rats.length + '/' + rosterCap() + ' · 上场 ' + onCount + '/' + fieldCap(),
       pad, ratsY - 6, Math.max(9, Math.round(W * 0.025)), C.muted, 'left');
   /* 每页 6 只（3×2）；超过 6 只时用 ‹ › 翻页，保证每只都点得到 */
-  var COLS = 3, PER_PAGE = 6;
+  var COLS = 2, PER_PAGE = 6;
   var gx = 6;
   var slotW = Math.round((cardW - gx * (COLS - 1)) / COLS);
-  var slotH = Math.round(H * 0.098);
+  var slotH = Math.round(H * 0.132);
   var gy = 6;
   var pageCount = Math.max(1, Math.ceil(SHOP.rats.length / PER_PAGE));
   SHOP.ratPage = Math.min(Math.max(0, SHOP.ratPage | 0), pageCount - 1);
@@ -2589,6 +2658,17 @@ function drawSkillDots(rat, x, y){
 /* ---------- 仓鼠卡（仓鼠栏） ----------
    统一用"白板鼠头"当图标（不再画各职业立绘），省出的空间显示技能：
    名字 / 职业·阶 / 天赋 / 技能名（最多 2 条 + 更多） */
+/* ---------- 仓鼠卡（两列大卡） ----------
+   左上：白板鼠头（裁到只剩头）+ 矢量职业纹章；名字与头像**同一条水平线**；
+   下面：职业与阶的描述 + **所有携带技能**（每条一行，超出用 +N）。 */
+var CLASS_DESC = {
+  tank: "扛伤前排",
+  blade: "近战爆发",
+  shot: "远程输出",
+  hex: "法术穿透",
+  care: "回血增益",
+  none: "未转职"
+};
 function drawRatCard(x, y, w, h, idx){
   var rat = SHOP.rats[idx];
   if (!rat) return;
@@ -2601,64 +2681,77 @@ function drawRatCard(x, y, w, h, idx){
   ctx.strokeStyle = selected ? C.amber : (onSquad ? "rgba(121,201,138,.55)" : C.line);
   ctx.stroke();
 
-  var iconS = Math.round(Math.min(38, h - 44));
-  var headImg = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["none-1"]) : null;
+  /* 头像（只要头）+ 矢量纹章 */
+  var headS = 34;
+  var headImg = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["head-base", "none-1"]) : null;
   if (headImg){
-    ctx.save();
-    ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(headImg, Math.round(x + 8), Math.round(y + (h - iconS) / 2), iconS, iconS);
+    ctx.save(); ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(headImg, Math.round(x + 8), Math.round(y + 7), headS, headS);
     ctx.restore();
   }
+  var gs = 18;
+  var hasGlyph = drawClassGlyph(rat.line, x + 8 + headS + 11, y + 7 + headS / 2, gs);
 
-  var tx = x + iconS + 16;
-  var nameFs = Math.max(10, Math.round(W * 0.031));
-  var subFs = Math.max(8, Math.round(W * 0.022));
+  /* 名字与头像同高 */
+  var tx = x + 8 + headS + (hasGlyph ? 26 : 12);
+  var nameFs = Math.max(11, Math.round(W * 0.032));
   var name = ratLabel(rat);
-  if (name.length > 4) name = name.slice(0, 4);
-  txt(name, tx, y + Math.round(h * 0.26), nameFs, C.ink, "left", true);
+  if (name.length > 5) name = name.slice(0, 5);
+  txt(name, tx, y + 24, nameFs, C.ink, "left", true);
+  txt("★" + ratScore(rat), x + w - 10, y + 22, Math.max(9, Math.round(W * 0.024)), "#ffd166", "right", true);
 
-  txt(ratLineLabel(rat), tx, y + Math.round(h * 0.44) + 4, subFs, C.muted, "left");
+  /* 职业 + 阶 + 一句描述 */
+  var subFs = Math.max(8, Math.round(W * 0.022));
+  txt(ratLineLabel(rat) + " · " + (CLASS_DESC[rat.line || "none"] || ""),
+      x + 10, y + headS + 18, Math.max(8, Math.round(W * 0.021)), C.muted, "left");
 
+  /* 天赋行 */
   var ts = rat.talents || [];
   var roman = ["Ⅰ", "Ⅱ", "Ⅲ"];
-  var talText;
-  if (!ts.length) talText = "未觉醒";
-  else {
-    var t0 = ts[0];
-    talText = (TALENT_DEF[t0.id] ? TALENT_DEF[t0.id].name : t0.id).slice(0, 2) + roman[(t0.lv || 1) - 1];
-    if (ts.length > 1) talText += "+" + (ts.length - 1);
+  var talText = "未觉醒";
+  if (ts.length){
+    talText = (TALENT_DEF[ts[0].id] ? TALENT_DEF[ts[0].id].name : ts[0].id).slice(0, 2) + roman[(ts[0].lv || 1) - 1];
+    if (ts.length > 1) talText += " +" + (ts.length - 1);
   }
-  txt(talText, tx, y + Math.round(h * 0.63), subFs + 1, "#ffd98a", "left", true);
+  txt("天赋 " + talText, x + 10, y + headS + 34, subFs, "#ffd98a", "left", true);
 
+  /* 所有技能：一条一行 */
   var sk = rat.skills || [];
-  if (sk.length){
-    var romanS = ["Ⅰ", "Ⅱ", "Ⅲ"];
-    var parts = [];
-    for (var si = 0; si < sk.length && si < 2; si++){
-      parts.push(skillName(sk[si].id).slice(0, 3) + romanS[(sk[si].lv || 1) - 1]);
-    }
-    if (sk.length > 2) parts.push("+" + (sk.length - 2));
-    txt(parts.join(" "), tx, y + Math.round(h * 0.82), Math.max(8, Math.round(W * 0.021)), "#8fb8ff", "left");
+  var sy = y + headS + 50;
+  var lineH = Math.max(12, Math.round(W * 0.031));
+  var maxLines = Math.max(1, Math.floor((y + h - 12 - sy) / lineH));
+  if (!sk.length){
+    txt("技能 无（抽卡 / 炼妖可带）", x + 10, sy, subFs, "#5b5374", "left");
   } else {
-    txt("无技能", tx, y + Math.round(h * 0.82), Math.max(8, Math.round(W * 0.021)), "#5b5374", "left");
+    var romanS = ["Ⅰ", "Ⅱ", "Ⅲ"];
+    for (var i = 0; i < sk.length && i < maxLines; i++){
+      var d = skillDefs()[sk[i].id] || {};
+      var kindCol = d.kind === "mag" ? "#8fb8ff" : (d.kind === "buff" ? "#79c98a" : "#ffb37a");
+      var lv = Math.min(3, sk[i].lv || 1);
+      var tg = (d.targets || [1,1,1])[lv - 1] || 1;
+      var cd = Math.round(((d.cd || [0,0,0])[lv - 1] || 0) / 1000);
+      txt((d.name || sk[i].id) + romanS[lv - 1], x + 10, sy + i * lineH,
+          Math.max(8, Math.round(W * 0.022)), kindCol, "left", true);
+      txt(tg + "体 · " + cd + "s", x + w - 10, sy + i * lineH,
+          Math.max(8, Math.round(W * 0.021)), C.muted, "right");
+    }
+    if (sk.length > maxLines){
+      txt("+" + (sk.length - maxLines) + " 个技能（进详情看全部）", x + 10, sy + maxLines * lineH,
+          Math.max(8, Math.round(W * 0.021)), "#6a6480", "left");
+    }
   }
-
-  var score = ratScore(rat);
-  txt("★" + score, x + w - 8, y + 15, Math.max(9, Math.round(W * 0.024)),
-      score >= 8 ? "#ffd166" : (score >= 5 ? "#e8ac50" : "#8f86a6"), "right", true);
 
   if (isFresh(idx)){
-    var nw = 26, nh = 12, nx = x + 6, ny = y + 6;
-    rr(nx, ny, nw, nh, 6);
+    var nw = 26, nh = 12;
+    rr(x + w - nw - 6, y + h - nh - 6, nw, nh, 6);
     ctx.fillStyle = "rgba(255,209,102,.9)"; ctx.fill();
-    txt("NEW", nx + nw / 2, ny + 9, 8, "#241d2e", "center", true);
+    txt("NEW", x + w - nw / 2 - 6, y + h - nh + 3, 8, "#241d2e", "center", true);
   }
   if (onSquad){
     var bw2 = 16, bh2 = 12;
-    var bxx = x + w - bw2 / 2 - 2, byy = y + h - 14;
-    rr(bxx, byy, bw2, bh2, 6);
+    rr(x + 8, y + h - bh2 - 4, bw2, bh2, 6);
     ctx.fillStyle = "rgba(121,201,138,.9)"; ctx.fill();
-    txt("上", bxx + bw2 / 2, byy + 9, 8, "#12301c", "center", true);
+    txt("上", x + 16, y + h - 8, 8, "#12301c", "center", true);
   }
 
   shopHit(x, y, w, h, function(){
