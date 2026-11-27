@@ -465,6 +465,9 @@
               },
               {
                 "type": "crate"
+              },
+              {
+                "type": "blast"
               }
             ],
             [
@@ -611,6 +614,9 @@
               },
               {
                 "type": "thief"
+              },
+              {
+                "type": "blast"
               }
             ],
             [
@@ -622,6 +628,9 @@
               },
               {
                 "type": "shell"
+              },
+              {
+                "type": "blast"
               }
             ],
             [
@@ -636,6 +645,9 @@
               },
               {
                 "type": "thief"
+              },
+              {
+                "type": "blast"
               }
             ],
             [
@@ -647,6 +659,9 @@
               },
               {
                 "type": "shell"
+              },
+              {
+                "type": "blast"
               }
             ]
           ],

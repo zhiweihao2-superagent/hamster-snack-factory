@@ -135,7 +135,8 @@ var FOES = {
   shell: { name: '抛壳鼠', hp: 56,  charge: 3, atk: 19, pierce: 1, cls: 'blade', tier: 2, range: 'melee' },
   thief: { name: '拾荒鼠', hp: 60,  charge: 4, atk: 0, cls: 'shot',  tier: 2, range: 'far' },
   boss:  { name: '质检机', hp: 210, charge: 4, atk: 34, boss: 1, cls: 'hex', tier: 2, range: 'mid' },
-  glue:  { name: '喷胶鼠', hp: 70,  charge: 4, atk: 8,  cls: 'care',  tier: 2, range: 'far' }
+  glue:  { name: '喷胶鼠', hp: 70,  charge: 4, atk: 8,  cls: 'care',  tier: 2, range: 'far' },
+  blast: { name: '引信鼠', hp: 44,  charge: 4, atk: 9,  blast: 1, cls: 'blade', tier: 2, range: 'melee' },
 };
 (function(){
   var src = RPGR.foes || {};
@@ -1416,6 +1417,41 @@ function glueTick(now){
   }
 }
 
+/* 引信鼠：血量 ≤35% 开始点引信（脚下红圈 1.2 秒），到点炸掉自己并对附近我方造成伤害 */
+function blastTick(now){
+  for (var i = 0; i < R.enemies.length; i++){
+    var f = R.enemies[i];
+    if (!f || !f.alive || f.type !== 'blast') continue;
+    var lowHp = f.hp / Math.max(1, f.hpMax) <= 0.35;
+    if (lowHp && !f.fuseAt){
+      f.fuseAt = now + 1200;
+      pushLog('引信鼠开始自爆');
+      R.banner = { text: '引信鼠开始自爆！', t0: now, holdMs: 1400 };
+      sfx('elite');
+    }
+    if (f.fuseAt && now >= f.fuseAt){
+      var dmg = Math.round(f.hpMax * 0.40);
+      f.fuseAt = 0;
+      f.alive = false;
+      f.hp = 0;
+      /* 范围伤害：离它近的我方单位吃满，远的减半 */
+      var cx = unitX(f), cy = unitY(f);
+      for (var u = 0; u < R.units.length; u++){
+        var a = R.units[u];
+        if (!a || !a.alive) continue;
+        var d = Math.sqrt(Math.pow(unitX(a) - cx, 2) + Math.pow(unitY(a) - cy, 2));
+        if (d > 95) continue;
+        applyUnitDamage(a, d < 55 ? dmg : Math.round(dmg * 0.5), false, 'phys');
+      }
+      R.blastFx = R.blastFx || [];
+      R.blastFx.push({ t0: now, x: cx, y: cy });
+      floatText('自爆!', cx, cy - 20, '#ff8a5c', true);
+      juice('crit');
+      checkBattleEnd();
+    }
+  }
+}
+
 function talentTick(now){
   for (var i = 0; i < R.enemies.length; i++){
     var f = R.enemies[i];
@@ -1458,6 +1494,7 @@ function realtimeTick(dtMs){
   thiefTick(performance.now());
   bossOverload();
   glueTick(performance.now());
+  blastTick(performance.now());
   /* 我方被胶住的减速在这里过期 */
   if (CFG.realtime){
     for (var i = 0; i < R.enemies.length; i++){
@@ -2660,7 +2697,10 @@ function unitArtKey(o){
    没有的话退回"我方同款 + 换色"（<cls>-<tier>-foe）。 */
 function foeArtKeys(o){
   var out = [];
-  if (o && o.type) out.push('foe-' + o.type + '-' + (o.tier || 1));
+  if (o && o.type){
+    out.push('foe-' + o.type + '-' + (o.tier || 1));
+    if (o.type === 'blast') out.push('foe-shell-' + (o.tier || 1));   /* 新原型暂无专属美术 */
+  }
   out.push(unitArtKey(o) + '-foe');
   out.push(unitArtKey(o));
   return out;
@@ -2874,6 +2914,21 @@ function talentLabel(id){
   return def ? def.name : id;
 }
 /* 精英标记：脚下金环 + 头顶一颗小三角冠 */
+/* 引信：脚下红色收缩圈 + 头顶一个小火花点 */
+function drawFuse(x, y, s, fuseAt, now){
+  var left = Math.max(0, fuseAt - now);
+  var k = 1 - left / 1200;                     /* 0 → 1 */
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,110,80,' + (0.5 + 0.5 * Math.sin(now / 60)) + ')';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.ellipse(x, y + 2, s * 0.5 * (1 - k * 0.5), s * 0.18 * (1 - k * 0.5), 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.fillStyle = '#ff8a5c';
+  ctx.fillRect(Math.round(x - 2), Math.round(y - s * 0.95), 4, 4);
+  ctx.restore();
+}
+
 function drawEliteMark(x, y, s, now){
   ctx.save();
   ctx.strokeStyle = 'rgba(255,209,102,.85)';
@@ -2969,6 +3024,7 @@ function drawUnitSprite(o, isFoe, now){
   if (!isFoe) drawTalentBadges(o, x, by - 6);
   drawBuffIcons(o, x, by + 8, now);
   if (isFoe && o.elite) drawEliteMark(x, gy, s, now);
+  if (isFoe && o.fuseAt) drawFuse(x, gy, s, o.fuseAt, now);
 
   /* 名字：只在"需要辨认"的时候才占地方 —— 32px 精灵挤在一起时，标签比角色还宽。
      做法：名字只写名字（职业已经由配色和武器区分），并按站位交错高度，
