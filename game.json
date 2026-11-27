@@ -601,8 +601,8 @@
               "energy": 0.8
             },
             "note": "停电：大招停用，能量略降（T2 但人多）",
-            "hpMul": 1.1,
-            "atkMul": 1.05
+            "hpMul": 1.2,
+            "atkMul": 2.2
           },
           "waves": [
             [
@@ -655,13 +655,13 @@
                 "type": "boss"
               },
               {
+                "type": "boss"
+              },
+              {
                 "type": "crate"
               },
               {
-                "type": "shell"
-              },
-              {
-                "type": "blast"
+                "type": "glue"
               }
             ]
           ],

@@ -1871,7 +1871,15 @@ function rollEvent(){
   var e = EVENT_DECK[Math.floor(Math.random() * EVENT_DECK.length)];
   R.event = e;
   R.mod = Object.assign({}, R.mod || {});   /* 事件只改副本，别污染 game.json 的关卡表 */
-  for (var k in e.mod) R.mod[k] = e.mod[k];
+  for (var k in e.mod){
+    var v = e.mod[k];
+    var isMul = (k === 'hpMul' || k === 'atkMul' || k === 'chargeMul');
+    if (isMul && typeof v === 'number' && typeof R.mod[k] === 'number'){
+      R.mod[k] = +(R.mod[k] * v).toFixed(3);      /* 倍率叠乘，不覆盖 */
+    } else {
+      R.mod[k] = v;
+    }
+  }
   if (e.coin) R.eventCoin = e.coin;
   if (e.mod.dmgBonus) R.buffDmgMul = (R.buffDmgMul || 1) * (1 + e.mod.dmgBonus);
   pushLog('随机事件：' + e.name + '（' + e.desc + '）');
