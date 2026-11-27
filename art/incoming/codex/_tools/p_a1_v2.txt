@@ -1,0 +1,69 @@
+You are a pixel-art asset producer for a vertical-screen pixel game (仓鼠零食工厂 / hamster snack factory).
+Work ONLY inside the current directory. Create nothing outside it, edit nothing outside it.
+
+ENVIRONMENT NOTES (important):
+- `apply_patch` is blocked in this environment ("Access is denied"). Do NOT use it. Write every file with
+  PowerShell:  Set-Content -Encoding utf8 -Path FILE -Value @' ... '@   or  [System.IO.File]::WriteAllText(PATH, TEXT, [Text.Encoding]::UTF8)
+- Use this interpreter for python (it has Pillow):
+  C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe
+
+TASK: write `gen_a1.py` (Python 3 + Pillow) that renders asset `none-1` = 白板鼠 / blank hamster
+(no profession, NO weapon, empty paws) and writes exactly these five files:
+
+    none-1/idle-1.png
+    none-1/idle-2.png
+    none-1/action-windup.png
+    none-1/action-strike.png
+    none-1/hop-air.png
+
+RENDER PIPELINE (write it exactly like this, it is what makes the output valid):
+1. In gen_a1.py keep the art as ASCII pixel maps at 32x32 logical resolution:
+   FRAMES = { "idle-1": [ 32 strings of exactly 32 chars, ... ], ... }
+   PALETTE = { ".": None, "o": (58,36,30), "f": (199,90,46), "d": (174,79,44), "h": (231,161,92),
+               "c": (255,224,179), "p": (255,145,164), "e": (41,5,46), "w": (254,254,252),
+               "n": (128,60,50) }
+   (o = outline #3a241e, f = fur, d = dark fur shade, h = amber highlight, c = cream face/belly,
+    p = pink inner ear, e = dark eye, w = eye glint, n = nose)
+2. build a 32x32 RGBA image from the map (alpha 255 for any non-"." char, 0 for ".").
+3. scale it up by exactly 2 with Image.NEAREST  -> 64x64.
+4. AUTO-ALIGN before saving (mandatory, do not eyeball it):
+   bbox = img.getbbox(); crop to bbox; then paste into a fresh 64x64 fully transparent canvas so that
+     - the crop's lowest opaque row lands on y = 61  (paste_y = 61 - crop_h + 1)
+     - the crop is horizontally centred: paste_x = round(32 - crop_w / 2)
+     - EXCEPT for "hop-air": paste_y = 51 - crop_h + 1  (airborne, 10 px off the ground)
+   If the crop is wider than 62 px or taller than 56 px, shrink the map instead of clipping.
+5. save as PNG, RGBA.
+
+HARD SPEC (a validator checks it; any failure = redo):
+- every file exactly 64x64 px, PNG, mode RGBA
+- alpha strictly binary 0 / 255, no anti-aliasing, no semi-transparent pixel
+- transparent background, no ground shadow, no border, no gradient, no text, no watermark
+- character faces RIGHT (nose toward +x, tail toward -x)
+- lowest opaque row y=61 for idle-1 / idle-2 / action-windup / action-strike; y=51 for hop-air
+- opaque bbox centre x within 32 +/- 3
+- closed outline in #3a241e around the whole silhouette, at least 24 px of it
+- total distinct colours <= 24
+
+ART DIRECTION (must read instantly at small size):
+- plump hamster, side view facing right, big round head on the right, small round ear on top-right,
+  cream face patch on the right side of the head with one dark eye + 1-px white glint, tiny pink nose
+  at the far right, small rounded tail on the left, two short arms, two short feet, cream belly.
+- chunky silhouette, no thin single-pixel limbs, no floating details.
+- shading: 1-2 px of dark fur "d" along the belly/underside, 1-2 px of amber "h" along the top of the
+  head and the back.
+- all five frames share the SAME body proportions and width; only the pose changes:
+  * idle-1: standing, arms down, neutral.
+  * idle-2: same but 1 logical px lower (slight crouch) and ear 1 px lower - a breathing frame.
+  * action-windup: leaning back, ears flattened, both paws pulled back to the chest, cheek puffed.
+  * action-strike: leaning forward hard, front paw stretched forward past the nose, mouth open, tail up.
+  * hop-air: legs tucked, ears up, clearly airborne.
+
+PROCESS:
+1. write gen_a1.py
+2. run:  <PY> gen_a1.py
+3. verify: <PY> _tools\validate_art.py char 64 64 none-1/idle-1.png none-1/idle-2.png none-1/action-windup.png none-1/action-strike.png none-1/hop-air.png
+   where <PY> is the interpreter path above.
+4. If any line says FAIL, fix the maps/alignment and repeat 2-3. Do not stop before all five print OK.
+5. Print each 32x32 map in your reply so the shapes can be reviewed.
+
+Do not create any other asset and do not modify anything else. Reply with the final validator output.

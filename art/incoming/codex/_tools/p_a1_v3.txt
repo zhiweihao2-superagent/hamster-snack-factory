@@ -1,0 +1,36 @@
+Continue work in the current directory only. `apply_patch` is BLOCKED here - write files with PowerShell
+`[System.IO.File]::WriteAllText(PATH, TEXT, [Text.Encoding]::UTF8)` or `Set-Content -Encoding utf8`.
+Python with Pillow: C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe
+
+`gen_a1.py` already exists here and produced 5 valid 64x64 frames of asset `none-1` (白板鼠 / blank hamster,
+no weapon, faces RIGHT). Keep its render pipeline and its file layout, and IMPROVE THE ART ONLY.
+
+The current silhouette is one plain round blob: the ear reads as a floating pink square, the tail is a
+floating amber square, the arms are invisible, the head is not separated from the body, action-strike has
+no visible paw thrust, and hop-air has no tucked legs.
+
+Fix all of these by editing the 32x32 ASCII maps (and only the maps / palette, not the alignment code):
+1. EAR: attach it to the top-right of the head, contiguous with the head, wrapped in #3a241e outline,
+   pink inner ear 2x2 logical px inside the outline. No gap between ear and head.
+2. TAIL: 3x2 logical px, fur colour "f" with "o" outline, attached at the lower-left edge of the body.
+   Never amber, never detached.
+3. HEAD/BODY: give the silhouette a head bump - head slightly narrower than the belly, cream muzzle on the
+   right, a 1 px "d" (dark fur) crease where head meets body so the shape reads as head + body.
+4. ARMS: two visible arms. Front arm: fur "f" with "o" outline, cream paw "c" 2x2 at its tip, held in front
+   of the chest. Rear arm: a short outlined stub on the left silhouette. Arms must protrude from the body
+   silhouette so they are readable.
+5. action-strike: front paw pushed 4-5 logical px forward past the nose, body leaning forward, mouth open
+   (2x2 dark "e" mouth with a cream tooth), tail lifted.
+6. action-windup: both paws pulled back against the chest, body leaning back, ear flattened.
+7. hop-air: both feet REMOVED and replaced by two small tucked leg stubs under the belly, ear up, and the
+   body clearly airborne (the auto-align already lifts it to y=51).
+8. Outline: every silhouette pixel must have #3a241e on its outside; no fur pixel may touch a transparent
+   pixel. Keep total colours <= 12.
+9. Keep idle-1 vs idle-2 a subtle breathing difference (1 logical px crouch), same silhouette width.
+
+Then run and verify (do not stop before every line is OK):
+  <PY> gen_a1.py
+  <PY> _tools\validate_art.py char 64 64 none-1/idle-1.png none-1/idle-2.png none-1/action-windup.png none-1/action-strike.png
+  <PY> _tools\validate_art.py char_air 64 64 none-1/hop-air.png
+
+Do not touch any other asset or file. Reply with the final validator output.

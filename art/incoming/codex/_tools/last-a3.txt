@@ -1,0 +1,7 @@
+```text
+OK   fx-blast/frame-1.png  32x32 bbox=(9, 7, 23, 25) px=130 fill=12.7% colors=6 outline=34
+OK   fx-blast/frame-2.png  32x32 bbox=(7, 7, 25, 25) px=256 fill=25.0% colors=5 outline=52
+OK   fx-blast/frame-3.png  32x32 bbox=(0, 0, 32, 32) px=596 fill=58.2% colors=6 outline=111
+OK   fx-blast/frame-4.png  32x32 bbox=(1, 1, 31, 31) px=312 fill=30.5% colors=4 outline=108
+OK   fx-blast/frame-5.png  32x32 bbox=(7, 7, 25, 25) px=188 fill=18.4% colors=3 outline=0
+```

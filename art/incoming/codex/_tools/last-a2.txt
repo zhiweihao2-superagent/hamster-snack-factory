@@ -1,0 +1,22 @@
+```text
+OK   foe-blast-1/idle-1.png          64x64 bbox=(1, 16, 63, 62) px=1808 fill=44.1% colors=11 outline=532
+OK   foe-blast-1/idle-2.png          64x64 bbox=(1, 16, 63, 62) px=1816 fill=44.3% colors=11 outline=536
+OK   foe-blast-1/action-windup.png   64x64 bbox=(2, 16, 62, 62) px=1788 fill=43.7% colors=11 outline=524
+OK   foe-blast-1/action-strike.png   64x64 bbox=(1, 16, 63, 62) px=1876 fill=45.8% colors=11 outline=592
+OK   foe-blast-1/hop-air.png         64x64 bbox=(2, 8, 62, 52) px=1720 fill=42.0% colors=11 outline=480
+OK   foe-blast-2/idle-1.png          64x64 bbox=(1, 16, 63, 62) px=1808 fill=44.1% colors=12 outline=608
+OK   foe-blast-2/idle-2.png          64x64 bbox=(1, 16, 63, 62) px=1816 fill=44.3% colors=12 outline=612
+OK   foe-blast-2/action-windup.png   64x64 bbox=(2, 16, 62, 62) px=1788 fill=43.7% colors=12 outline=600
+OK   foe-blast-2/action-strike.png   64x64 bbox=(1, 16, 63, 62) px=1880 fill=45.9% colors=12 outline=660
+OK   foe-blast-2/hop-air.png         64x64 bbox=(2, 8, 62, 52) px=1720 fill=42.0% colors=12 outline=556
+OK   foe-blast-3/idle-1.png          64x64 bbox=(1, 16, 63, 62) px=1808 fill=44.1% colors=12 outline=684
+OK   foe-blast-3/idle-2.png          64x64 bbox=(1, 16, 63, 62) px=1816 fill=44.3% colors=12 outline=688
+OK   foe-blast-3/action-windup.png   64x64 bbox=(2, 16, 62, 62) px=1788 fill=43.7% colors=12 outline=676
+OK   foe-blast-3/action-strike.png   64x64 bbox=(1, 16, 63, 62) px=1876 fill=45.8% colors=12 outline=740
+OK   foe-blast-3/hop-air.png         64x64 bbox=(2, 8, 62, 52) px=1720 fill=42.0% colors=12 outline=632
+OK   foe-blast-4/idle-1.png          64x64 bbox=(1, 16, 63, 62) px=1820 fill=44.4% colors=12 outline=724
+OK   foe-blast-4/idle-2.png          64x64 bbox=(1, 16, 63, 62) px=1828 fill=44.6% colors=12 outline=728
+OK   foe-blast-4/action-windup.png   64x64 bbox=(2, 16, 62, 62) px=1800 fill=43.9% colors=12 outline=712
+OK   foe-blast-4/action-strike.png   64x64 bbox=(1, 16, 63, 62) px=1896 fill=46.3% colors=12 outline=772
+OK   foe-blast-4/hop-air.png         64x64 bbox=(2, 8, 62, 52) px=1732 fill=42.3% colors=12 outline=672
+```

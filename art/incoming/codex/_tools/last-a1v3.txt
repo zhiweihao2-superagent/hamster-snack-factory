@@ -1,0 +1,7 @@
+```text
+OK   none-1/idle-1.png                                    64x64 bbox=(7, 8, 57, 62) px=1668 fill=40.7% colors=7 outline=508
+OK   none-1/idle-2.png                                    64x64 bbox=(7, 10, 57, 62) px=1620 fill=39.6% colors=7 outline=496
+OK   none-1/action-windup.png                             64x64 bbox=(9, 12, 55, 62) px=1596 fill=39.0% colors=7 outline=524
+OK   none-1/action-strike.png                             64x64 bbox=(4, 8, 60, 62) px=1728 fill=42.2% colors=8 outline=556
+OK   none-1/hop-air.png                                   64x64 bbox=(7, 0, 57, 52) px=1608 fill=39.3% colors=7 outline=492
+```

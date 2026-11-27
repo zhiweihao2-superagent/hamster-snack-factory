@@ -1,0 +1,56 @@
+You are a pixel-art asset producer for a vertical-screen pixel game (仓鼠零食工厂 / hamster snack factory).
+Work ONLY inside the current directory. Create nothing outside it, edit nothing outside it.
+
+ENVIRONMENT NOTES:
+- `apply_patch` is BLOCKED here ("Access is denied"). Write files with PowerShell
+  `[System.IO.File]::WriteAllText(PATH, TEXT, [Text.Encoding]::UTF8)` or `Set-Content -Encoding utf8`.
+- Python with Pillow: C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe
+
+TASK: write `gen_b1.py` that renders 11 SKILL ICONS at 16x16, plus a 32x32 nearest-neighbour version of each.
+
+Output files (all inside `icons/`):
+    drill.png       + drill_32.png        冲击钻     (power drill, bit pointing right-down)
+    sweep.png       + sweep_32.png        横扫切削   (curved slash arc with a blade tip)
+    pierce.png      + pierce_32.png       穿甲钉     (steel nail piercing an armour plate)
+    guillotine.png  + guillotine_32.png   断头台     (guillotine frame with a raised blade)
+    fireball.png    + fireball_32.png     火球术     (flaming ball with a tail)
+    frostnova.png   + frostnova_32.png    冰霜新星   (radial ice spikes / snowflake burst)
+    chain.png       + chain_32.png        闪电链     (zigzag lightning bolt with 2 arc links)
+    butterarmor.png + butterarmor_32.png  黄油护甲   (butter block in front of a small shield)
+    overtime.png    + overtime_32.png     加班冲刺   (clock face with speed lines)
+    lucky.png       + lucky_32.png        幸运签     (fortune slip with a star)
+    sugar.png       + sugar_32.png        糖分补给   (wrapped candy with a sparkle)
+
+RENDER PIPELINE:
+1. Keep the art as ASCII pixel maps at 16x16: ICONS = { "drill": [16 strings of 16 chars], ... }
+   PALETTE = { ".": None, "o": (58,36,30), "m": (150,156,168), "M": (206,212,222), "d": (92,98,110),
+               "b": (120,80,48), "w": (244,240,230), "y": (250,206,80), "Y": (255,238,150),
+               "r": (214,60,48), "R": (255,130,110), "g": (110,180,120), "c": (120,200,235),
+               "C": (200,240,255), "p": (196,150,90), "s": (120,86,60), "e": (255,255,255) }
+   (o = outline #3a241e, m/M/d = metal shades, b = wood/brown, w = white, y/Y = gold/yellow,
+    r/R = red, g = green, c/C = ice blue, p = butter/pale yellow-brown, s = brown wood,
+    e = pure white highlight)
+2. build a 16x16 RGBA image (alpha 255 for non-".", 0 for "."), save as icons/<key>.png
+3. upscale x2 with Image.NEAREST -> 32x32, save as icons/<key>_32.png
+4. Every icon must be centred in its 16x16 cell (bbox centre within 8 +/- 3 on both axes), fill 25-90% of the
+   canvas, closed #3a241e outline around the main shape, at least 8 px of outline colour.
+
+HARD SPEC (a validator checks it):
+- icons/<key>.png exactly 16x16, icons/<key>_32.png exactly 32x32, both PNG mode RGBA
+- alpha strictly binary 0 / 255, no anti-aliasing, no semi-transparent pixel
+- transparent background, no text, no letters, no numbers, no watermark, no border frame, no drop shadow
+- each icon <= 12 distinct colours, chunky pixel shapes, 1 px #3a241e outline, no floating single pixels
+- icons must be readable at 16x16: one clear central subject, no tiny detail
+
+ART DIRECTION: flat pixel-icon style, front view, slightly 3/4 for tools, warm industrial palette
+(metal grey + amber + the skill's accent colour). Same visual weight for all 11: they must look like one set.
+Keep the subject inside a 14x14 area so nothing touches the canvas edge.
+
+PROCESS:
+1. write gen_b1.py
+2. run: <PY> gen_b1.py
+3. verify each 16x16: <PY> _tools\validate_art.py icon 16 16 icons/drill.png icons/sweep.png ... (all 11)
+   and each 32x32:   <PY> _tools\validate_art.py icon 32 32 icons/drill_32.png ... (all 11)
+4. Fix and repeat until every line prints OK (22 files).
+
+Reply with the final validator output and the 11 16x16 maps. Do not create or modify anything else.

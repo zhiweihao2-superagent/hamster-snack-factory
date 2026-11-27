@@ -2328,6 +2328,7 @@ function drawStage(){
   for (var k = 0; k < list.length; k++) drawUnitSprite(list[k].o, list[k].foe, now);
 
   drawShots(now);
+  drawBlastFx(now);
 
   /* 排队条：改到舞台右下，横排，不再和敌方卡抢右边缘 */
   drawQueueRow(x + w - 12, y + h - SZ.stripH - 26);
@@ -3050,6 +3051,38 @@ function drawFuse(x, y, s, fuseAt, now){
   ctx.fillStyle = '#ff8a5c';
   ctx.fillRect(Math.round(x - 2), Math.round(y - s * 0.95), 4, 4);
   ctx.restore();
+}
+
+/* 引信鼠爆炸：5 帧序列（点火→爆闪→火球→冲击环→余烟），共 500ms */
+function drawBlastFx(now){
+  if (!R.blastFx || !R.blastFx.length) return;
+  var keep = [];
+  for (var i = 0; i < R.blastFx.length; i++){
+    var f = R.blastFx[i];
+    var age = now - f.t0;
+    if (age > 520) continue;
+    keep.push(f);
+    var idx = Math.min(5, Math.max(1, Math.floor(age / 104) + 1));
+    var img = unitFrameImg('fx-blast-' + idx, 'idle1') ||
+              (typeof artFromMap === 'function' ? artFromMap(unitArtMap(), ['fx-blast-' + idx]) : null);
+    if (img){
+      var s2 = 96;
+      ctx.save();
+      ctx.imageSmoothingEnabled = false;
+      ctx.globalAlpha = Math.max(0, 1 - age / 520);
+      ctx.drawImage(img, Math.round(f.x - s2 / 2), Math.round(f.y - s2 / 2), s2, s2);
+      ctx.restore();
+    } else {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255,150,90,' + Math.max(0, 0.8 - age / 600) + ')';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, 12 + age / 12, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+  R.blastFx = keep;
 }
 
 function drawEliteMark(x, y, s, now){

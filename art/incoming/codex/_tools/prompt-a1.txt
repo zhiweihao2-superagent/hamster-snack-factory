@@ -1,0 +1,44 @@
+You are a pixel-art asset producer for a vertical-screen pixel game (仓鼠零食工厂 / hamster snack factory).
+Work ONLY inside the current directory. Create nothing outside it. Never edit files outside it.
+
+TASK: write `gen_a1.py` (Python 3 + Pillow) that draws asset `none-1` = 白板鼠 / blank hamster (no profession, NO weapon, empty paws) and writes exactly these five files:
+
+    none-1/idle-1.png
+    none-1/idle-2.png
+    none-1/action-windup.png
+    none-1/action-strike.png
+    none-1/hop-air.png
+
+Then run it with this interpreter:
+    C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe gen_a1.py
+
+HARD SPEC (a validator checks all of it; any failure = redo):
+1. every file exactly 64x64 px, PNG, mode RGBA.
+2. alpha strictly binary 0 / 255. No anti-aliasing, no semi-transparent pixel anywhere.
+3. transparent background.
+4. character faces RIGHT (side view, nose toward +x).
+5. feet on the ground: the lowest opaque row must be y=61 for idle-1, idle-2, action-windup, action-strike (exactly 2 transparent rows below); never lower than y=61.
+6. horizontally centred: opaque bounding-box centre x within 32 +/- 3.
+7. outline colour exactly #3a241e (58,36,30), a closed 1-px chunky silhouette outline around the whole body.
+8. palette: warm brown/orange fur #c75a2e, #fa923e, #ae4f2c; amber highlight #e7a15c; cream face/belly #ffe0b3; pink inner ear #ff91a4; dark eye #29052e; white eye glint #fefefc. Total distinct colours <= 24.
+9. no text, no letters, no watermark, no ground shadow, no border, no gradient, no scenery.
+10. the body (ears to feet) fills 60-90% of canvas height, roughly 50-56 px tall.
+
+TECHNIQUE (deterministic code drawing, not an image model):
+- build a 64x64 index buffer; helpers: px(x,y,c), rect, ellipse_fill, hline, polygon_fill; draw on a coarse 2-px rhythm so it reads as real pixel art.
+- after drawing the body, run an outline pass: every transparent pixel 4-adjacent to a body pixel becomes #3a241e.
+- add a 1-px darker fur shade (#ae4f2c) along the belly/underside and a 1-px amber highlight (#e7a15c) along the top of the head and back.
+- write the buffer with Pillow (Image.new + putpixel or frombytes), save PNG.
+
+SHAPE (keep the same body, same silhouette width, same position across all five frames; only the pose changes):
+- plump hamster, big round head at the right side, small round ear top-right, tiny tail at the left, two short arms, two short feet, cream face patch with one dark eye and a glint, small pink nose.
+- idle-1: standing, arms down, neutral breathing pose.
+- idle-2: same but body 1 px lower (slight crouch), ears 1 px lower - a subtle breathing frame.
+- action-windup: leaning back, ears flattened, both paws pulled back to the chest, cheek puffed.
+- action-strike: leaning forward hard, front paw stretched 6 px forward past the nose, mouth open, tail up.
+- hop-air: airborne - the whole body lifted 10 px, so its lowest opaque row is y=51; legs tucked, ears up.
+
+VERIFY, then iterate until it passes:
+    C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe _tools\validate_art.py 64 64 none-1/idle-1.png none-1/idle-2.png none-1/action-windup.png none-1/action-strike.png none-1/hop-air.png
+
+Do not stop until all five lines print OK. Do not create any other asset. Reply with the final validator output only.

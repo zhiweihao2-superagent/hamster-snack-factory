@@ -1,0 +1,56 @@
+You are a pixel-art asset producer for a vertical-screen pixel game (仓鼠零食工厂 / hamster snack factory).
+Work ONLY inside the current directory. Create nothing outside it, edit nothing outside it.
+
+ENVIRONMENT NOTES:
+- `apply_patch` is BLOCKED here ("Access is denied"). Write files with PowerShell
+  `[System.IO.File]::WriteAllText(PATH, TEXT, [Text.Encoding]::UTF8)` or `Set-Content -Encoding utf8`.
+- Python with Pillow: C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe
+
+TASK: write `gen_a3.py` that renders asset `fx-blast` = 爆炸 / 引信特效 (explosion + fuse flash, used for the
+fuse-rat self-destruct telegraph and the blast itself) as 5 frames at NATIVE 32x32 (no upscaling):
+
+    fx-blast/frame-1.png   (ignition: fuse spark + small glow)
+    fx-blast/frame-2.png   (flash core: hot white-yellow centre)
+    fx-blast/frame-3.png   (peak blast: full red-orange fireball)
+    fx-blast/frame-4.png   (expanding shock ring + debris shards)
+    fx-blast/frame-5.png   (dissipating smoke, embers)
+
+RENDER PIPELINE:
+1. Keep the art as ASCII pixel maps at 32x32 (one list of exactly 32 strings of exactly 32 chars per frame).
+   PALETTE = { ".": None, "o": (58,36,30), "W": (255,255,240), "Y": (255,226,120),
+               "O": (255,150,40), "R": (232,64,32), "D": (150,32,24), "K": (70,26,20),
+               "S": (110,105,110), "s": (70,66,72) }
+   (W=white hot, Y=yellow, O=orange, R=red, D=dark red, K=dark smoke outline, S=grey smoke,
+    s=dark grey smoke, o=outline #3a241e)
+2. build a 32x32 RGBA image directly (alpha 255 for any non-"." char, 0 for "."), save as PNG RGBA 32x32.
+   Do NOT upscale.
+3. Every frame must be visually centred in the canvas (the fireball's bbox centre within 32/2 +/- 4 on both axes).
+   Keep the hot core in the same place across frames 2-3 so it does not jump around.
+
+HARD SPEC (a validator checks it):
+- every file exactly 32x32 px, PNG, mode RGBA
+- alpha strictly binary 0 / 255, no anti-aliasing, no semi-transparent pixel, no soft glow
+- transparent background, no text, no watermark, no border frame
+- opaque bbox centred within +/- 4 px of the canvas centre on both axes
+- each frame covers at least 8% of the canvas (a real visible effect, not 3 pixels)
+- palette only red/orange/yellow/white/smoke greys plus the #3a241e outline, <= 14 colours
+- no single isolated pixel confetti: every pixel must touch another pixel of the effect
+
+ART DIRECTION:
+- chunky pixel explosion in the game's style: hard pixel edges, thick dark outline on the outer edge of the
+  fireball/ring, stepped colour bands white -> yellow -> orange -> red -> dark red.
+- frame-1: a small 6-8 px spark cluster with 3 short fuse sparks and a faint 10 px halo of dots, plus one
+  tiny grey fuse stub - this is the "about to explode" warning.
+- frame-2: 16-18 px ball, white core 4-6 px, yellow band, orange edge, closed #3a241e outline.
+- frame-3: 26-30 px fireball, white-hot 6 px core, yellow, orange, red bands, jagged outline, 4 flame
+  tongues reaching the canvas edge, a few dark red holes.
+- frame-4: hollow ring 26-30 px across, 4-5 px thick, orange/red, plus 8 debris shards outside the ring.
+- frame-5: grey smoke puffs (3-4 overlapping blobs) with 4-5 yellow embers, thin and fading, no red left.
+
+PROCESS:
+1. write gen_a3.py
+2. run: <PY> gen_a3.py
+3. verify: <PY> _tools\validate_art.py fx 32 32 fx-blast/frame-1.png fx-blast/frame-2.png fx-blast/frame-3.png fx-blast/frame-4.png fx-blast/frame-5.png
+4. Fix and repeat until all five print OK.
+
+Reply with the final validator output. Do not create or modify anything else.

@@ -1,0 +1,28 @@
+Continue in the current directory only. `apply_patch` is BLOCKED - write files with PowerShell
+`[System.IO.File]::WriteAllText(PATH, TEXT, [Text.Encoding]::UTF8)`.
+Python + Pillow: C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe
+
+`gen_a1.py` already produces 5 valid 64x64 frames for `none-1` (白板鼠). All five pass the validator.
+Do NOT change the render pipeline, the alignment code, the file names or the palette. Change ONLY the 32x32
+ASCII maps, and only for these three defects:
+
+1. TAIL (all five poses): it currently reads as a torn, spiky branch sticking out of the left side.
+   Replace it with a compact rounded tail: 3 wide x 2 tall logical px of "f", wrapped in "o" outline,
+   attached directly to the body silhouette at the lower-left, no gaps, no spikes, no diagonal stray pixels.
+2. EYE (all five poses): it is currently a single dark pixel that disappears into the head. Make it a 2x2
+   logical px dark eye "e" placed on the cream muzzle area at head height (not at the top of the head),
+   with a single "w" glint pixel in its upper-right corner, and 1 px of "c" cream around it so it reads at
+   small size.
+3. hop-air: it currently looks like the whole sprite is tilted/lying down. Rebuild that map as a clearly
+   upright airborne hamster: body vertical, ears up, both feet replaced by two small tucked leg stubs under
+   the belly, front arm raised slightly. Keep the auto-align (it already lifts this pose to y=51).
+
+Keep everything else (body proportions, cream belly, arm with cream paw, strike pose thrust, windup pose,
+idle breathing difference, colour count <= 12) exactly as it is.
+
+Then run and verify - every line must print OK:
+  <PY> gen_a1.py
+  <PY> _tools\validate_art.py char 64 64 none-1/idle-1.png none-1/idle-2.png none-1/action-windup.png none-1/action-strike.png
+  <PY> _tools\validate_art.py char_air 64 64 none-1/hop-air.png
+
+Reply with the final validator output. Do not touch any other asset or file.

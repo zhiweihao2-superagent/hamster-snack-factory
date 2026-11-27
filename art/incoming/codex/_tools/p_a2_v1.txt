@@ -1,0 +1,71 @@
+You are a pixel-art asset producer for a vertical-screen pixel game (仓鼠零食工厂 / hamster snack factory).
+Work ONLY inside the current directory. Create nothing outside it, edit nothing outside it.
+
+ENVIRONMENT NOTES (important):
+- `apply_patch` is BLOCKED in this environment ("Access is denied"). Do NOT use it. Write every file with
+  PowerShell: `[System.IO.File]::WriteAllText(PATH, TEXT, [Text.Encoding]::UTF8)` or `Set-Content -Encoding utf8`.
+- Python with Pillow: C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe
+
+TASK: write `gen_a2.py` that renders the ENEMY prototype `foe-blast` (引信鼠 / fuse rat: a rat strapped with
+dynamite and a lit fuse, it walks toward the player and self-destructs) in 4 tiers x 5 frames = 20 PNGs:
+
+    foe-blast-1/idle-1.png  foe-blast-1/idle-2.png  foe-blast-1/action-windup.png  foe-blast-1/action-strike.png  foe-blast-1/hop-air.png
+    foe-blast-2/... (same five names)
+    foe-blast-3/... (same five names)
+    foe-blast-4/... (same five names)
+
+RENDER PIPELINE (follow exactly - it is what makes the output valid):
+1. Keep the art as ASCII pixel maps at 32x32 logical resolution, ONE map per pose (5 poses total, shared by
+   all tiers), e.g. POSES = { "idle-1": [32 strings of 32 chars], ... }.
+   PALETTE = { ".": None, "o": (58,36,30), "g": (126,132,141), "G": (163,167,170), "k": (85,91,101),
+               "r": (199,25,50), "R": (255,120,120), "y": (250,200,80), "c": (212,213,219),
+               "e": (255,40,40), "w": (254,254,252), "n": (60,40,40), "m": (110,110,125) }
+   (o=outline #3a241e, g=grey fur, G=light grey fur, k=dark grey shade, r=red dynamite stick,
+    R=red highlight, y=fuse spark yellow, c=cream/pale metal, e=red eye, w=eye glint, n=nose/mouth,
+    m=metal band)
+2. build a 32x32 RGBA image per pose, then scale x2 with Image.NEAREST -> 64x64.
+3. TIER DECORATION, applied to the 32x32 index grid before scaling (function decorate(grid, tier)):
+   - tier 1: one red dynamite stick strapped to the belly + a short lit fuse with a yellow spark.
+   - tier 2: two dynamite sticks + a metal band "m" across the chest + a longer fuse.
+   - tier 3: three sticks in a bundle, rivets, a bigger spark, one cracked tooth.
+   - tier 4: full bomb vest (sticks around the torso), shoulder strap, glowing red seams, biggest spark.
+   Never move the body silhouette between tiers; only add gear. Tiers must stay inside the 32x32 grid.
+4. AUTO-ALIGN before saving (mandatory):
+   crop to bbox, paste into a fresh 64x64 transparent canvas so that
+     - lowest opaque row = y61 (paste_y = 61 - crop_h + 1); for pose "hop-air" use y51
+     - horizontally centred: paste_x = round(32 - crop_w / 2)
+   If the crop is wider than 62 px or taller than 56 px, shrink the map instead of clipping.
+5. save PNG RGBA.
+
+HARD SPEC (a validator checks it):
+- every file exactly 64x64, PNG, mode RGBA, alpha strictly binary 0/255
+- transparent background, no shadow, no border, no gradient, no text, no watermark
+- ENEMY faces LEFT (nose toward -x, tail toward +x) - the mirror of the player unit
+- lowest opaque row y=61 for idle-1/idle-2/action-windup/action-strike, y=51 for hop-air
+- opaque bbox centre x within 32 +/- 3
+- closed outline in #3a241e around the silhouette, >= 24 px of it
+- total distinct colours <= 20
+
+ART DIRECTION:
+- menacing grey rat, cold grey-blue fur (g/G/k), glowing RED eye (e) with a 1 px white glint,
+  pointed snout on the LEFT, long thin outlined tail on the right, hunched aggressive posture,
+  dark claws, a red dynamite bundle on the torso, a fuse that ends in a yellow spark.
+- poses (same body, only pose changes):
+  * idle-1: hunched, fuse spark small, arms down
+  * idle-2: 1 logical px lower crouch, spark 1 px different (flicker)
+  * action-windup: leaning back, chest puffed, spark bigger (about to blow)
+  * action-strike: lunging forward-left, front claw extended past the snout, mouth open, spark burst
+  * hop-air: airborne (lifted 10 px), legs tucked, tail curled up
+- chunky readable silhouette, no single-pixel floating details, thick outline.
+
+PROCESS:
+1. write gen_a2.py
+2. run: <PY> gen_a2.py
+3. verify every file, e.g.:
+   <PY> _tools\validate_art.py char 64 64 foe-blast-1/idle-1.png foe-blast-1/idle-2.png foe-blast-1/action-windup.png foe-blast-1/action-strike.png
+   <PY> _tools\validate_art.py char_air 64 64 foe-blast-1/hop-air.png
+   ... and the same for foe-blast-2, foe-blast-3, foe-blast-4 (16 char + 4 char_air checks).
+4. Fix and repeat until every line prints OK. Do not stop before that.
+Reply with the final validator output.
+
+Do not create or modify anything else.

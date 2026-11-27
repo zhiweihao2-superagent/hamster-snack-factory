@@ -1,0 +1,1 @@
+﻿Create a file named ping.txt in the current directory containing the single line: ok. Then reply DONE.

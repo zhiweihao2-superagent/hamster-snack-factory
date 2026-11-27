@@ -1,0 +1,18 @@
+Continue in the current directory only. `apply_patch` is BLOCKED - write files with PowerShell
+`[System.IO.File]::WriteAllText(PATH, TEXT, [Text.Encoding]::UTF8)`.
+Python + Pillow: C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe
+
+`gen_b1.py` produced 11 icons. All pass except ONE defect: the `pierce` map (穿甲钉) has a single isolated
+1-px pixel floating away from the shape (the validator now counts 4-connected components and reports
+"2 opaque components ... sizes [100, 1]"). The other 10 icons are fine and must not change.
+
+Fix: in the `pierce` 16x16 map, delete the isolated pixel (or connect it to the main shape with one pixel of
+the same colour so the design still reads as a nail through an armour plate). Do not otherwise redesign it.
+Regenerate the 32x32 version by re-running the script (it is a nearest x2 upscale, so it fixes itself).
+
+Then run and verify - all 22 lines must print OK, with exactly one connected component per icon:
+  <PY> gen_b1.py
+  <PY> _tools\validate_art.py icon 16 16 icons/butterarmor.png icons/chain.png icons/drill.png icons/fireball.png icons/frostnova.png icons/guillotine.png icons/lucky.png icons/overtime.png icons/pierce.png icons/sugar.png icons/sweep.png
+  <PY> _tools\validate_art.py icon 32 32 icons/butterarmor_32.png icons/chain_32.png icons/drill_32.png icons/fireball_32.png icons/frostnova_32.png icons/guillotine_32.png icons/lucky_32.png icons/overtime_32.png icons/pierce_32.png icons/sugar_32.png icons/sweep_32.png
+
+Reply with the final validator output only. Do not touch any other asset or file.

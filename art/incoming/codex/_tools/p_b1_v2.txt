@@ -1,0 +1,26 @@
+Continue in the current directory only. `apply_patch` is BLOCKED - write files with PowerShell
+`[System.IO.File]::WriteAllText(PATH, TEXT, [Text.Encoding]::UTF8)`.
+Python + Pillow: C:\Users\lenovo\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe
+
+`gen_b1.py` already produced 11 skill icons (16x16 + 32x32) in `icons/`, all passing the validator.
+Do NOT change the pipeline, the palette, the file names or the other 8 icons. Fix ONLY these three 16x16 maps
+because they are not readable at 16x16:
+
+1. `drill` (冲击钻): currently an unreadable grey/amber blob. Redraw as a clearly readable handheld power
+   drill in 3/4 view: amber/red body "r" with a pistol grip going down-right, a dark trigger notch, a metal
+   chuck "m", and a pointed spiral drill bit "M"/"m" sticking out to the RIGHT with 2-3 diagonal ridge pixels.
+   Body left, bit right, overall diagonal composition inside 14x14.
+2. `lucky` (幸运签): currently a blank cream card. Redraw as a fortune slip: a cream "w" paper tag with a
+   folded top-right corner, one thick gold "y" four-point star in the middle, a red "r" ribbon knot at the
+   bottom-left, dark #3a241e outline around the paper. It must read as a lucky charm, not an empty note.
+3. `pierce` (穿甲钉): currently ambiguous. Redraw as a long steel nail driven through an armour plate seen
+   from the side: a grey "m"/"M" plate 10x6 on the left with 3 rivet dots "d", and a light steel "M" nail
+   shaft crossing it diagonally, its sharp point emerging on the RIGHT and a flat nail head "d" on the LEFT,
+   plus 2 crack pixels "o" radiating from the hole.
+
+Everything else stays. Then run and verify - all 22 files must print OK:
+  <PY> gen_b1.py
+  <PY> _tools\validate_art.py icon 16 16 icons/butterarmor.png icons/chain.png icons/drill.png icons/fireball.png icons/frostnova.png icons/guillotine.png icons/lucky.png icons/overtime.png icons/pierce.png icons/sugar.png icons/sweep.png
+  <PY> _tools\validate_art.py icon 32 32 icons/butterarmor_32.png icons/chain_32.png icons/drill_32.png icons/fireball_32.png icons/frostnova_32.png icons/guillotine_32.png icons/lucky_32.png icons/overtime_32.png icons/pierce_32.png icons/sugar_32.png icons/sweep_32.png
+
+Reply with the final validator output and the three new 16x16 maps. Do not touch any other asset or file.
