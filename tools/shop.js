@@ -1251,7 +1251,7 @@ function drawRatDetail(){
   }
 
   var tx = ax + box + 14;
-  if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, W - pad - 24, cardY + 26, 20);
+  if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, W - pad - 26, cardY + 30, 32);
   txt(st.name, tx, cardY + 30, Math.round(W * 0.045), C.ink, "left", true);
   txt(ratLineLabel(rat) + (onSquad ? " · 上场中" : ""), tx, cardY + 50,
       Math.max(10, Math.round(W * 0.026)), onSquad ? "#79c98a" : C.muted, "left");
@@ -1975,7 +1975,6 @@ function drawBoxPage(){
     ctx.lineWidth = sel ? 2 : 1;
     ctx.strokeStyle = sel ? C.amber : C.line; ctx.stroke();
     drawRatAt(rat, cx + cw / 2, cy + ch * 0.38, Math.min(46, ch * 0.52), 1);
-    if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, cx + cw - 14, cy + 26, 16);
     var name = ratLabel(rat); if (name.length > 4) name = name.slice(0, 4);
     txt(name, cx + cw / 2, cy + ch - 20, Math.max(9, Math.round(W * 0.026)), C.ink, 'center', true);
     var ts = rat.talents || [];
@@ -2082,7 +2081,6 @@ function drawFuse(){
         '#ffd166', 'left', true);
     txt('技' + ((r.skills || []).length), cx + cw - 8, cy + chh - 6,
         Math.max(8, Math.round(W * 0.022)), '#8fb8ff', 'right');
-    if (r.line && r.line !== 'none') drawClassIcon(r.line, cx + cw - 14, cy + 26, 16);
     txt((LINE_NAME[r.line] || '白板'), cx + 8, cy + 20, Math.max(10, Math.round(W * 0.028)), C.ink, 'left', true);
     var tal = (r.talents || []).map(function(t){ return (TALENT_DEF[t.id] ? TALENT_DEF[t.id].name : t.id).slice(0,2) + t.lv; }).join(' ');
     txt(tal || '无天赋', cx + 8, cy + 38, Math.max(8, Math.round(W * 0.023)), '#ffd98a', 'left');
@@ -2482,6 +2480,10 @@ function drawOfferCard(x, y, w, h, o, idx){
 
 /* 选中鼠的数值面板（改动前/后的实际效果都在这） */
 function drawRatStats(x, y, w){
+  var ratIconOwner = SHOP.rats[SHOP.sel];
+  if (ratIconOwner && ratIconOwner.line && ratIconOwner.line !== 'none'){
+    drawClassIcon(ratIconOwner.line, x + 12, y + 20, 26);
+  }
   var rat = SHOP.rats[SHOP.sel];
   if (!rat) return;
   var u = makeUnit(ratId(rat), 0);
@@ -2616,9 +2618,10 @@ function drawRatCard(x, y, w, h, idx){
   /* 卡片只有 ~110px 宽：名字最多 4 个字，天赋只显示第一条 + "+n" */
   var name = ratLabel(rat);
   if (name.length > 4) name = name.slice(0, 4);
-  if (rat.line && rat.line !== 'none') drawClassIcon(rat.line, x + w - 15, y + 26, 16);
   txt(name, tx, y + Math.round(h * 0.30), nameFs, C.ink, 'left', true);
-  txt(ratLineLabel(rat), tx, y + Math.round(h * 0.52), subFs, C.muted, 'left');
+  var lineX = tx;
+  if (rat.line && rat.line !== 'none' && drawClassIcon(rat.line, tx + 8, y + Math.round(h * 0.52) - 4, 15)) lineX = tx + 18;
+  txt(ratLineLabel(rat), lineX, y + Math.round(h * 0.52), subFs, C.muted, 'left');
 
   var ts = rat.talents || [];
   var roman = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
