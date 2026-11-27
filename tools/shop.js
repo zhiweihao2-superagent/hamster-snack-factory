@@ -690,9 +690,13 @@ function rollOffers(){
   else pool = cand;
   var g = pool[Math.floor(Math.random() * pool.length)];
 
+  /* 五件：两张证（一张推荐、一张随机）+ 小碎片包 + 大碎片包 + 仓鼠 */
+  var g2 = cand[Math.floor(Math.random() * cand.length)] || g;
   SHOP.offers = [
     { kind: 'gear', line: g.line, tier: g.tier, price: g.price, sold: false },
+    { kind: 'gear', line: g2.line, tier: g2.tier, price: g2.price, sold: false },
     { kind: 'shard', amount: 2, price: 10, sold: false },
+    { kind: 'shard', amount: 5, price: 22, sold: false },
     { kind: 'rat', price: 35, sold: false }
   ];
 }
@@ -1692,6 +1696,7 @@ function drawGacha(){
     }
   });
 
+
   /* 池子展示 */
   var stripY = py + ph + 10;
   drawPoolStrip(pad, stripY, 76);
@@ -1732,7 +1737,24 @@ function drawGacha(){
 
 
 
-  drawLoopTips(pad, exY + exH + 14, W - pad * 2);
+  /* 摇一次（原商店页的摇奖机）：放在碎片说明上方，整行一个按钮 */
+  var slotY3 = exY + exH + 8;
+  var canSlot3 = SHOP.coins >= SLOT.price;
+  if (SLOT.rolling && performance.now() - SLOT.t0 > 820) slotResolve();
+  rr(pad, slotY3, W - pad * 2, 38, 19);
+  ctx.fillStyle = canSlot3 || SLOT.rolling ? "rgba(232,172,80,.18)" : "#241d2e";
+  ctx.fill();
+  ctx.lineWidth = SLOT.rolling ? 2 : 1;
+  ctx.strokeStyle = SLOT.rolling ? C.amber : (canSlot3 ? "rgba(232,172,80,.6)" : "#332b45");
+  ctx.stroke();
+  txt(SLOT.rolling ? '…摇…' : ('摇一次 ' + SLOT.price + ' 💰'), W / 2, slotY3 + 25,
+      Math.max(11, Math.round(W * 0.03)), canSlot3 || SLOT.rolling ? C.amber : "#5b5374", "center", true);
+  shopHit(pad, slotY3, W - pad * 2, 38, function(){ slotRoll(); });
+  var lastTxt3 = SLOT.last ? ('上次：' + SLOT.last) : '';
+  txt("金币 40% · 碎片 30% · 转职证 25% · 大奖 5%" + (lastTxt3 ? ("  ｜ " + lastTxt3) : ""),
+      pad, slotY3 + 52, Math.max(8, Math.round(W * 0.021)), "#8f86a6", "left");
+
+  drawLoopTips(pad, slotY3 + 66, W - pad * 2);
 
   /* Ⅲ 级播报（金色横条 + 分享） */
   var now = performance.now();
@@ -2408,13 +2430,6 @@ function drawShop(){
     /* 仓鼠盒：盒里有东西就高亮，数字直接写在按钮上 */
   var boxN = boxList().length;
   entryBtn(e3x, boxN ? ('盒' + boxN) : '仓鼠盒', function(){ SHOP.page = 'box'; sfx('tap'); }, boxN > 0);
-  var gearN = gearCountAll();
-  entryBtn(e3x - ebw - 6, gearN ? ('证' + gearN) : '证', function(){
-    sfx('tap');
-    /* 没有专门的背包页：跳到选中鼠的详情页，那里能用证 */
-    if (SHOP.rats.length){ SHOP.detail = SHOP.sel >= 0 ? SHOP.sel : 0; SHOP.page = 'rat'; }
-  }, gearN > 0);
-
   var cardX = pad, cardW = W - pad * 2;
   var ratsY = Math.round(H * 0.178);
   var onCount = squadOnCount();
@@ -2549,57 +2564,39 @@ function drawShardStrip(x, y, w){
 
 /* 紧凑货架卡：图标居中、名字最多两行、价格在底部 —— 一行能放三张 */
 /* 商店页：只放"花钱"的东西 —— 今日货架、摇一次、抽奖入口、刷新、下一关 */
+/* 商店页：今日货架 5 件（3 + 2 两行）。摇奖机已挪到抽奖页的池子里 */
 function drawStorePage(pad){
   var cardW = W - pad * 2;
   var rowY = Math.round(H * 0.155);
-  var ogx = 6;
-  var colN = Math.max(1, SHOP.offers.length);
-  var ow = Math.floor((cardW - ogx * (colN - 1)) / colN);
-  var oh = 86;
-  txt('今日货架', pad, rowY - 10, Math.max(10, Math.round(W * 0.026)), '#8f86a6', 'left', true);
+  var ogx = 6, perRow = 3, oh = 84, rowGap = 10;
+  var ow = Math.floor((cardW - ogx * (perRow - 1)) / perRow);
+  txt('今日货架 · 每天刷新', pad, rowY - 10, Math.max(10, Math.round(W * 0.026)), '#8f86a6', 'left', true);
   for (var i = 0; i < SHOP.offers.length; i++){
-    drawOfferCard(pad + i * (ow + ogx), rowY, ow, oh, SHOP.offers[i], i);
+    var row = Math.floor(i / perRow), col = i % perRow;
+    var inRow = Math.min(perRow, SHOP.offers.length - row * perRow);
+    var w2 = inRow === perRow ? ow : Math.floor((cardW - ogx * (inRow - 1)) / inRow);
+    drawOfferCard(pad + col * (w2 + ogx), rowY + row * (oh + rowGap), w2, oh, SHOP.offers[i], i);
   }
 
-  /* 摇奖机 */
-  var sy = rowY + oh + 26;
-  var canSlot = SHOP.coins >= SLOT.price;
-  if (SLOT.rolling && performance.now() - SLOT.t0 > 820) slotResolve();
-  rr(pad, sy, cardW, 44, 22);
-  ctx.fillStyle = canSlot || SLOT.rolling ? 'rgba(232,172,80,.18)' : '#241d2e';
-  ctx.fill();
-  ctx.lineWidth = SLOT.rolling ? 2 : 1;
-  ctx.strokeStyle = SLOT.rolling ? C.amber : (canSlot ? 'rgba(232,172,80,.6)' : '#332b45');
-  ctx.stroke();
-  txt(SLOT.rolling ? '…摇…' : ('摇一次 ' + SLOT.price + '💰'),
-      W / 2, sy + 28, Math.max(12, Math.round(W * 0.034)),
-      canSlot || SLOT.rolling ? C.amber : '#5b5374', 'center', true);
-  shopHit(pad, sy, cardW, 44, function(){ slotRoll(); });
-
-  var lastTxt = SLOT.last ? ('上次：' + SLOT.last + ' ｜ ') : '';
-  txt(lastTxt + SLOT_ODDS, pad, sy + 58, Math.max(8, Math.round(W * 0.022)), '#8f86a6', 'left');
-
-  /* 抽奖入口 */
-  var gy = sy + 74;
+  var gy = rowY + 2 * (oh + rowGap) + 18;
   rr(pad, gy, cardW, 48, 24);
   ctx.fillStyle = 'rgba(199,182,255,.2)'; ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(199,182,255,.8)'; ctx.stroke();
-  txt('抽奖 · 仓鼠池 / 道具池', W / 2, gy + 30, Math.max(11, Math.round(W * 0.031)),
+  txt('去抽奖 · 仓鼠池 / 道具池 / 摇一次', W / 2, gy + 30, Math.max(11, Math.round(W * 0.031)),
       '#e4dcff', 'center', true);
   shopHit(pad, gy, cardW, 48, function(){ SHOP.page = 'gacha'; sfx('tap'); });
 
-  /* 底部：刷新 + 下一关 */
   var btnH = 46, bw2 = Math.round((W - pad * 2 - 10) / 2), by = H - 96;
   rr(pad, by, bw2, btnH, 23);
   ctx.fillStyle = C.panel2; ctx.fill();
   ctx.lineWidth = 1;
-  ctx.strokeStyle = SHOP.coins >= 8 && SHOP.refreshLeft > 0 ? C.line : '#332b45';
+  ctx.strokeStyle = SHOP.coins >= 8 && SHOP.refreshLeft > 0 ? C.line : "#332b45";
   ctx.stroke();
   txt('刷新 8 · 剩' + SHOP.refreshLeft, pad + bw2 / 2, by + 28,
       Math.max(10, Math.round(W * 0.029)), SHOP.refreshLeft > 0 ? C.muted : '#5b5374', 'center', true);
   shopHit(pad, by, bw2, btnH, function(){
     if (SHOP.refreshLeft <= 0 || SHOP.coins < 8) return;
-    SHOP.coins -= 8; SHOP.refreshLeft--; rollOffers(); shopSave(); sfx('tap');
+    SHOP.coins -= 8; SHOP.refreshLeft--; rollOffers(); shopSave(); sfx("tap");
   });
 
   var bx2 = pad + bw2 + 10;
@@ -2607,7 +2604,7 @@ function drawStorePage(pad){
   ctx.fillStyle = SHOP.advance === false ? C.panel2 : C.amber; ctx.fill();
   txt('下一关 ▶', bx2 + bw2 / 2, by + 28, Math.max(11, Math.round(W * 0.033)),
       SHOP.advance === false ? '#5b5374' : '#241d2e', 'center', true);
-  shopHit(bx2, by, bw2, btnH, function(){ if (SHOP.advance === false) return; sfx('tap'); startNextLevel(); });
+  shopHit(bx2, by, bw2, btnH, function(){ if (SHOP.advance === false) return; sfx("tap"); startNextLevel(); });
 }
 
 function drawOfferCard(x, y, w, h, o, idx){
