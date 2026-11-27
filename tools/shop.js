@@ -1737,24 +1737,7 @@ function drawGacha(){
 
 
 
-  /* 摇一次（原商店页的摇奖机）：放在碎片说明上方，整行一个按钮 */
-  var slotY3 = exY + exH + 8;
-  var canSlot3 = SHOP.coins >= SLOT.price;
-  if (SLOT.rolling && performance.now() - SLOT.t0 > 820) slotResolve();
-  rr(pad, slotY3, W - pad * 2, 38, 19);
-  ctx.fillStyle = canSlot3 || SLOT.rolling ? "rgba(232,172,80,.18)" : "#241d2e";
-  ctx.fill();
-  ctx.lineWidth = SLOT.rolling ? 2 : 1;
-  ctx.strokeStyle = SLOT.rolling ? C.amber : (canSlot3 ? "rgba(232,172,80,.6)" : "#332b45");
-  ctx.stroke();
-  txt(SLOT.rolling ? '…摇…' : ('摇一次 ' + SLOT.price + ' 💰'), W / 2, slotY3 + 25,
-      Math.max(11, Math.round(W * 0.03)), canSlot3 || SLOT.rolling ? C.amber : "#5b5374", "center", true);
-  shopHit(pad, slotY3, W - pad * 2, 38, function(){ slotRoll(); });
-  var lastTxt3 = SLOT.last ? ('上次：' + SLOT.last) : '';
-  txt("金币 40% · 碎片 30% · 转职证 25% · 大奖 5%" + (lastTxt3 ? ("  ｜ " + lastTxt3) : ""),
-      pad, slotY3 + 52, Math.max(8, Math.round(W * 0.021)), "#8f86a6", "left");
-
-  drawLoopTips(pad, slotY3 + 66, W - pad * 2);
+  drawLoopTips(pad, exY + exH + 14, W - pad * 2);
 
   /* Ⅲ 级播报（金色横条 + 分享） */
   var now = performance.now();
@@ -2404,34 +2387,9 @@ function drawShop(){
   /* 商店页整块交给 drawStorePage，队伍页不画货架 */
   if (SHOP.mainTab === 'shop'){ drawStorePage(pad); return; }
 
-  /* 图鉴入口：五职业 × 四阶，看看每条线升到四级长什么样、拿什么武器 */
-  var cbw = 50, cbh = 22;
-  var cbx = W - pad - cbw, cby = tabY2 + tabH + 6;
-  rr(cbx, cby, cbw, cbh, 12);
-  ctx.fillStyle = C.panel2; ctx.fill();
-  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(232,172,80,.45)'; ctx.stroke();
-  txt('图鉴', cbx + cbw / 2, cby + 15, Math.max(9, Math.round(W * 0.026)), C.amber, 'center', true);
-  shopHit(cbx, cby, cbw, cbh, function(){ SHOP.codex = true; sfx('tap'); });
 
-  /* 抽奖 / 炼妖 两个独立页面入口 */
-  var ebw = 50, ebh = 22;
-  var e1x = cbx - ebw - 6, e2x = e1x - ebw - 6, e3x = e2x - ebw - 6;
-  function entryBtn(ex, label, onTap, hot){
-    rr(ex, cby, ebw, ebh, 12);
-    ctx.fillStyle = hot ? 'rgba(199,182,255,.22)' : C.panel2; ctx.fill();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = hot ? 'rgba(199,182,255,.85)' : 'rgba(199,182,255,.5)';
-    ctx.stroke();
-    txt(label, ex + ebw / 2, cby + 15, Math.max(9, Math.round(W * 0.026)),
-        hot ? '#e4dcff' : '#c7b6ff', 'center', true);
-    shopHit(ex, cby, ebw, ebh, onTap);
-  }
-  entryBtn(cbx - 2 * (ebw + 6), '炼妖', function(){ SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap'); });
-    /* 仓鼠盒：盒里有东西就高亮，数字直接写在按钮上 */
-  var boxN = boxList().length;
-  entryBtn(cbx - ebw - 6, boxN ? ('盒' + boxN) : '仓鼠盒', function(){ SHOP.page = 'box'; sfx('tap'); }, boxN > 0);
   var cardX = pad, cardW = W - pad * 2;
-  var ratsY = Math.round(H * 0.178);
+  var ratsY = Math.round(H * 0.152);
   var onCount = squadOnCount();
   txt('我的仓鼠 ' + SHOP.rats.length + '/' + rosterCap() + ' · 上场 ' + onCount + '/' + fieldCap(),
       pad, ratsY - 6, Math.max(9, Math.round(W * 0.025)), C.muted, 'left');
@@ -2489,42 +2447,38 @@ function drawShop(){
   /* 选中鼠的数值面板：把"买完到底强了多少"摊开给玩家看 */
   drawRatStats(cardX, ratsY + rows * (slotH + 8) + 10, cardW);
 
-  /* 底部按钮 */
+  /* 底部工具栏：左边三个小入口（炼妖 / 仓鼠盒 / 图鉴），右边下一关 */
   var btnH = Math.round(Math.min(46, H * 0.055));
   var by = H - btnH - Math.round(H * 0.045);
-  var b1w = Math.round(cardW * 0.30), b3w = Math.round(cardW * 0.34);
-  var b2w = cardW - b1w - b3w - 20;
-  var bx1 = cardX, bx2 = bx1 + b1w + 10, bx3 = bx2 + b2w + 10;
-
-  rr(bx1, by, b1w, btnH, btnH / 2);
-  ctx.fillStyle = SHOP.coins >= 8 && SHOP.refreshLeft > 0 ? C.panel2 : '#241d2e';
-  ctx.fill();
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = SHOP.coins >= 8 && SHOP.refreshLeft > 0 ? C.line : '#332b45';
-  ctx.stroke();
-  txt('刷新 8 · 剩' + SHOP.refreshLeft, bx1 + b1w / 2, by + btnH * 0.64,
-      Math.max(10, Math.round(W * 0.032)), SHOP.refreshLeft > 0 ? C.muted : '#5b5374', 'center', true);
-  shopHit(bx1, by, b1w, btnH, function(){
-    if (SHOP.refreshLeft <= 0 || SHOP.coins < 8) return;
-    SHOP.coins -= 8; SHOP.refreshLeft--; rollOffers(); shopSave(); sfx('tap');
-  });
-
-  /* 出货率 + 上次结果（明示概率，五连保底） */
-  var oddsY = by - 10;
-  var lastTxt = SLOT.last ? ('上次：' + SLOT.last + ' ｜ ') : '';
-  /* 仓鼠一多，卡片会占满到按钮上方；这时不画出货率那行，免得和选中面板叠字 */
-  if ((SHOP.rats || []).length <= 4){
-    txt(lastTxt + SLOT_ODDS, pad, oddsY, Math.max(8, Math.round(W * 0.023)), '#8f86a6', 'left');
-  }
-
-  /* 下一关 */
-  rr(bx3, by, b3w, btnH, btnH / 2);
+  var nextW = Math.round(cardW * 0.40);
+  var nx = cardX + cardW - nextW;
+  rr(nx, by, nextW, btnH, btnH / 2);
   ctx.fillStyle = SHOP.advance === false ? C.panel2 : C.amber;
   ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = C.amber; ctx.stroke();
-  txt(SHOP.advance === false ? '重打 ▶' : '下一关 ▶', bx3 + b3w / 2, by + btnH * 0.64,
-      Math.round(W * 0.038), SHOP.advance === false ? C.amber : '#241d2e', 'center', true);
-  shopHit(bx3, by, b3w, btnH, function(){ sfx('pick'); startNextLevel(); });
+  txt(SHOP.advance === false ? '重打 ▶' : '下一关 ▶', nx + nextW / 2, by + btnH * 0.64,
+      Math.round(W * 0.036), SHOP.advance === false ? C.amber : '#241d2e', 'center', true);
+  shopHit(nx, by, nextW, btnH, function(){ sfx('pick'); startNextLevel(); });
+
+  /* 三个小入口：等宽排在左边 */
+  var toolW = Math.round((nx - cardX - 24) / 3);
+  var boxN = boxList().length;
+  var tools = [
+    ['炼妖', function(){ SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap'); }, false],
+    [boxN ? ('盒' + boxN) : '盒', function(){ SHOP.page = 'box'; sfx('tap'); }, boxN > 0],
+    ['图鉴', function(){ SHOP.codex = true; sfx('tap'); }, false]
+  ];
+  for (var ti = 0; ti < tools.length; ti++){
+    var tx0 = cardX + ti * (toolW + 12);
+    var hot = tools[ti][2];
+    rr(tx0, by, toolW, btnH, btnH / 2);
+    ctx.fillStyle = hot ? 'rgba(199,182,255,.24)' : C.panel2; ctx.fill();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = hot ? 'rgba(199,182,255,.85)' : 'rgba(199,182,255,.45)'; ctx.stroke();
+    txt(tools[ti][0], tx0 + toolW / 2, by + btnH * 0.64, Math.max(10, Math.round(W * 0.028)),
+        hot ? '#e4dcff' : '#c7b6ff', 'center', true);
+    shopHit(tx0, by, toolW, btnH, tools[ti][1]);
+  }
 }
 
 /* 碎片兑换条：贴在摇奖机上面一行，两个按钮（道具池 / 仓鼠池） */
