@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 sheet.py — 生成对照表 _tools/sheet-*.png（4x 最近邻放大，深灰底），便于肉眼验收。
@@ -50,7 +50,16 @@ def sheet_A1() -> Path | None:
 
 
 def sheet_A2() -> Path | None:
-    dirs = [d for d in sorted(ROOT.glob("A2-*")) if (d / "idle-1.png").exists()]
+    return _sheet_charset("A2-*", "sheet-A2.png")
+
+
+def sheet_A2b() -> Path | None:
+    return _sheet_charset("A2b-*", "sheet-A2b.png")
+
+
+def _sheet_charset(pattern: str, name: str) -> Path | None:
+    """一个角色组（多阶 × 5 帧）的对照表。缺帧的格子留空。"""
+    dirs = [d for d in sorted(ROOT.glob(pattern)) if (d / "idle-1.png").exists()]
     if not dirs:
         return None
     s = grid(len(dirs), 5, 256)
@@ -59,7 +68,7 @@ def sheet_A2() -> Path | None:
             im = load(d / f"{f}.png", 4)
             if im:
                 s.alpha_composite(im, (6 + c * 262, 6 + r * 262))
-    p = TOOLS / "sheet-A2.png"
+    p = TOOLS / name
     s.save(p)
     return p
 
@@ -101,7 +110,7 @@ def sheet_icons(name: str, dirpath: Path) -> Path | None:
 
 def main() -> None:
     made = []
-    for fn in (sheet_A1, sheet_A2, sheet_A3):
+    for fn in (sheet_A1, sheet_A2, sheet_A2b, sheet_A3):
         p = fn()
         if p:
             made.append(p.name)

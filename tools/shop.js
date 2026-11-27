@@ -2707,7 +2707,7 @@ function drawRatCard(x, y, w, h, idx){
   ctx.stroke();
 
   /* 头像（只要头）+ 矢量纹章 */
-  var headS = 34;
+  var headS = 32;
   var headImg = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["head-base", "none-1"]) : null;
   if (headImg){
     ctx.save(); ctx.imageSmoothingEnabled = false;
@@ -2755,8 +2755,8 @@ function drawRatCard(x, y, w, h, idx){
       var lv = Math.min(3, sk[i].lv || 1);
       var tg = (d.targets || [1,1,1])[lv - 1] || 1;
       var cd = Math.round(((d.cd || [0,0,0])[lv - 1] || 0) / 1000);
-      var hasIc = drawSkillIcon(sk[i].id, x + 17, sy + i * lineH - 3, 15);
-      txt((d.name || sk[i].id) + romanS[lv - 1], x + (hasIc ? 27 : 10), sy + i * lineH,
+
+      txt((d.name || sk[i].id) + romanS[lv - 1], x + 10, sy + i * lineH,
           Math.max(8, Math.round(W * 0.022)), kindCol, "left", true);
       txt(tg + "体 · " + cd + "s", x + w - 10, sy + i * lineH,
           Math.max(8, Math.round(W * 0.021)), C.muted, "right");

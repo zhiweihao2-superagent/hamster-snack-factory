@@ -1,0 +1,45 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. All four PNGs must come out of the image generation model.
+
+You will call the image generation tool FOUR times: one IDLE frame for each upgrade tier of the SAME character.
+
+=== THE TWO ATTACHED REFERENCES ARE THE TARGET STYLE ===
+Both attached images are our shipped enemy art. Copy their POSE, BODY TYPE and SILHOUETTE, not their props:
+- FRONT-FACING, THREE-QUARTER view: the rat faces the CAMERA, turned only very slightly to one side. BOTH eyes visible, BOTH ears visible, chest and belly presented to us. Its snout may dip toward the lower right at 20 degrees at most. NEVER a pure side profile, NEVER a full profile head.
+- CHUBBY AND SQUAT: a big round head roughly 40% of the total height, a fat round belly, SHORT STUBBY arms and SHORT STUBBY legs with thick visible feet. A plump little bomb-carrier, NOT tall, NOT lean, NOT a lanky rat.
+- The body FILLS MOST of the square frame (about 8% margin all around). Big and bold.
+- The TAIL is SHORT: it comes out from behind the right hip, makes ONE small curl, and STOPS. It must never stick out beyond the body's width and never touch the frame edge.
+
+=== THE CHARACTER ===
+A cartoon GREY RAT, a bomb-carrying enemy.
+- Fur grey #8a8f96, belly and muzzle pale grey #b9bdc4, darker grey #5e6369 only in the ear and back shadow.
+- BIG ROUND RED EYES #e8402c with a hard dark pupil and one white highlight, set wide apart on the front of the face. Eyes must stay clearly visible in every tier.
+- Rounded snout, two tiny front teeth, short whiskers drawn as two or three thick bars (never hairline fuzz).
+- Pink inner ears #f09ca8, pink paws and feet.
+- NO clothing, NO hat, NO hand weapon, NO shield. Paws empty.
+
+=== THE BOMB (the only thing that changes between the four images) ===
+Red #c8342a dynamite sticks with dark brown #3a241e bands, strapped LOW on the chest and waist with a leather harness, hanging on the FRONT of the belly and around the back — like a bandolier belt of explosives.
+HARD RULE: the bomb must sit BELOW THE CHIN. It must NEVER cover the mouth, the snout or the eyes, and it must never hide the round grey head. Keep a clear grey neck and a clear face.
+A short fuse curls up from the bundle with a small yellow #e8c14a spark and a few spark dots.
+
+Tier 1: ONE single stick of dynamite, hanging at the belly on a thin strap.
+Tier 2: TWO sticks lashed side by side across the belly.
+Tier 3: THREE sticks in a row around the waist, all with bands, harness strap over one shoulder.
+Tier 4: FIVE sticks packed in a fat bundle around the waist and the lower chest, harness straining, fuse almost burnt down with a white-hot spark, a little soot on the fur — but the face and the eyes stay completely clear.
+
+=== STYLE ===
+Hard-edged PIXEL ART sprite with visible 1px stair-stepped pixel detail, NOT chunky 2px blocks.
+Thick dark-brown outline #3a241e around the silhouette and between every colour region.
+Flat solid colours only. NO gradients, NO soft shading, NO anti-aliasing, NO blur.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame.
+All four images must show the SAME rat at the SAME size, SAME pose, SAME palette — only the dynamite count differs.
+
+=== OUTPUT ===
+Each at high resolution (at least 1000x1000), transparent background.
+Save to exactly, one generation per file:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-1\raw\idle-1.png   (Tier 1, one stick)
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-2\raw\idle-1.png   (Tier 2, two sticks)
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-3\raw\idle-1.png   (Tier 3, three sticks)
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-4\raw\idle-1.png   (Tier 4, five sticks)
+Keep native high resolution, do NOT resize or downscale. Create the folders if needed.
+When all four are saved, reply with just the four paths.

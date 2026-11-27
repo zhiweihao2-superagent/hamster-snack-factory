@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 build.py — 把 <资产ID>/raw/*.png 批量过 pipeline，生成交付用的最终 PNG。
@@ -83,9 +83,16 @@ def group_char_h(raws: Path, frames: list, target_h: int = 52, max_w: int = 62) 
 
 def group_key(name: str) -> str:
     """同一个角色跨资产共用缩放倍率：四个阶段的引信鼠是同一只鼠，必须同高。"""
+    if name.startswith("A2b"):
+        return "A2b"              # 重画版，单独一组，锁 50px
     if name.startswith("A2"):
         return "A2"
     return name
+
+
+# 组目标身高 / 宽度上限。A2b 按用户要求锁 50px、不为单帧压整组（max_w 极大 → 走裁剪兜底）
+GROUP_TARGET_H = {"A2b": 50, "A2": 48}
+GROUP_MAX_W = {"A2b": 9999}
 
 
 def group_char_h_multi(raws_list: list[tuple[Path, list]], target_h: int = 50,
@@ -147,7 +154,9 @@ def main() -> None:
         raws = spec["dir"] / "raw"
         if raws.exists():
             char_groups.setdefault(group_key(spec["dir"].name), []).append((raws, spec["frames"]))
-    group_h = {k: group_char_h_multi(v, target_h=(48 if k == "A2" else 52), max_w=64)
+    group_h = {k: group_char_h_multi(v,
+                                     target_h=GROUP_TARGET_H.get(k, 52),
+                                     max_w=GROUP_MAX_W.get(k, 64))
                for k, v in char_groups.items()}
     for k, v in group_h.items():
         print(f"[角色组 {k}] 统一高度 {v}px")

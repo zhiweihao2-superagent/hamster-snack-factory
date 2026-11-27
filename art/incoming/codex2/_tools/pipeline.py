@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 pipeline.py — 把 Codex/imagen 产出的高分辨率原图，降采样并像素化成项目规格的 sprite。
@@ -300,10 +300,19 @@ def fit_resize(rgba: np.ndarray, size: int, mode: str, char_h: int | None = None
         if not char_h:
             target_w = min(target_w, int(size * 0.94))
             target_h = int(round(img.height * target_w / img.width))
-        target_w = min(target_w, size)
-        art = grid_sample(img, cell, max(4, target_w), max(4, target_h))
+        target_w = min(target_w, size * 2)   # 只防极端值；超宽不再挤压，改中心裁剪
+        over = target_w > size
+        draw_w = max(4, target_w)
+        art = grid_sample(img, cell, draw_w, max(4, target_h))
         canvas = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-        canvas.alpha_composite(art, (max(0, (size - target_w) // 2), max(0, size - target_h)))
+        if over:
+            # 超宽帧按真实宽度渲染后中心裁到画布，保持像素比例不变形（宁可裁掉尾巴尖也不压扁身体）
+            left = (draw_w - size) // 2
+            art = art.crop((left, 0, left + size, art.height))
+            x = 0
+        else:
+            x = (size - target_w) // 2
+        canvas.alpha_composite(art, (max(0, x), max(0, size - target_h)))
         return np.array(canvas)
     else:
         target = int(size * (0.92 if mode == "fx" else 0.88))
