@@ -1,0 +1,48 @@
+﻿You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. The PNG must come out of the image generation model.
+
+You will call the image generation tool ONCE, replacing the idle frame of one enemy tier because the old version came out too FLAT (only 7 colours, it reads as one grey blob).
+
+=== THE ONE THING THAT CHANGES: MORE TONE SEPARATION ===
+Keep the body shape, pose, size and the firecrackers EXACTLY as described below, but use MORE distinct grey tones so the fur has layers. All tones are FLAT SOLID BLOCKS — separate colour regions, never a gradient:
+- `#5e6369` dark grey: a wedge along the BACK / spine, the shadow inside each ear, and a soft eye-socket shadow block directly under and beside each eye;
+- `#8a8f96` main grey: the rest of the head and arms;
+- `#6f757c` mid-dark grey: one small block where the arms meet the belly;
+- `#b9bdc4` pale grey: belly and muzzle;
+- `#c9cdd2` light highlight: one block on the top of the head and one on the top of the belly;
+- pink #f09ca8 inner ears and paws, red #e8402c eyes with a pure white #fff8ee highlight, firecracker red #c8342a, fuse yellow #e8c14a, every outline #3a241e.
+IMPORTANT — the eyes are BRIGHT RED #e8402c, absolutely NOT amber, NOT yellow, NOT brown, NOT orange-brown: RED only. Each eye is exactly one RED block plus one PURE WHITE #fff8ee highlight block — the eye is one red block PLUS one white block, never a solid red disc, never a dark hole. This is the single most important detail.
+
+Aim for 12–16 distinct colours in total. Boundaries between tones must follow the block grid (hard edges), never a soft blend.
+
+=== DRAW IT ON A COARSE PIXEL GRID ===
+Look at the two attached reference sprites: every block is a fat square, roughly 40 blocks tall for the body, and the outline is ONE WHOLE BLOCK thick.
+- the rat is about 40 blocks tall and every block is a big fat square;
+- the finished image is that grid enlarged ~40x with HARD edges — a blown-up low-res sprite, NOT a painted illustration;
+- no feature smaller than one block; no anti-aliased edge anywhere.
+
+=== THE CHARACTER ===
+A cartoon GREY RAT, a bomb-carrying enemy, FRONT-FACING, turned only slightly: faces the CAMERA, BOTH eyes and BOTH ears visible, belly presented to us. NOT a side profile.
+- A plump pear, the silhouette slightly TALLER THAN WIDE: width about 0.80 of the height. Do NOT make a wide squat blob.
+- Big round head about 42% of the total height, fat round belly, SHORT thick arms and SHORT thick legs with big flat feet, all limbs solidly attached.
+- EYE = 2 blocks wide by 2 blocks tall: one block of solid red #e8402c plus one block of pure white highlight. No lashes, no outline inside the eye, no pupil dot. Three blocks of plain grey fur between the two eyes.
+- NOSE = one pink block. TEETH = one white block directly under it. No mouth line.
+- EARS = two big round pink-inner ears on top of the head.
+- TAIL: SHORT, out from behind the right hip, ONE small curl, then stop. Never wider than the body.
+- The character sits in the middle of the square frame with a clear margin on all four sides (about 12%).
+
+=== THE FIRECRACKER BUNDLE ===
+TWO thick bright red #c8342a party-firecracker sticks lying side by side across the lower belly, each 3 blocks thick and about a third of the belly width, each with ONE dark brown #3a241e band and a rounded cap, held by a thin strap that passes BEHIND them.
+A short yellow #e8c14a fuse with a small yellow star sparkle.
+The bundle sits BELOW THE CHIN, is never wider than the belly, and never covers the mouth, snout or eyes.
+
+=== STYLE ===
+Chunky pixel art, thick dark-brown #3a241e outline, flat solid colours.
+NO gradients, NO soft shading, NO anti-aliasing, NO blur, NO fine detail, NO ground, NO shadow, NO text, NO watermark, NO frame.
+Fully TRANSPARENT background (alpha).
+
+=== OUTPUT ===
+High resolution (at least 1000x1000), transparent background.
+Save to exactly:
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-2\raw\idle-1.new.png
+Keep native high resolution, do NOT resize or downscale.
+When it is saved, reply with just the path.

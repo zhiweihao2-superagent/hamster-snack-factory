@@ -1,0 +1,37 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. The PNG must come out of the image generation model.
+
+You will call the image generation tool ONCE, producing ONE animation frame.
+
+=== THE ATTACHED IMAGE IS THIS EXACT RAT ===
+The attached PNG is the idle frame of this character, already approved and shipped. You must draw THE SAME RAT:
+same body, same head size, same face, same eyes, same colours, same firecracker bundle, same pixel grid, same outline weight.
+Change ONLY the pose, exactly as described under THE POSE below.
+
+=== HARD RULES — DO NOT BREAK THE SHAPE ===
+- Do NOT squash, stretch, widen, flatten or slim the body. The silhouette stays a plump pear, slightly taller than wide, width about 0.80 of the height.
+- The HEAD stays a big ROUND circle of the same diameter as the reference. Never flatten the head into an oval or a wedge.
+- The belly keeps its size; the arms stay SHORT and THICK and attached to the body; the legs stay SHORT and THICK.
+- Total figure height may change by 10% at most compared with the reference.
+- EYE = 2 blocks wide by 2 blocks tall: one block solid red #e8402c plus one block pure white #fff8ee. Two eyes, 3 blocks of plain grey fur apart. Never merge the eyes into one red smear, never let the eyes disappear.
+- NOSE = one pink block, TEETH = one white block under it. No mouth line except where THE POSE explicitly asks for an open mouth.
+- EARS = two big round pink-inner #f09ca8 ears on top of the head, the same size as the reference.
+- The firecracker bundle stays the same size and stays on the LOWER BELLY, below the chin, never covering the mouth, snout or eyes.
+- TAIL stays SHORT: one small curl out from the right hip. Never wider than the body, never reaching the frame edge. Nothing in the drawing may touch the frame edge.
+
+=== THE FIRECRACKER BUNDLE (unchanged) ===
+ONE thick red #c8342a stick across the lower belly.
+Each stick is 3 blocks thick with ONE dark brown #3a241e band and a rounded cap, held by a thin strap passing BEHIND. A short yellow #e8c14a fuse with a small spark.
+
+=== DRAW IT ON A COARSE PIXEL GRID ===
+Every block is a fat square, about 40 blocks from the feet to the top of the ears. The dark outline #3a241e is ONE WHOLE BLOCK thick. No anti-aliased edge anywhere, no fine detail, flat solid colours only.
+Fully TRANSPARENT background (alpha). No ground, no shadow, no backdrop, no text, no watermark, no frame.
+
+=== THE POSE — hop-air ===
+AIRBORNE. The whole rat is lifted with clear empty space under the feet, both legs folded up under the belly, both paws raised in front of the chest, ears flipped up, tail trailing behind. Same body, same head, same bundle — only the whole figure is off the ground.
+
+=== OUTPUT ===
+High resolution (at least 1000x1000), transparent background, the character centred with a clear margin on all four sides.
+Save to exactly (overwrite the old file):
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-1\raw\hop-air.png
+Keep native high resolution, do NOT resize or downscale.
+When it is saved, reply with just the path.

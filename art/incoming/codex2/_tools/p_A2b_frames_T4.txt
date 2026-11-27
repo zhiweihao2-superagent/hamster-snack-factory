@@ -1,0 +1,51 @@
+You have an image generation tool. Use it. Do NOT write drawing code, do NOT compose images programmatically. All output PNGs must come out of the image generation model.
+
+You will call the image generation tool FOUR times: four animation frames of ONE character (tier 4 of a four-tier enemy).
+
+=== DRAW IT ON A COARSE PIXEL GRID (the most important rule) ===
+Look at the two attached reference sprites: they are drawn on a grid where every block is a fat square, roughly 30–40 blocks tall for the whole body, and the outline is ONE WHOLE BLOCK thick. Do exactly that.
+- the rat is about 40 blocks tall and every block is a big fat square;
+- the finished image is that grid enlarged ~40x with HARD edges — it must look like a blown-up low-res sprite, NOT a painted illustration;
+- the dark outline is ONE BLOCK thick everywhere, never a thin line;
+- no feature smaller than one block; no anti-aliased edge anywhere.
+
+=== THE CHARACTER (identical in all four frames) ===
+A cartoon GREY RAT, a bomb-carrying enemy, FRONT-FACING, turned only slightly: faces the CAMERA, BOTH eyes and BOTH ears visible, belly presented to us. NOT a side profile.
+- A plump pear, the silhouette slightly TALLER THAN WIDE: width about 0.80 of the height. Do NOT make a wide squat blob.
+- Big round head about 42% of the total height, fat round belly, SHORT thick arms and SHORT thick legs with big flat feet, all limbs solidly attached to the body.
+- EYE = 2 blocks wide by 2 blocks tall: one block of solid red #e8402c plus one block of pure white #fff8ee as the highlight. Nothing else — no lashes, no outline inside the eye, no pupil dot. The two eyes are 3 blocks of plain grey fur apart.
+- NOSE = one pink block. TEETH = one white block directly under it. No mouth line.
+- EARS = two big round pink-inner #f09ca8 ears on top of the head.
+- Whiskers: at most two short thick bars per side.
+- Fur grey #8a8f96, belly and muzzle #b9bdc4, paws pink, outlines #3a241e. Flat solid colours, no gradients.
+- TAIL: SHORT, out from behind the right hip, ONE small curl, then stop. Never wider than the body.
+
+=== THE FIRECRACKER BUNDLE (fixed for this character) ===
+FIVE thick sticks stacked in two short rows (three over two) at the lower belly, the biggest bundle of the family.
+FAT bright red #c8342a party-firecracker sticks, each 3 blocks thick and about a third of the belly width, each with ONE dark brown #3a241e band and a rounded cap.
+A short yellow #e8c14a fuse with a small yellow star sparkle.
+The bundle sits BELOW THE CHIN on the lower belly, is never wider than the belly, and NEVER covers the mouth, snout or eyes.
+
+=== STYLE ===
+Chunky pixel art, thick dark-brown #3a241e outline, flat solid colours.
+NO gradients, NO soft shading, NO anti-aliasing, NO blur, NO fine detail, NO ground, NO shadow, NO text, NO watermark, NO frame.
+Fully TRANSPARENT background (alpha).
+
+=== THE FOUR FRAMES (one generation each) ===
+1. `idle-2` — the neutral standing idle a half-breath later: body lifted 1 block, ears angled slightly outward, tail tip flicked, fuse spark a little brighter, both arms still hanging. Same stance as an idle, only the breathing bob differs.
+2. `action-windup` — winding up: the rat crouches DOWN, knees bent, hips lowered about 3 blocks, shoulders pulled back, both fists drawn in against the chest, head lowered slightly and chin tucked, ears swept back, eyes narrowed and focused forward, and THE FUSE SPARK FLARES BRIGHT — a bigger yellow-and-white burst with a few spark blocks flying off. The bundle glows a little hotter.
+3. `action-strike` — lunging FORWARD: the body pitches forward about 20 degrees toward the viewer, both front paws thrust out ahead of the chest, back legs braced, tail whipped out to the right for balance, mouth open in a small shout, ears blown back. THE BUNDLE SWINGS OUT on its strap, tracing a short arc — but the WHOLE rat, tail and swinging bundle included, must stay inside the frame: total width never exceeds about 0.95 of the body height. Do not let the tail or the bundle reach the edge.
+4. `hop-air` — airborne: clearly OFF the ground with empty space below the tucked feet, body stretched slightly, both paws raised in front of the chest, ears flying up, tail streaming, the bundle lifted and the fuse spark trailing.
+
+All four: same rat, same size, same palette, same bundle. Only the pose and the fuse spark intensity change.
+
+=== OUTPUT ===
+Each frame at high resolution (at least 1000x1000), transparent background.
+Keep every frame the SAME overall body scale so the animation does not pop.
+Save to exactly, one generation per file (do NOT touch idle-1.png, it already exists):
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-4\raw\idle-2.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-4\raw\action-windup.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-4\raw\action-strike.png
+  D:\deepseek\杂项\hamster-snack-factory\art\incoming\codex2\A2b-foe-blast-4\raw\hop-air.png
+Keep native high resolution, do NOT resize or downscale.
+When all four are saved, reply with just the four paths.
