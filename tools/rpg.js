@@ -3157,26 +3157,40 @@ function drawBuffIcons(u, x, y, now){
   }
 }
 
-/* 头顶天赋：只画图标（硬化/嗜血/穿甲/余烬/复苏），最多 3 个，不写字 —— 战场要干净 */
+
+
+
+
+
+
+
+/* 天赋标识（TFT 风）：血条正上方一枚小徽章「◆N」，N = 天赋等级和（有 Ⅲ 级则变金） */
 function drawTalentBadges(u, x, y){
   if (!u || !u.talents || !u.talents.length) return;
-  var TAL_ICON = { tank: "hardening", blade: "bloodthirst", shot: "armourpierce", hex: "ember", care: "revival" };
-  var list = u.talents.slice(0, 3);
-  var ic = 12, gap = 2;
-  var tot = list.length * ic + (list.length - 1) * gap;
-  var x0 = Math.round(x - tot / 2), y0 = Math.round(y - ic + 2);
-  ctx.save();
-  ctx.fillStyle = "rgba(10,8,16,.45)";
-  ctx.fillRect(x0 - 2, y0 - 2, tot + 4, ic + 4);
-  ctx.imageSmoothingEnabled = false;
-  for (var i = 0; i < list.length; i++){
-    var key = TAL_ICON[list[i].id];
-    var img = key && (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["talent-" + key]) : null;
-    if (img) ctx.drawImage(img, x0 + i * (ic + gap), y0, ic, ic);
+  var sum = 0, hot = false;
+  for (var i = 0; i < u.talents.length; i++){
+    sum += (u.talents[i].lv || 1);
+    if ((u.talents[i].lv || 1) >= 3) hot = true;
   }
+  var w = 20, h = 12;
+  var bx3 = Math.round(x - w / 2), by3 = Math.round(y - h);
+  rr(bx3, by3, w, h, 3);
+  ctx.fillStyle = "rgba(12,10,18,.88)";
+  ctx.fill();
+  ctx.lineWidth = 0.9;
+  ctx.strokeStyle = hot ? "rgba(255,209,102,.95)" : "rgba(232,172,80,.65)";
+  ctx.stroke();
+  ctx.save();
+  ctx.beginPath();
+  var dx2 = bx3 + 5, dy2 = by3 + h / 2;
+  ctx.moveTo(dx2, dy2 - 3.2); ctx.lineTo(dx2 + 3.2, dy2);
+  ctx.lineTo(dx2, dy2 + 3.2); ctx.lineTo(dx2 - 3.2, dy2);
+  ctx.closePath();
+  ctx.fillStyle = hot ? "#ffd166" : "#ffd98a";
+  ctx.fill();
   ctx.restore();
+  txt(String(sum), bx3 + 13, by3 + 8.6, 8, hot ? "#ffd166" : "#ffd98a", "center", true);
 }
-
 
 function drawUnitSprite(o, isFoe, now){
   var gy = unitY(o);                       /* 脚底就在地面上的 (x, y) */
@@ -3217,7 +3231,7 @@ function drawUnitSprite(o, isFoe, now){
     ctx.restore();
   }
 
-  if (!isFoe) drawTalentBadges(o, x, by - 6);
+  if (!isFoe) drawTalentBadges(o, x, by - 2);
   drawBuffIcons(o, x, by + 8, now);
   if (isFoe && o.elite) drawEliteMark(x, gy, s, now);
   if (isFoe && o.fuseAt) drawFuse(x, gy, s, o.fuseAt, now);
