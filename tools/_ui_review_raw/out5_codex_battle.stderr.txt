@@ -1,0 +1,379 @@
+Reading prompt from stdin...
+OpenAI Codex v0.149.0
+--------
+workdir: D:\deepseek\杂项\hamster-snack-factory
+model: gpt-6.1-terra
+provider: custom
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a21fdf-1bba-7550-b6e3-7d36bd028777
+--------
+user
+你是「仓鼠零食工厂」的 UI 评审。竖屏 390×844 像素风微信小游戏。看真实截图指出可优化点，不要泛泛而谈，不要写实现代码。
+
+【本次评审四张】
+- 12-codex-forms.png 图鉴·形态
+- 13-codex-talents.png 图鉴·天赋
+- 14-codex-skills.png 图鉴·技能
+- 15-battle.png 战斗
+
+【视觉体系，别建议改这些】
+- 像素风：Fusion Pixel 12px 字体、1px 硬描边、暖橙 #e8843e + 奶油 #fae8c8，敌方灰毛红眼
+- 竖屏 390×844，安全区已避让
+- 我方/敌方 64×64 精灵 1:1 绘制
+
+【重点维度】
+1 信息层级（战斗页：血量/技能冷却/波次数字是否最显眼） 2 对齐与间距（网格对齐、中文字宽、卡片内边距） 3 可点区域（战斗按钮≥44px、摇杆与技能键误触） 4 颜色对比（暗底灰字、未解锁格是否太隐形） 5 重复信息 6 空状态（图鉴未解锁格、技能空位是否交代清楚） 7 首屏动线（图鉴是否一眼看懂"还差什么"；战斗页 HUD 是否遮住敌方精灵）
+
+【可读代码确认】
+当前目录是项目根，可读 tools/shop.js（商店/详情/抽奖/图鉴）、tools/rpg.js（战斗 HUD）、tools/adapter.js（字体）。若能确认建议对应函数，行末补「参考：文件 函数名」；不确定别写。
+
+【输出格式，严格遵守】
+只输出行，一行一条，不写标题/前言/总结/代码块：
+[12-codex-forms] 线索：<问题> 建议：<怎么改> 影响：高
+[13-codex-talents] ...
+[14-codex-skills] ...
+[15-battle] ...
+影响只能是 高/中/低。每张 1–3 条。中文。
+
+warning: Model metadata for `gpt-6.1-terra` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+2026-11-28T01:57:27.900592Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://mcp.runwayml.com/.well-known/oauth-protected-resource/mcp\", scope=\"api:read_write\", error=\"missing_bearer\", realm=\"runway-mcp\"" })
+**Inspecting the code**
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg -n "图鉴|天赋|形态|技能|质检|存活|冷却|战况|护甲" tools/shop.js tools/rpg.js | Select-Object -First 110' in D:\deepseek\杂项\hamster-snack-factory
+ succeeded in 497ms:
+tools/shop.js:100:/* 槽位：5% 三天赋 / 13% 双天赋 / 82% 单天赋（合起来 P3=5%、P2=18%） */
+tools/shop.js:115:/* 生成一只新仓鼠（职业随机，天赋按规则掷） */
+tools/shop.js:116:/* ---------- 技能（S2：只携带与展示，战斗生效在 S4–S6） ---------- */
+tools/shop.js:162:  /* 天赋：二级/三级必带职业天赋；其余按老规则随机携带 */
+tools/shop.js:166:    /* 二级/三级再抽 0–2 条跨线天赋（跟白板同表，只是先占掉一条职业天赋） */
+tools/shop.js:183:  /* 技能：三档同一张表 */
+tools/shop.js:267:  /* 副鼠若也带这条天赋，等级取较高的那条 */
+tools/shop.js:294:/* ---------- 天赋洗练（P5）：花碎片重掷某一槽的等级，可升可降 ---------- */
+tools/shop.js:319:  var kept = [{ id: pv.slot1.id, lv: pv.slot1.lv }];   /* 槽1 职业天赋：免疫 */
+tools/shop.js:322:  /* 1) 技能：先判"被吃"（8%），再判继承（主 70% / 副 55%），同名合并升级 */
+tools/shop.js:338:  /* 2) 额外天赋：先判"被吃"（2.5%），再判继承（70%） */
+tools/shop.js:351:  /* 3) 分开技能/天赋，各自按上限整理（技能不限、天赋最多 3 个槽） */
+tools/shop.js:515:/* v2 → v3：配件下线（每个折 2 碎片），天赋槽1 补齐 */
+tools/shop.js:730:  // 无限步之后，"剩余步数"不再存在：改用存活仓鼠数 + 护甲余量结算
+tools/shop.js:817:/* ---------- 7.5 图鉴：五职业 × 四阶（含手里那把武器） ---------- */
+tools/shop.js:840:/* ---------- 图鉴 · 天赋页（P0） ---------- */
+tools/shop.js:889:/* 图鉴 · 技能页：11 个技能的类型 / 目标数 / 冷却 */
+tools/shop.js:910:    txt('目标 ' + t + ' · 冷却 ' + c, pad + 10, y + 34,
+tools/shop.js:922:  var pageName = ['图鉴 · 五职业 × 四阶', '图鉴 · 天赋', '图鉴 · 技能'][SHOP.codexPage | 0] || '图鉴';
+tools/shop.js:930:  var nextName = ['天赋', '技能', '形态'][SHOP.codexPage | 0] || '天赋';
+tools/shop.js:973:  txt('战斗里：花生→能量 · 饼干→护甲 · 瓜子→零件',
+tools/shop.js:1192:/* 详情页「技能」：名称 + 等级 + 类型 + 目标数 + 冷却（S2 只展示） */
+tools/shop.js:1200:  txt('技能', x + 12, y + 18, Math.max(9, Math.round(W * 0.026)), C.amber, 'left', true);
+tools/shop.js:1226:   原来把天赋 / 技能 / 转职证 / 能力全堆在一屏，手机上会被裁掉且无法下拉。
+tools/shop.js:1273:  txt("★" + ratScore(rat) + "  ·  天赋 " + (rat.talents || []).length + "/3  ·  技能 " + (rat.skills || []).length,
+tools/shop.js:1280:  var tabs = ["天赋", "技能", "转职证", "能力"];
+tools/shop.js:1311:        txt(t === 0 ? "本职业天赋（转职后觉醒）" : "未开启（抽卡有概率携带）",
+tools/shop.js:1348:      txt("还没有技能 —— 抽卡有概率携带（物理 / 魔法 / 增益），组装可以继续堆",
+tools/shop.js:1402:      txt("转职有 30% 概率随机失去 1 个技能", pad, cy0 + 20 + Math.min(4, opts.length) * 34 + 6,
+tools/shop.js:1450:/* 技能图标（32×32 档，按 18px 绘制）：skill-<id> */
+tools/shop.js:1588:/* 天赋串：硬化Ⅲ 复苏Ⅱ */
+tools/shop.js:1626:    txt('技能 0/1/2/3 = 30/42/22/6% · 等级 Ⅰ62/Ⅱ30/Ⅲ8', pad + 14, py + 66,
+tools/shop.js:1630:    txt('槽1 必为本职业天赋，槽2/3 可跨职业', pad + 14, py + 102,
+tools/shop.js:1753:    txt('★NEW★ Ⅲ 级天赋 · ' + g3.t3, W / 2 - 26, by2 + 24, Math.round(W * 0.042), '#241d2e', 'center', true);
+tools/shop.js:1756:      var msg = '我抽到了 Ⅲ 级天赋「' + g3.t3 + '」！';
+tools/shop.js:1885:    txt('★NEW★ Ⅲ 级天赋 · ' + REVEAL.t3, W / 2, H * 0.16,
+tools/shop.js:1926:/* 组装二次确认：写清"技能 8%/条、额外天赋 2.5%/条被吃，槽1 免疫" */
+tools/shop.js:1947:    '槽1 职业天赋：100% 保留（免疫）',
+tools/shop.js:1948:    '技能：每条 ' + Math.round(pv.eatSkill * 100) + '% 被吃 → 未被吃再按 主70% / 副55% 继承',
+tools/shop.js:1949:    '额外天赋：每条 ' + (pv.eatTalent * 100).toFixed(1) + '% 被吃 → 未被吃再按 70% 继承',
+tools/shop.js:1950:    '同名技能/天赋合并升级（Ⅲ 封顶）'
+tools/shop.js:1958:  txt('本次参与：技能 ' + skN + ' 条 · 额外天赋 ' + talN + ' 条',
+tools/shop.js:2036:      txt(a.gotExtra ? ('继承了 ' + a.gotExtra + ' 条额外天赋') : ('没继承额外天赋，返还 ' + a.refunded + ' 碎片'),
+tools/shop.js:2055:    '碎片 → 洗练天赋等级（6 碎片）或再抽一次',
+tools/shop.js:2056:    '两只鼠 → 组装（30 金币），主鼠槽1 天赋固定'
+tools/shop.js:2153:  txt(tl || '无天赋', pad + 12, oy + 44, Math.max(9, Math.round(W * 0.024)), '#ffd98a', 'left');
+tools/shop.js:2185:  txt('点一只当主鼠（槽1 天赋固定保留）', pad, top, Math.max(9, Math.round(W * 0.026)), C.muted, 'left');
+tools/shop.js:2213:    txt(tal || '无天赋', cx + 8, cy + 38, Math.max(8, Math.round(W * 0.023)), '#ffd98a', 'left');
+tools/shop.js:2257:    txt('先选主鼠，再选副鼠（主鼠的槽1 天赋会固定保留）', pad + 12, slotY + slotS + 44,
+tools/shop.js:2269:    /* 双方属性 + 技能（压成两行，避免和下面挤） */
+tools/shop.js:2288:    txt('新鼠随主鼠职业/阶，技能与天赋按概率继承',
+tools/shop.js:2290:    txt('消耗 ' + pv.cost + ' 金币 · 副鼠消失 · 没继承额外天赋返 ' + pv.refund + ' 碎片',
+tools/shop.js:2320:    '主鼠槽1 天赋 100% 保留（等级取两者较高）',
+tools/shop.js:2321:    '主鼠其它天赋各 55% 保留，副鼠所有天赋各 45% 保留',
+tools/shop.js:2322:    '最多 3 槽 · 一条额外天赋都没继承则返 3 碎片'
+tools/shop.js:2340:    txt(FUSE.result.gotExtra ? ('继承了 ' + FUSE.result.gotExtra + ' 条（技能+天赋）')
+tools/shop.js:2344:    (FUSE.result.lostSkills || []).forEach(function(t){ lostTxt.push('技能 ' + skillName(t.id)); });
+tools/shop.js:2345:    (FUSE.result.lostTalents || []).forEach(function(t){ lostTxt.push('天赋 ' + (TALENT_DEF[t.id] ? TALENT_DEF[t.id].name : t.id)); });
+tools/shop.js:2363:  /* 第二行：左边小字信息，右边三枚入口（图鉴 / 抽奖 / 组装） */
+tools/shop.js:2371:  /* 顶部五个按钮一行对齐：队伍 / 商店 / 组装 / 盒 / 图鉴 */
+tools/shop.js:2381:    { label: '图鉴', kind: 'page', page: 'codex' }
+tools/shop.js:2637:    ['天赋', (function(){
+tools/shop.js:2694:/* 仓鼠"价值"速览：天赋等级和 + 技能等级和，右上角显示成 ★N */
+tools/shop.js:2704:/* 技能类型色点（物理橙 / 魔法蓝 / 增益绿），最多画 4 个 */
+tools/shop.js:2718:   统一用"白板鼠头"当图标（不再画各职业立绘），省出的空间显示技能：
+tools/shop.js:2719:   名字 / 职业·阶 / 天赋 / 技能名（最多 2 条 + 更多） */
+tools/shop.js:2722:   下面：职业与阶的描述 + **所有携带技能**（每条一行，超出用 +N）。 */
+tools/shop.js:2768:  /* 天赋行 */
+tools/shop.js:2776:  txt("天赋 " + talText, x + 10, y + headS + 34, subFs, "#ffd98a", "left", true);
+tools/shop.js:2778:  /* 所有技能：一条一行 */
+tools/shop.js:2784:    txt("技能 无（抽卡 / 组装可带）", x + 10, sy, subFs, "#5b5374", "left");
+tools/shop.js:2801:      txt("+" + (sk.length - maxLines) + " 个技能（进详情看全部）", x + 10, sy + maxLines * lineH,
+tools/shop.js:2859:/* ---------- 天赋（P0）：每只鼠的槽1 跟着职业线走 ----------
+tools/shop.js:2860:   白板鼠（line === 'none'）没有天赋，转职定线之后补上槽1。 */
+tools/shop.js:2911:/* 转职/升阶：拿到职业天赋，同时按概率吃掉一个已携带技能 */
+tools/shop.js:3163:/* 调试口：抽一只（不写存档、不动金币），用于校验三档分布与技能携带 */
+tools/rpg.js:5:   · 护甲 = 全队共享护盾（不分配给具体单位）
+tools/rpg.js:16:  cardH: 66,       // 单位卡高：两排制要同时塞下敌排+我排+战况，压到 66
+tools/rpg.js:36:  // 每格产出（花生→能量 / 饼干→护甲 / 瓜子→零件）
+tools/rpg.js:69:/* M6-2：五职业 × 四阶形态表（tier 1 = 白板鼠 worker；2–4 如下）
+tools/rpg.js:131:/* 基础血量：玩家侧现在有"5 鼠 + 倍率 + 天赋"三重增幅，所以基数抬到这里的量级，
+tools/rpg.js:137:  boss:  { name: '质检机', hp: 210, charge: 4, atk: 34, boss: 1, cls: 'hex', tier: 2, range: 'mid' },
+tools/rpg.js:176:    /* 本关开场提示（教学用），显示成横幅 + 记一条战况 */
+tools/rpg.js:320:      /* 法术型敌人（质检机/粘胶/自爆）走魔法，其余物理 */
+tools/rpg.js:442:  boss:  ['质检机', '电检机', '高压检测塔', '报废熔炉'],
+tools/rpg.js:478:    /* 天赋追赶：队里出现"三天赋"的鼠，敌人整体升一阶（只在开关打开时） */
+tools/rpg.js:491:/* 天赋追赶（P4c）：按全队最多天赋条数给敌人一个连续倍率 ——
+tools/rpg.js:515:  /* 精英：血 ×1.6、攻 ×1.25、赏金 ×2（给高天赋玩家的目标） */
+tools/rpg.js:609:/* ---------- 10. 分配：护甲进公共盾；零件/能量按"线权重 + 进度"灌私有槽 ----------
+tools/rpg.js:667:   · 敌人打穿护甲、真的掉血 → 衰减 25%（不清零，避免一崩到底）
+tools/rpg.js:695:/* ---------- 天赋（P0） ----------
+tools/rpg.js:696:   一只仓鼠最多 3 条天赋，每条 1–3 级；数值全部来自 game.json 的 rules.talents。
+tools/rpg.js:697:   设计约束：不参与乘区叠加（减伤加法、穿甲按比例无视护甲）。 */
+tools/rpg.js:708:/* 取某条天赋在当前等级的数值对象 */
+tools/rpg.js:724:   物理：先扣护甲（我方）或先破箱（敌方），再按物抗减伤
+tools/rpg.js:725:   魔法：绕过护甲与箱子，按魔抗减伤 */
+tools/rpg.js:756:  /* 穿甲：按比例无视护甲；Ⅱ级起附带暴击 */
+tools/rpg.js:900:/* ---------- 技能（S4：物理系先落地） ----------
+tools/rpg.js:901:   每只鼠的技能各自冷却；到点从"就绪列表"里挑一个（伤害优先、等级高优先）。
+tools/rpg.js:902:   一次只放一个；技能与普攻是两套独立计时。 */
+tools/rpg.js:920:/* 物理技能的目标挑选 */
+tools/rpg.js:921:/* 增益技能的目标：先自己，再按血量从低到高（范围随等级 1 / 2 / 5） */
+tools/rpg.js:936:/* 放增益技能 */
+tools/rpg.js:947:      /* 护甲：立刻补护甲池 + 4 秒内上限提升 */
+tools/rpg.js:995:/* 放技能 */
+tools/rpg.js:1036:  /* 表现：技能名 + 一圈冲击环 */
+tools/rpg.js:1046:/* 每帧推进技能冷却 */
+tools/rpg.js:1074:    /* 抬手/冷却的算法不变，但近战必须先走到够得着；够不着时时间照样走，
+tools/rpg.js:1427:/* 技能点燃：写入同一套 ember 计时（和余烬天赋共用结算） */
+tools/rpg.js:1465:/* 质检机：血量 ≤50% 进入"超载"（出手更快，但物抗掉 10%） */
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$s=Get-Content tools/shop.js; $s[816..975]; rg -n '"'"'^function .*'"' tools/rpg.js | Select-Object -Last 45" in D:\deepseek\杂项\hamster-snack-factory
+ succeeded in 498ms:
+/* ---------- 7.5 鍥鹃壌锛氫簲鑱屼笟 脳 鍥涢樁锛堝惈鎵嬮噷閭ｆ妸姝﹀櫒锛?---------- */
+function codexRows(){
+  var rows = [];
+  for (var i = 0; i < CLASS_LINES.length; i++){
+    var line = CLASS_LINES[i];
+    var cells = [];
+    for (var t = 1; t <= 4; t++){
+      var id = t === 1 ? 'worker' : (line + '-' + t);
+      var def = ROSTER[id] || {};
+      cells.push({
+        line: line, tier: t,
+        name: t === 1 ? '鐧芥澘榧? : (def.name || ''),
+        weapon: t === 1 ? '鎷冲ご' : ((WEAPON_NAME[line] || [])[t - 1] || ''),
+        hp: def.hp || 0,
+        atk: def.act ? (def.act.kind === 'heal' ? '娌荤枟' + def.act.dmg : def.act.dmg) : (def.baseDmg || 0)
+      });
+    }
+    rows.push({ line: line, label: CLASS_NAME[line], cells: cells });
+  }
+  return rows;
+}
+window.__codex = codexRows;
+
+/* ---------- 鍥鹃壌 路 澶╄祴椤碉紙P0锛?---------- */
+var TALENT_FIELD_NAME = {
+  dr: '鍑忎激', heal: '鍑绘潃鍥炶', atk: '鏀婚€?, pierce: '绌跨敳', crit: '鏆村嚮',
+  burn: '鐏肩儳/绉?, stack: '灞傛暟', amp: '鏄撲激',
+  overflow: '婧㈠嚭杞浘', armor: '鐩句笂闄?, haste: '鏀婚€?
+};
+
+function talentLevelText(def, lv){
+  if (!def || !def.levels || !def.levels[lv - 1]) return '鈥?;
+  var o = def.levels[lv - 1], parts = [];
+  for (var k in o){
+    var v = o[k];
+    var label = TALENT_FIELD_NAME[k] || k;
+    if (k === 'dr' || k === 'pierce' || k === 'crit' || k === 'atk' || k === 'amp' || k === 'haste'){
+      parts.push(label + ' +' + Math.round(v * 100) + '%');
+    } else {
+      parts.push(label + ' ' + v);
+    }
+  }
+  return parts.join(' 路 ');
+}
+
+function drawCodexTalents(pad){
+  var top = 66, rowH = 88, gap = 8;
+  var lines = ['tank', 'blade', 'shot', 'hex', 'care'];
+  for (var i = 0; i < lines.length; i++){
+    var id = lines[i];
+    var def = (TALENT_DEF || {})[id] || {};
+    var y = top + i * (rowH + gap);
+    rr(pad, y, W - pad * 2, rowH, 10);
+    ctx.fillStyle = C.panel; ctx.fill();
+    ctx.strokeStyle = 'rgba(232,172,80,.35)'; ctx.lineWidth = 1; ctx.stroke();
+
+    txt((LINE_NAME[id] || id) + ' 路 ' + (def.name || ''), pad + 12, y + 18,
+        Math.round(W * 0.036), C.amber, 'left', true);
+    txt('妲? 蹇呭甫 路 妲?/妲? 鍙法鑱屼笟', W - pad - 12, y + 18,
+        Math.max(8, Math.round(W * 0.023)), C.muted, 'right');
+
+    for (var lv = 1; lv <= 3; lv++){
+      var col = pad + 12 + (lv - 1) * ((W - pad * 2 - 24) / 3);
+      txt('鈪犫叀鈪?.charAt(lv - 1), col, y + 36, Math.max(9, Math.round(W * 0.026)), '#ffd98a', 'left', true);
+      txt(talentLevelText(def, lv), col + 14, y + 36,
+          Math.max(8, Math.round(W * 0.0235)), C.ink, 'left');
+    }
+  }
+  txt('绛夌骇姒傜巼锛氣厾 62% 路 鈪?30% 路 鈪?8%锛堚參 绾ф娊鍒颁細鍏ㄥ睆鎾姤锛?,
+      pad, top + 5 * (rowH + gap) + 12, Math.max(9, Math.round(W * 0.026)), C.muted, 'left');
+}
+
+/* 鍥鹃壌 路 鎶€鑳介〉锛?1 涓妧鑳界殑绫诲瀷 / 鐩爣鏁?/ 鍐峰嵈 */
+function drawCodexSkills(pad){
+  var ids = Object.keys(skillTable());
+  var top = 66, rowH = 44, gap = 6;
+  var shown = Math.min(ids.length, 11);
+  for (var i = 0; i < shown; i++){
+    var id = ids[i];
+    var d = skillTable()[id];
+    var y = top + i * (rowH + gap);
+    rr(pad, y, W - pad * 2, rowH, 8);
+    ctx.fillStyle = 'rgba(255,255,255,.03)'; ctx.fill();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = d.kind === 'mag' ? 'rgba(143,184,255,.35)'
+      : (d.kind === 'buff' ? 'rgba(121,201,138,.35)' : 'rgba(255,179,122,.35)');
+    ctx.stroke();
+    var col = d.kind === 'mag' ? '#8fb8ff' : (d.kind === 'buff' ? '#79c98a' : '#ffb37a');
+    txt(d.name || id, pad + 10, y + 17, Math.max(10, Math.round(W * 0.028)), col, 'left', true);
+    txt(skillKindLabel(d.kind), pad + W - pad * 2 - 10, y + 17,
+        Math.max(8, Math.round(W * 0.022)), C.muted, 'right');
+    var t = (d.targets || []).join(' / ');
+    var c = (d.cd || []).map(function(v){ return Math.round(v / 1000) + 's'; }).join(' / ');
+    txt('鐩爣 ' + t + ' 路 鍐峰嵈 ' + c, pad + 10, y + 34,
+        Math.max(8, Math.round(W * 0.022)), '#8f86a6', 'left');
+    txt(d.desc || '', pad + W - pad * 2 - 10, y + 34,
+        Math.max(8, Math.round(W * 0.021)), '#5b5374', 'right');
+  }
+}
+
+function drawCodex(){
+  HITS = [];
+  var pad = L.pad;
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+  SHOP.codexPage = SHOP.codexPage | 0;
+  var pageName = ['鍥鹃壌 路 浜旇亴涓?脳 鍥涢樁', '鍥鹃壌 路 澶╄祴', '鍥鹃壌 路 鎶€鑳?][SHOP.codexPage | 0] || '鍥鹃壌';
+  txt(pageName, pad, 42,
+      Math.round(W * 0.045), C.ink, 'left', true);
+  txt('鐐逛换鎰忓杩斿洖', W - pad, 42, Math.max(10, Math.round(W * 0.028)), C.muted, 'right');
+  /* 椤电鎸夐挳 */
+  var tbx = W - pad - 46, tby = 8, tbw = 46, tbh = 22;
+  rr(tbx, tby, tbw, tbh, 11);
+  ctx.fillStyle = SHOP.codexPage ? 'rgba(232,172,80,.9)' : C.panel2; ctx.fill();
+  var nextName = ['澶╄祴', '鎶€鑳?, '褰㈡€?][SHOP.codexPage | 0] || '澶╄祴';
+  txt(nextName, tbx + tbw / 2, tby + 15,
+      Math.max(9, Math.round(W * 0.026)), SHOP.codexPage ? '#241d2e' : C.ink, 'center', true);
+  shopHit(tbx, tby, tbw, tbh, function(){
+    SHOP.codexPage = ((SHOP.codexPage | 0) + 1) % 3;
+    sfx('tap');
+  });
+  if ((SHOP.codexPage | 0) === 1){
+    drawCodexTalents(pad);
+    shopHit(0, 0, W, H, function(){ SHOP.codex = false; SHOP.codexPage = 0; sfx('tap'); });
+    return;
+  }
+  if ((SHOP.codexPage | 0) === 2){
+    drawCodexSkills(pad);
+    shopHit(0, 0, W, H, function(){ SHOP.codex = false; SHOP.codexPage = 0; sfx('tap'); });
+    return;
+  }
+  var rows = codexRows();
+  var top = 62, gapX = 5, gapY = 8;
+  var cw = Math.round((W - pad * 2 - gapX * 3) / 4), chh = 98;
+  for (var r = 0; r < rows.length; r++){
+    var y = top + r * (chh + gapY);
+    for (var c = 0; c < rows[r].cells.length; c++){
+      var cell = rows[r].cells[c];
+      var x = pad + c * (cw + gapX);
+      rr(x, y, cw, chh, 8);
+      ctx.fillStyle = C.panel; ctx.fill();
+      ctx.strokeStyle = c === 0 ? C.line : 'rgba(232,172,80,.35)';
+      ctx.lineWidth = 1; ctx.stroke();
+      var artS = 28;
+      drawHamsterArt(x + cw / 2 - artS * 0.75, y + 8, artS,
+                     { line: cell.line, cls: cell.line, tier: cell.tier, name: cell.name });
+      drawWeapon(cell.line, cell.tier, x + cw / 2 + 4, y + 32, 32, 1, 0, false);
+      txt(cell.name, x + cw / 2, y + 54, 9, C.ink, 'center', true);
+      txt(cell.weapon || '鈥?, x + cw / 2, y + 66, 8, C.muted, 'center');
+      txt('HP ' + cell.hp + ' 路 ' + cell.atk, x + cw / 2, y + 80, 8, '#8f86a6', 'center');
+    }
+    txt(rows[r].label, pad - 2, top + r * (chh + gapY) - 2, 8, '#6a6480', 'left');
+  }
+  /* 涓€琛屽姞鐐瑰缓璁細鐪佸緱姣忔潯绾块兘瑕佽嚜宸辫瘯 */
+  var noteY = top + rows.length * (chh + gapY) + 8;
+  txt('鍔犵偣锛氳倝鐩?杩戞垬鏀掗浂浠?路 杩滅▼鏀掗浂浠?路 榄旀硶/澧炵泭鏀掕兘閲?,
+      pad, noteY, Math.max(9, Math.round(W * 0.026)), '#8f86a6', 'left');
+  txt('鎴樻枟閲岋細鑺辩敓鈫掕兘閲?路 楗煎共鈫掓姢鐢?路 鐡滃瓙鈫掗浂浠?,
+      pad, noteY + 16, Math.max(9, Math.round(W * 0.026)), '#6a6480', 'left');
+  shopHit(0, 0, W, H, function(){ SHOP.codex = false; sfx('tap'); });
+}
+2564:function ultWhy(){
+2569:function ultBlocked(){ return !!(R.mod && R.mod.noUlt); }
+2571:function explainUlt(){
+2586:function cellRect(rc){
+2595:function pickTutorialMove(){
+2602:function drawTutorialMoveHint(now){
+2655:function wrapLines(text, maxChars){
+2679:function tutResIndex(){ return clamp(R.tutRes | 0, 0, TUT_RES.length - 1); }
+2681:function drawTutorialResourcePage(now){
+2736:function drawIntroOverlay(){
+2764:function lungeDX(o, isFoe){
+2777:function unitArtMap(){
+2783:function unitArtKey(o){
+2790:function foeArtKeys(o){
+2803:function artFromMap(map, keys){
+2822:function warmUnitArt(list, isFoe){
+2846:function iconImg(id){
+2854:function foeFrameName(o, now){
+2864:function unitFrameName(u, isFoe, now){
+2878:function unitFrameImg(key, frame){
+2895:function unitArtImg(key, isFoe, o, now){
+2918:function hopLift(o, now){
+2924:function drawArtImage(img, x, gy, s, dead){
+2933:function drawCrateTag(x, gy, s){
+2951:function pixelCtx(){
+2961:function drawSpriteArtDirect(o, isFoe, now, x, gy, s, dead){
+2999:function drawSpriteArt(o, isFoe, now, x, gy, s, dead){
+3036:function talentLabel(id){
+3042:function drawFuse(x, y, s, fuseAt, now){
+3057:function drawBlastFx(now){
+3088:function drawEliteMark(x, y, s, now){
+3106:function drawBuffIcons(u, x, y, now){
+3122:function drawTalentBadges(u, x, y){
+3143:function drawUnitSprite(o, isFoe, now){
+3207:function drawShots(now){
+3240:function drawUnitCard(x, y, u, isFoe, now){
+3281:function drawFoeCard(x, y, foe, now){
+3315:function bar(x, y, w, h, ratio, col, back){
+3347:function drawWeapon(line, tier, x, y, s, dir, swing, isFoe){
+3463:function drawHamsterArt(x, y, s, u){
+3517:function drawFoeArt(x, y, s, foe){
+3636:function useUlt(){
+3787:function renderSpriteTo(canvas, line, tier, px, isFoe){
+3818:function pixelateCanvas(g, size){
+3839:function makePixelSprite(line, tier, grid, out, isFoe){
+
+codex
+[12-codex-forms] 线索：五行都重复展示白板鼠，职业行标签又贴着卡片上沿、颜色很暗，扫读时难以分清行。建议：白板鼠只介绍一次，给每行职业标签留独立空间并提高对比。影响：中（参考：tools/shop.js drawCodex）
+[12-codex-forms] 线索：形态卡片看起来均为同一状态，没有收集进度或未解锁标记，无法看出还差什么。建议：区分已拥有与未解锁，并显示总进度及未解锁形态的获取线索；若这里只是资料总览，应明确标注。影响：高（参考：tools/shop.js drawCodex）
+[12-codex-forms] 线索：右上“天赋”切页按钮仅约 46×22 像素，且其余位置点击即返回，容易误触退出。建议：扩大切页热区至至少 44 像素高，改用明确的返回按钮。影响：高（参考：tools/shop.js drawCodex）
+[13-codex-talents] 线索：Ⅱ、Ⅲ级效果文字挤在同一行，近战、魔法和增益卡出现重叠或右侧截断。建议：按等级分行，或允许每级内容在固定列内换行，保证完整数值可读。影响：高（参考：tools/shop.js drawCodexTalents）
+[13-codex-talents] 线索：每张卡重复“槽1必带·槽2/槽3可跨职业”，而卡片下半部大量留白。建议：将通用规则集中显示一次，把空间让给分行后的等级效果。影响：中（参考：tools/shop.js drawCodexTalents）
+[14-codex-skills] 线索：每行右下的技能效果说明颜色很暗、字号很小，比左侧目标和冷却更难辨认。建议：提高说明文字对比度，并利用下方空白增加行高，让说明完整换行。影响：高（参考：tools/shop.js drawCodexSkills）
+[14-codex-skills] 线索：“目标 1/2/3·冷却 8s/7s/6s”没有说明斜杠对应等级，且列表未区分是否已获得。建议：标明数值依次对应Ⅰ/Ⅱ/Ⅲ级；若图鉴承担收集功能，再显示已获得状态和进度。影响：中（参考：tools/shop.js drawCodexSkills）
+[15-battle] 线索：顶部“第5关”醒目，但未见明确波次数字；单位血条很细，技能冷却也不易辨认。建议：在顶部固定显示当前波次，并增强血量和冷却的数字与对比，让它们优先于说明文字。影响：高
+[15-battle] 线索：战况栏和“本关特色”横幅叠在战场上部，压住上排精灵及血条附近区域。建议：将提示收进顶部独立区域或短暂展示后收起，避免持续覆盖双方单位。影响：高
+[15-battle] 线索：底部三个道具按钮约 32 像素高，低于 44 像素目标；右侧圆形技能键贴近棋盘，截图无法确认实际热区。建议：扩大道具按钮热区，并核查圆形技能键与棋盘热区留有间隔；本图未见摇杆。影响：高
+tokens used
+11,262

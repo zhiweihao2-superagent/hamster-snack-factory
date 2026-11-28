@@ -1,0 +1,353 @@
+Reading prompt from stdin...
+OpenAI Codex v0.149.0
+--------
+workdir: D:\deepseek\杂项\hamster-snack-factory
+model: gpt-6.1-terra
+provider: custom
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: none
+session id: 01a21fdf-1b31-7bf3-b14b-68fd738a2f43
+--------
+user
+你是「仓鼠零食工厂」的 UI 评审。竖屏 390×844 像素风微信小游戏。看真实截图指出可优化点，不要泛泛而谈，不要写实现代码。
+
+【本次评审同一个详情页的四个页签（看页签切换的一致性与每页信息层级）】
+- 08-detail-talents.png 详情·天赋
+- 09-detail-skills.png 详情·技能
+- 10-detail-certs.png 详情·转职证
+- 11-detail-stats.png 详情·能力
+
+【视觉体系，别建议改这些】
+- 像素风：Fusion Pixel 12px 字体、1px 硬描边、暖橙 #e8843e + 奶油 #fae8c8，敌方灰毛红眼
+- 竖屏 390×844，安全区已避让
+- 我方/敌方 64×64 精灵 1:1 绘制
+
+【重点维度】
+1 信息层级（页签内最重要信息是否最显眼） 2 对齐与间距（中文字宽不一造成错位、数值列是否对齐、页签基线） 3 可点区域（页签是否够大、相邻误触） 4 颜色对比（暗底灰字、稀有度色、禁用态） 5 重复信息（四个页签里重复出现的同一批属性/名字） 6 空状态（技能为空、无转职证时是否交代） 7 四页之间视觉一致性（页签位置/标题/返回是否跳动）
+
+【可读代码确认】
+当前目录是项目根，可读 tools/shop.js（商店/详情/抽奖/图鉴）、tools/rpg.js、tools/adapter.js。若能确认建议对应函数，行末补「参考：文件 函数名」；不确定别写。
+
+【输出格式，严格遵守】
+只输出行，一行一条，不写标题/前言/总结/代码块：
+[08-detail-talents] 线索：<问题> 建议：<怎么改> 影响：高
+[09-detail-skills] 线索：<问题> 建议：<怎么改> 影响：中
+[10-detail-certs] ...
+[11-detail-stats] ...
+影响只能是 高/中/低。每张 1–3 条。中文。
+
+warning: Model metadata for `gpt-6.1-terra` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+2026-11-28T01:57:27.793562Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when AuthRequired(AuthRequiredError { www_authenticate_header: "Bearer resource_metadata=\"https://mcp.runwayml.com/.well-known/oauth-protected-resource/mcp\", scope=\"api:read_write\", error=\"missing_bearer\", realm=\"runway-mcp\"" })
+**Inspecting code**
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg -n '天赋|转职证|仓鼠详情|已经满阶|生命|技能' tools/shop.js" in D:\deepseek\杂项\hamster-snack-factory
+ succeeded in 323ms:
+37:/* 转职证的阶与解锁关卡：T2 第 1 关、T3 第 3 关、T4 第 6 关 */
+100:/* 槽位：5% 三天赋 / 13% 双天赋 / 82% 单天赋（合起来 P3=5%、P2=18%） */
+115:/* 生成一只新仓鼠（职业随机，天赋按规则掷） */
+116:/* ---------- 技能（S2：只携带与展示，战斗生效在 S4–S6） ---------- */
+162:  /* 天赋：二级/三级必带职业天赋；其余按老规则随机携带 */
+166:    /* 二级/三级再抽 0–2 条跨线天赋（跟白板同表，只是先占掉一条职业天赋） */
+183:  /* 技能：三档同一张表 */
+267:  /* 副鼠若也带这条天赋，等级取较高的那条 */
+294:/* ---------- 天赋洗练（P5）：花碎片重掷某一槽的等级，可升可降 ---------- */
+319:  var kept = [{ id: pv.slot1.id, lv: pv.slot1.lv }];   /* 槽1 职业天赋：免疫 */
+322:  /* 1) 技能：先判"被吃"（8%），再判继承（主 70% / 副 55%），同名合并升级 */
+338:  /* 2) 额外天赋：先判"被吃"（2.5%），再判继承（70%） */
+351:  /* 3) 分开技能/天赋，各自按上限整理（技能不限、天赋最多 3 个槽） */
+515:/* v2 → v3：配件下线（每个折 2 碎片），天赋槽1 补齐 */
+840:/* ---------- 图鉴 · 天赋页（P0） ---------- */
+889:/* 图鉴 · 技能页：11 个技能的类型 / 目标数 / 冷却 */
+922:  var pageName = ['图鉴 · 五职业 × 四阶', '图鉴 · 天赋', '图鉴 · 技能'][SHOP.codexPage | 0] || '图鉴';
+930:  var nextName = ['天赋', '技能', '形态'][SHOP.codexPage | 0] || '天赋';
+1037:/* ================= 仓鼠详情页（梦幻西游式宠物面板） ================= */
+1076:/* 四维雷达：生命 / 输出 / 续航 / 辅助（都按 0–1 归一，便于横向比较） */
+1087:    { k: '生命', v: clamp01(hp / 200) },
+1147:/* 详情页的「可用转职证」：能吃的证列出来，点一下就用在这只鼠身上 */
+1155:  txt('可用转职证', x + 12, y + 18, Math.max(9, Math.round(W * 0.026)), C.amber, 'left', true);
+1160:    txt(rat.tier >= 4 ? '已经满阶，用不上了' : '没有能用的证 —— 抽奖页道具池 / 补给站可获得',
+1192:/* 详情页「技能」：名称 + 等级 + 类型 + 目标数 + 冷却（S2 只展示） */
+1200:  txt('技能', x + 12, y + 18, Math.max(9, Math.round(W * 0.026)), C.amber, 'left', true);
+1225:/* ================= 仓鼠详情（页签式，一屏放得下） =================
+1226:   原来把天赋 / 技能 / 转职证 / 能力全堆在一屏，手机上会被裁掉且无法下拉。
+1235:  txt("仓鼠详情", pad, 40, Math.round(W * 0.045), C.ink, "left", true);
+1273:  txt("★" + ratScore(rat) + "  ·  天赋 " + (rat.talents || []).length + "/3  ·  技能 " + (rat.skills || []).length,
+1275:  txt("生命 " + st.hp + " · 出手 " + (st.atkMs ? (st.atkMs / 1000).toFixed(1) + "s" : "不攻击") +
+1280:  var tabs = ["天赋", "技能", "转职证", "能力"];
+1311:        txt(t === 0 ? "本职业天赋（转职后觉醒）" : "未开启（抽卡有概率携带）",
+1348:      txt("还没有技能 —— 抽卡有概率携带（物理 / 魔法 / 增益），组装可以继续堆",
+1375:      txt(rat.tier >= 4 ? "已经满阶，用不上了" : "没有能用的证 —— 抽奖页道具池 / 补给站可获得",
+1402:      txt("转职有 30% 概率随机失去 1 个技能", pad, cy0 + 20 + Math.min(4, opts.length) * 34 + 6,
+1408:    txt("生命 " + st.hp + " · 基础 " + st.baseDmg + " · 强化 " + st.act, pad, H - 168,
+1450:/* 技能图标（32×32 档，按 18px 绘制）：skill-<id> */
+1588:/* 天赋串：硬化Ⅲ 复苏Ⅱ */
+1626:    txt('技能 0/1/2/3 = 30/42/22/6% · 等级 Ⅰ62/Ⅱ30/Ⅲ8', pad + 14, py + 66,
+1630:    txt('槽1 必为本职业天赋，槽2/3 可跨职业', pad + 14, py + 102,
+1637:    txt('转职证 25%（无鼠可升折 2 碎片）· 大奖 5%', pad + 14, py + 66,
+1639:    txt('十连保底：必出 1 张转职证 —— 距保底 ' + pityLeft + ' 抽', pad + 14, py + 84,
+1753:    txt('★NEW★ Ⅲ 级天赋 · ' + g3.t3, W / 2 - 26, by2 + 24, Math.round(W * 0.042), '#241d2e', 'center', true);
+1756:      var msg = '我抽到了 Ⅲ 级天赋「' + g3.t3 + '」！';
+1885:    txt('★NEW★ Ⅲ 级天赋 · ' + REVEAL.t3, W / 2, H * 0.16,
+1926:/* 组装二次确认：写清"技能 8%/条、额外天赋 2.5%/条被吃，槽1 免疫" */
+1947:    '槽1 职业天赋：100% 保留（免疫）',
+1948:    '技能：每条 ' + Math.round(pv.eatSkill * 100) + '% 被吃 → 未被吃再按 主70% / 副55% 继承',
+1949:    '额外天赋：每条 ' + (pv.eatTalent * 100).toFixed(1) + '% 被吃 → 未被吃再按 70% 继承',
+1950:    '同名技能/天赋合并升级（Ⅲ 封顶）'
+1958:  txt('本次参与：技能 ' + skN + ' 条 · 额外天赋 ' + talN + ' 条',
+2036:      txt(a.gotExtra ? ('继承了 ' + a.gotExtra + ' 条额外天赋') : ('没继承额外天赋，返还 ' + a.refunded + ' 碎片'),
+2055:    '碎片 → 洗练天赋等级（6 碎片）或再抽一次',
+2056:    '两只鼠 → 组装（30 金币），主鼠槽1 天赋固定'
+2153:  txt(tl || '无天赋', pad + 12, oy + 44, Math.max(9, Math.round(W * 0.024)), '#ffd98a', 'left');
+2185:  txt('点一只当主鼠（槽1 天赋固定保留）', pad, top, Math.max(9, Math.round(W * 0.026)), C.muted, 'left');
+2213:    txt(tal || '无天赋', cx + 8, cy + 38, Math.max(8, Math.round(W * 0.023)), '#ffd98a', 'left');
+2257:    txt('先选主鼠，再选副鼠（主鼠的槽1 天赋会固定保留）', pad + 12, slotY + slotS + 44,
+2269:    /* 双方属性 + 技能（压成两行，避免和下面挤） */
+2288:    txt('新鼠随主鼠职业/阶，技能与天赋按概率继承',
+2290:    txt('消耗 ' + pv.cost + ' 金币 · 副鼠消失 · 没继承额外天赋返 ' + pv.refund + ' 碎片',
+2320:    '主鼠槽1 天赋 100% 保留（等级取两者较高）',
+2321:    '主鼠其它天赋各 55% 保留，副鼠所有天赋各 45% 保留',
+2322:    '最多 3 槽 · 一条额外天赋都没继承则返 3 碎片'
+2340:    txt(FUSE.result.gotExtra ? ('继承了 ' + FUSE.result.gotExtra + ' 条（技能+天赋）')
+2344:    (FUSE.result.lostSkills || []).forEach(function(t){ lostTxt.push('技能 ' + skillName(t.id)); });
+2345:    (FUSE.result.lostTalents || []).forEach(function(t){ lostTxt.push('天赋 ' + (TALENT_DEF[t.id] ? TALENT_DEF[t.id].name : t.id)); });
+2636:    ['生命', String(u.hpMax)],
+2637:    ['天赋', (function(){
+2694:/* 仓鼠"价值"速览：天赋等级和 + 技能等级和，右上角显示成 ★N */
+2704:/* 技能类型色点（物理橙 / 魔法蓝 / 增益绿），最多画 4 个 */
+2718:   统一用"白板鼠头"当图标（不再画各职业立绘），省出的空间显示技能：
+2719:   名字 / 职业·阶 / 天赋 / 技能名（最多 2 条 + 更多） */
+2722:   下面：职业与阶的描述 + **所有携带技能**（每条一行，超出用 +N）。 */
+2768:  /* 天赋行 */
+2776:  txt("天赋 " + talText, x + 10, y + headS + 34, subFs, "#ffd98a", "left", true);
+2778:  /* 所有技能：一条一行 */
+2784:    txt("技能 无（抽卡 / 组装可带）", x + 10, sy, subFs, "#5b5374", "left");
+2801:      txt("+" + (sk.length - maxLines) + " 个技能（进详情看全部）", x + 10, sy + maxLines * lineH,
+2859:/* ---------- 天赋（P0）：每只鼠的槽1 跟着职业线走 ----------
+2860:   白板鼠（line === 'none'）没有天赋，转职定线之后补上槽1。 */
+2875:/* ---------- 转职证背包：抽到的证先存起来，由玩家决定给谁用 ---------- */
+2911:/* 转职/升阶：拿到职业天赋，同时按概率吃掉一个已携带技能 */
+2989:   22% 转职证（选中鼠能升就升一阶，不能升折成 +40 金币）
+2991:   每第 5 次必出"转职证档"（能升就升，不能升给 +40 金币）。 */
+2993:var SLOT_ODDS = '金币 40% · 碎片×1 30% · 转职证 25%（进背包） · 大奖 5% · 十连保底出证';
+3163:/* 调试口：抽一只（不写存档、不动金币），用于校验三档分布与技能携带 */
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$s = Get-Content tools/shop.js; $s[1224..1425]' in D:\deepseek\杂项\hamster-snack-factory
+ succeeded in 372ms:
+/* ================= 浠撻紶璇︽儏锛堥〉绛惧紡锛屼竴灞忔斁寰椾笅锛?=================
+   鍘熸潵鎶婂ぉ璧?/ 鎶€鑳?/ 杞亴璇?/ 鑳藉姏鍏ㄥ爢鍦ㄤ竴灞忥紝鎵嬫満涓婁細琚鎺変笖鏃犳硶涓嬫媺銆?
+   鐜板湪鎷嗘垚鍥涗釜椤电锛屾瘡椤靛彧鐢讳竴鍧楀唴瀹癸紝搴曢儴鎿嶄綔鍥哄畾銆?*/
+function drawRatDetail(){
+  HITS = [];
+  var pad = L.pad;
+  var idx = SHOP.detail | 0;
+  var rat = SHOP.rats[idx];
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+
+  txt("浠撻紶璇︽儏", pad, 40, Math.round(W * 0.045), C.ink, "left", true);
+  gachaBackBtn(pad);
+
+  if (!rat){
+    txt("杩欏彧浠撻紶涓嶅湪浜嗭紙鍙兘琚垎瑙?/ 鍚堟垚浜嗭級", W / 2, H * 0.4,
+        Math.max(11, Math.round(W * 0.032)), C.muted, "center");
+    return;
+  }
+
+  var st = ratStats(rat);
+  var onSquad = SHOP.squad.indexOf(idx) >= 0;
+
+  /* ---------- 椤堕儴锛氱珛缁?+ 姒傝 ---------- */
+  var cardY = 56, cardH = 120;
+  rr(pad, cardY, W - pad * 2, cardH, 14);
+  ctx.fillStyle = C.panel; ctx.fill();
+  ctx.lineWidth = 1; ctx.strokeStyle = "rgba(232,172,80,.35)"; ctx.stroke();
+
+  /* 澶村儚锛氬拰浠撻紶鏍忓崱鐗囧悓涓€寮狅紙head-base锛?6 鍘熺敓 脳4 = 64 灞曠ず锛?*/
+  /* 璇︽儏椤电敤 64 绔嬬粯锛堝師鐢伙級锛屼笉鍐嶇敤瑁佸ご鍥?*/
+  var headImg = ratArt64(rat);
+  var box = 92, ax = pad + 12, ay = cardY + 14;
+  rr(ax, ay, box, box, 12);
+  ctx.fillStyle = "rgba(255,255,255,.03)"; ctx.fill();
+  if (headImg){
+    ctx.save(); ctx.imageSmoothingEnabled = false;
+    var drawSide = 64;                       /* 鍘熺敾灏辨槸 64锛屾寜 1:1 鐢?*/
+    ctx.drawImage(headImg,
+      Math.round(ax + (box - drawSide) / 2),
+      Math.round(ay + (box - drawSide) / 2), drawSide, drawSide);
+    ctx.restore();
+  }
+  if (rat.line && rat.line !== "none") drawClassGlyph(rat.line, ax + box - 14, ay + box - 14, 22);
+
+  var tx = ax + box + 14;
+  txt(st.name, tx, cardY + 30, Math.round(W * 0.045), C.ink, "left", true);
+  txt(ratLineLabel(rat) + (onSquad ? " 路 涓婂満涓? : ""), tx, cardY + 50,
+      Math.max(10, Math.round(W * 0.026)), onSquad ? "#79c98a" : C.muted, "left");
+  txt("鈽? + ratScore(rat) + "  路  澶╄祴 " + (rat.talents || []).length + "/3  路  鎶€鑳?" + (rat.skills || []).length,
+      tx, cardY + 70, Math.max(9, Math.round(W * 0.024)), "#ffd98a", "left");
+  txt("鐢熷懡 " + st.hp + " 路 鍑烘墜 " + (st.atkMs ? (st.atkMs / 1000).toFixed(1) + "s" : "涓嶆敾鍑?) +
+      " 路 娉曞己 " + (typeof unitMag === "function" ? unitMag(makeUnit(ratId(rat), 0)) : "-"),
+      tx, cardY + 90, Math.max(9, Math.round(W * 0.023)), C.muted, "left");
+
+  /* ---------- 椤电 ---------- */
+  var tabs = ["澶╄祴", "鎶€鑳?, "杞亴璇?, "鑳藉姏"];
+  var tabY = cardY + cardH + 8, tabH = 26;
+  var tw = Math.floor((W - pad * 2 - 3 * 6) / 4);
+  SHOP.detailTab = Math.max(0, Math.min(3, SHOP.detailTab | 0));
+  for (var i = 0; i < tabs.length; i++){
+    var bx = pad + i * (tw + 6);
+    var on = (SHOP.detailTab | 0) === i;
+    rr(bx, tabY, tw, tabH, 13);
+    ctx.fillStyle = on ? C.amber : C.panel2; ctx.fill();
+    txt(tabs[i], bx + tw / 2, tabY + 18, Math.max(10, Math.round(W * 0.026)),
+        on ? "#241d2e" : C.ink, "center", true);
+    (function(k){
+      shopHit(bx, tabY, tw, tabH, function(){ SHOP.detailTab = k; sfx("tap"); });
+    })(i);
+  }
+
+  var cy0 = tabY + tabH + 10;
+  var chAvail = H - 150 - cy0;
+
+  /* ---------- 椤电鍐呭 ---------- */
+  if ((SHOP.detailTab | 0) === 0){
+    var slotH = 52, sy = cy0;
+    for (var t = 0; t < 3; t++){
+      var tal = (rat.talents || [])[t];
+      var y = sy + t * (slotH + 8);
+      rr(pad, y, W - pad * 2, slotH, 10);
+      ctx.fillStyle = tal ? "rgba(232,172,80,.07)" : "rgba(255,255,255,.02)"; ctx.fill();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = tal ? "rgba(232,172,80,.45)" : C.line; ctx.stroke();
+      txt("妲? + (t + 1), pad + 10, y + 17, 9, C.muted, "left", true);
+      if (!tal){
+        txt(t === 0 ? "鏈亴涓氬ぉ璧嬶紙杞亴鍚庤閱掞級" : "鏈紑鍚紙鎶藉崱鏈夋鐜囨惡甯︼級",
+            pad + 44, y + 18, Math.max(9, Math.round(W * 0.024)), "#5b5374", "left");
+        continue;
+      }
+      var def = TALENT_DEF[tal.id] || {};
+      var roman = ["鈪?, "鈪?, "鈪?];
+      var hasT = drawTalentIcon(tal.id, pad + 26, y + 22, 22);
+      txt((def.name || tal.id) + " " + (roman[(tal.lv || 1) - 1] || ""),
+          pad + 44, y + 20, Math.max(12, Math.round(W * 0.032)), "#ffd98a", "left", true);
+      txt(talentEffectText(tal.id, tal.lv || 1), pad + 44, y + 38,
+          Math.max(8, Math.round(W * 0.022)), C.ink, "left");
+      var rbw = 44, rbh = 20, rbx = W - pad - rbw - 8, rby = y + slotH - 26;
+      var armed = REROLL_ARM === (idx + ":" + t);
+      var canR = (SHOP.shard | 0) >= REROLL_COST;
+      rr(rbx, rby, rbw, rbh, 10);
+      ctx.fillStyle = armed ? "rgba(217,109,85,.55)" : (canR ? "rgba(199,182,255,.16)" : "#241d2e"); ctx.fill();
+      ctx.strokeStyle = armed ? "#d96d55" : (canR ? "rgba(199,182,255,.7)" : "#332b45");
+      ctx.lineWidth = 1; ctx.stroke();
+      txt(armed ? "纭?" : ("娲?" + REROLL_COST), rbx + rbw / 2, rby + 14,
+          Math.max(8, Math.round(W * 0.022)), armed ? "#fff" : (canR ? "#c7b6ff" : "#5b5374"), "center", true);
+      (function(slotIndex){
+        shopHit(rbx, rby, rbw, rbh, function(){
+          if ((SHOP.shard | 0) < REROLL_COST){ sfx("invalid"); return; }
+          var key = idx + ":" + slotIndex;
+          if (REROLL_ARM !== key){ REROLL_ARM = key; sfx("tap"); return; }
+          REROLL_ARM = "";
+          var res = rerollTalent(idx, slotIndex);
+          if (res) floatText("娲楃粌 " + ["鈪?,"鈪?,"鈪?][res.from - 1] + "鈫? + ["鈪?,"鈪?,"鈪?][res.to - 1],
+                              W / 2, Math.round(H * 0.33), res.to > res.from ? "#ffd98a" : "#d96d55", true);
+        });
+      })(t);
+    }
+    txt("娲楃粌 " + REROLL_COST + " 纰庣墖 路 姒傜巼 鈪?2% / 鈪?0% / 鈪?%", pad, sy + 3 * (slotH + 8) + 6,
+        Math.max(8, Math.round(W * 0.022)), "#8f86a6", "left");
+  } else if ((SHOP.detailTab | 0) === 1){
+    var sk = rat.skills || [];
+    if (!sk.length){
+      txt("杩樻病鏈夋妧鑳?鈥斺€?鎶藉崱鏈夋鐜囨惡甯︼紙鐗╃悊 / 榄旀硶 / 澧炵泭锛夛紝缁勮鍙互缁х画鍫?,
+          W / 2, cy0 + 40, Math.max(10, Math.round(W * 0.026)), C.muted, "center");
+    } else {
+      var rowH = 40, roman2 = ["鈪?, "鈪?, "鈪?];
+      for (var k2 = 0; k2 < sk.length && cy0 + k2 * rowH < H - 160; k2++){
+        var one = sk[k2];
+        var d2 = skillDefs()[one.id] || {};
+        var yy = cy0 + k2 * rowH;
+        rr(pad, yy, W - pad * 2, rowH - 6, 9);
+        ctx.fillStyle = "rgba(255,255,255,.03)"; ctx.fill();
+        var col = d2.kind === "mag" ? "#8fb8ff" : (d2.kind === "buff" ? "#79c98a" : "#ffb37a");
+        ctx.strokeStyle = col; ctx.globalAlpha = 0.35; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1;
+        var hasIc2 = drawSkillIcon(one.id, pad + 18, yy + 17, 18);
+        txt((d2.name || one.id) + " " + (roman2[(one.lv || 1) - 1] || ""),
+            pad + (hasIc2 ? 38 : 10), yy + 16, Math.max(10, Math.round(W * 0.027)), col, "left", true);
+        var tg = (d2.targets || [1,1,1])[(one.lv || 1) - 1] || 1;
+        var cd = Math.round(((d2.cd || [0,0,0])[(one.lv || 1) - 1] || 0) / 1000);
+        txt(skillKindLabel(d2.kind) + " 路 " + tg + " 鐩爣 路 " + cd + "s",
+            pad + (hasIc2 ? 34 : 10), yy + 29, Math.max(8, Math.round(W * 0.022)), C.muted, "left");
+        txt(d2.desc || "", W - pad - 10, yy + 22, Math.max(8, Math.round(W * 0.021)), "#6a6480", "right");
+      }
+    }
+  } else if ((SHOP.detailTab | 0) === 2){
+    var opts = gearOptionsFor(rat);
+    txt("鑳屽寘鍏?" + gearCountAll() + " 寮犺瘉", pad, cy0 + 4,
+        Math.max(9, Math.round(W * 0.024)), C.muted, "left");
+    if (!opts.length){
+      txt(rat.tier >= 4 ? "宸茬粡婊￠樁锛岀敤涓嶄笂浜? : "娌℃湁鑳界敤鐨勮瘉 鈥斺€?鎶藉椤甸亾鍏锋睜 / 琛ョ粰绔欏彲鑾峰緱",
+          W / 2, cy0 + 48, Math.max(10, Math.round(W * 0.024)), C.muted, "center");
+    } else {
+      for (var g2 = 0; g2 < opts.length && g2 < 4; g2++){
+        var o2 = opts[g2];
+        var by2 = cy0 + 20 + g2 * 34;
+        rr(pad, by2, W - pad * 2, 30, 15);
+        ctx.fillStyle = "rgba(232,172,80,.16)"; ctx.fill();
+        ctx.strokeStyle = "rgba(232,172,80,.6)"; ctx.lineWidth = 1; ctx.stroke();
+        /* 璇佷功鍥炬爣锛堥潚/閾?閲?娣辩孩锛夛細cert-<闃?1> */
+        var cImg = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["cert-" + (o2.tier - 1)]) : null;
+        if (cImg){
+          ctx.save(); ctx.imageSmoothingEnabled = true;
+          ctx.drawImage(cImg, pad + 4, by2 + 3, 24, 24);
+          ctx.restore();
+        }
+        txt("浣跨敤 " + (LINE_NAME[o2.line] || o2.line) + (TIER_LABEL[o2.tier] || "") + "璇?脳" + o2.count,
+            pad + (cImg ? 32 : 10), by2 + 20, Math.max(10, Math.round(W * 0.026)), "#ffd98a", "left", true);
+        txt("鈫?" + (LINE_NAME[o2.line] || o2.line) + " 路 " + (TIER_LABEL[o2.tier] || ""),
+            W - pad - 10, by2 + 20, Math.max(9, Math.round(W * 0.023)), C.muted, "right");
+        (function(key){
+          shopHit(pad, by2, W - pad * 2, 30, function(){
+            if (gearUse(idx, key)) floatText("杞亴鎴愬姛", W / 2, Math.round(H * 0.30), "#ffd98a", true);
+            else sfx("invalid");
+          });
+        })(o2.key);
+      }
+      txt("杞亴鏈?30% 姒傜巼闅忔満澶卞幓 1 涓妧鑳?, pad, cy0 + 20 + Math.min(4, opts.length) * 34 + 6,
+          Math.max(8, Math.round(W * 0.022)), "#8f86a6", "left");
+    }
+  } else {
+    var rpR = 54;
+    drawRatRadar(W / 2, cy0 + 92, rpR, rat);
+    txt("鐢熷懡 " + st.hp + " 路 鍩虹 " + st.baseDmg + " 路 寮哄寲 " + st.act, pad, H - 168,
+        Math.max(9, Math.round(W * 0.023)), C.muted, "left");
+  }
+
+  /* ---------- 搴曢儴鎿嶄綔 ---------- */
+  var bh = 40, byy = H - 96;
+  var bw = Math.round((W - pad * 2 - 16) / 3);
+  function act(i, label, enabled, color, onTap){
+    var bx = pad + i * (bw + 8);
+    rr(bx, byy, bw, bh, 20);
+    ctx.fillStyle = enabled ? color : "#241d2e"; ctx.fill();
+    txt(label, bx + bw / 2, byy + 26, Math.max(10, Math.round(W * 0.028)),
+        enabled ? "#241d2e" : "#5b5374", "center", true);
+    shopHit(bx, byy, bw, bh, onTap);
+  }
+  act(0, onSquad ? "涓嬪満" : "涓婂満", true, onSquad ? "rgba(232,172,80,.75)" : C.amber, function(){
+    if (onSquad){
+      var kk = SHOP.squad.indexOf(idx);
+      if (kk >= 0) SHOP.squad[kk] = -1;
+
+codex
+[08-detail-talents] 线索：槽2、槽3的“未开启”文字在暗底上偏暗，难以看清获得条件。建议：提高文字亮度，并保留边框和“未开启”文案区分已解锁槽位。影响：高 参考：tools/shop.js drawRatDetail
+[08-detail-talents] 线索：“洗 6”按钮仅约 44×20 像素，紧贴卡片右下角，触控面积偏小。建议：扩大实际触控区域，并把“6碎片”写完整，避免只靠下方小字解释消耗。影响：高 参考：tools/shop.js drawRatDetail
+[09-detail-skills] 线索：技能卡右侧效果说明颜色很暗、字号很小，相比彩色技能名难读。建议：提高说明文字对比度，将效果放到独立一行或扩大卡片高度。影响：高 参考：tools/shop.js drawRatDetail
+[09-detail-skills] 线索：技能名与下一行“物理·1目标·7s”的左起点略有错位，扫描两条技能时不够整齐。建议：让名称和属性从同一文字列起始，图标单独占列。影响：中 参考：tools/shop.js drawRatDetail
+[09-detail-skills] 线索：四个页签的可见高度仅约 26 像素，间隔约 6 像素，切换时容易误触。建议：保持四页页签位置和基线一致，增加高度或扩大不重叠的触控区域。影响：高 参考：tools/shop.js drawRatDetail
+[10-detail-certs] 线索：背包显示“共3张证”，中央却写“已经满阶，用不上了”，容易误以为证书全部无用。建议：改成“这只仓鼠已满阶，无法使用转职证”，并提示可给其他符合条件的仓鼠使用。影响：高 参考：tools/shop.js drawRatDetail
+[10-detail-certs] 线索：背包数量贴近页签，空状态却孤零零地放在下方，数量与原因关联较弱。建议：把数量和针对当前仓鼠的状态收拢到同一内容区，突出状态说明。影响：中 参考：tools/shop.js drawRatDetail
+[11-detail-stats] 线索：雷达图轴名和图形较小，且没有数值或刻度，难以判断四项能力差异。建议：放大图表与标签，并补充各维度的数值或清晰刻度。影响：高 参考：tools/shop.js drawRatRadar
+[11-detail-stats] 线索：雷达图位于上方，生命、基础、强化却落在接近底部的位置，中间留白过大；生命数值还与顶部摘要重复。建议：将数值集中放到雷达图下方，统一标签和数值列对齐，并把重复的生命值作为详细拆解而非孤立重复。影响：高 参考：tools/shop.js drawRatDetail
+tokens used
+11,113
