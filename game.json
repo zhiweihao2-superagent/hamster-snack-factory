@@ -871,7 +871,7 @@
     },
     "stagePitch": 1,
     "stageReach": 1.2,
-    "rosterCap": 12,
+    "rosterCap": 6,
     "ratStats": {
       "none": {
         "magMul": 0.8,

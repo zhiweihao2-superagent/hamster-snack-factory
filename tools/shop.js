@@ -2076,7 +2076,7 @@ function drawFuseAnim(){
 
 /* 底部说明卡：把"抽 → 分解 → 洗练 → 组装"这条循环讲清楚 */
 function drawLoopTips(pad, y, w){
-  var h = 118;
+  var h = 126;
   rr(pad, y, w, h, 12);
   ctx.fillStyle = 'rgba(255,255,255,.03)'; ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.07)'; ctx.stroke();
@@ -2478,33 +2478,13 @@ function drawShop(){
   var slotH = Math.floor((avail - 2 * 6) / 3);
   slotH = Math.max(84, Math.min(132, slotH));
   var gy = 6;
-  var pageCount = Math.max(1, Math.ceil(SHOP.rats.length / PER_PAGE));
-  SHOP.ratPage = Math.min(Math.max(0, SHOP.ratPage | 0), pageCount - 1);
-  var pageStart = SHOP.ratPage * PER_PAGE;
+  var pageCount = 1;
+  SHOP.ratPage = 0;
+  var pageStart = 0;
   for (var s = pageStart; s < SHOP.rats.length && s < pageStart + PER_PAGE; s++){
     var vi = s - pageStart;
     var col = vi % COLS, row = Math.floor(vi / COLS);
     drawRatCard(cardX + col * (slotW + gx), ratsY + row * (slotH + gy), slotW, slotH, s);
-  }
-  /* 翻页按钮 */
-  if (pageCount > 1){
-    var pbw = 30, pbh = 20;
-    var py2 = ratsY - 24;
-    function pageBtn(bx, label, dir, enabled){
-      rr(bx, py2, pbw, pbh, 10);
-      ctx.fillStyle = enabled ? C.panel2 : '#241d2e'; ctx.fill();
-      ctx.lineWidth = 1; ctx.strokeStyle = enabled ? C.line : '#332b45'; ctx.stroke();
-      txt(label, bx + pbw / 2, py2 + 14, 11, enabled ? C.ink : '#7d7396', 'center', true);
-      shopHit(bx, py2, pbw, pbh, function(){
-        if (!enabled) { sfx('invalid'); return; }
-        SHOP.ratPage = Math.min(pageCount - 1, Math.max(0, (SHOP.ratPage | 0) + dir));
-        sfx('tap');
-      });
-    }
-    pageBtn(cardX + cardW - pbw * 2 - 4, '›', 1, (SHOP.ratPage | 0) < pageCount - 1);
-    pageBtn(cardX + cardW - pbw * 2 - 4 - pbw - 4, '‹', -1, (SHOP.ratPage | 0) > 0);
-    txt((SHOP.ratPage + 1) + '/' + pageCount, cardX + cardW - pbw * 2 - 4 - pbw - 4 - 26, py2 + 14,
-        9, C.muted, 'right');
   }
   /* 本页实际占的行数；未满页时补一个"招募"空位 */
   var shown = Math.min(SHOP.rats.length - pageStart, PER_PAGE);
@@ -2703,6 +2683,30 @@ function drawRatStats(x, y, w){
     sfx('tap');
   });
 
+  /* 存盒：把这只鼠移进仓鼠盒（腾出仓鼠栏的位置） */
+  var kbw = 46, kbh = 20, kbx = x + w - kbw - 68 - 54, kby = y + 8;
+  var onField = SHOP.squad.indexOf(SHOP.sel) >= 0;
+  var canBox = !onField && SHOP.rats.length > 1 && boxList().length < boxCap();
+  rr(kbx, kby, kbw, kbh, 10);
+  ctx.fillStyle = canBox ? 'rgba(121,201,138,.16)' : '#241d2e';
+  ctx.fill();
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = canBox ? 'rgba(121,201,138,.75)' : '#332b45';
+  ctx.stroke();
+  txt('存盒', kbx + kbw / 2, kby + 15, Math.max(8, Math.round(W * 0.024)),
+      canBox ? '#a6e4b6' : '#7d7396', 'center', true);
+  shopHit(kbx, kby, kbw, kbh, function(){
+    if (!canBox){ sfx("invalid"); return; }
+    var mv = SHOP.rats.splice(SHOP.sel, 1)[0];
+    boxList().push(mv);
+    /* 上场编号要跟着挪 */
+    SHOP.squad = (SHOP.squad || []).filter(function(ix){ return ix !== SHOP.sel; })
+      .map(function(ix){ return ix > SHOP.sel ? ix - 1 : ix; });
+    SHOP.sel = Math.min(SHOP.sel, SHOP.rats.length - 1);
+    shopSave();
+    sfx("tap");
+  });
+
   /* 分解按钮：选中鼠且不在场上时可用（点两次确认） */
   var dShard = (typeof shardValueOf === 'function') ? shardValueOf(rat) : 0;
   var onField = SHOP.squad.indexOf(SHOP.sel) >= 0;
@@ -2741,7 +2745,7 @@ function drawRatStats(x, y, w){
 
   /* 技能清单：选中面板也要看得到带了哪些技能（最多 3 条，带小图标） */
   var sk3 = rat.skills || [];
-  var sy3 = y + 100;
+  var sy3 = y + 106;
   txt('技能', x + 12, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'left', true);
   if (!sk3.length){
     txt('无（抽卡 / 组装可得）', x + 42, sy3, Math.max(9, Math.round(W * 0.023)), '#7d7396', 'left');
@@ -2751,7 +2755,7 @@ function drawRatStats(x, y, w){
       var d3 = skillDefs()[sk3[k3].id] || {};
       var roman3 = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
       var label3 = (d3.name || sk3[k3].id) + roman3[Math.min(3, Math.max(1, sk3[k3].lv || 1)) - 1];
-      var hasIc3 = drawSkillIcon(sk3[k3].id, cx3 + 7, sy3 - 3, 14);
+      var hasIc3 = drawSkillIcon(sk3[k3].id, cx3 + 7, sy3 - 9, 14);
       txt(label3, cx3 + (hasIc3 ? 16 : 0), sy3, Math.max(9, Math.round(W * 0.023)),
           d3.kind === 'mag' ? '#8fb8ff' : (d3.kind === 'buff' ? '#79c98a' : '#ffb37a'), 'left');
       cx3 += (hasIc3 ? 16 : 0) + Math.max(36, label3.length * 13);
