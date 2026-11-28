@@ -2671,7 +2671,12 @@ function drawOfferCard(x, y, w, h, o, idx){
   var icId = (o.kind === "gear") ? ("gear-" + o.line)
            : (o.kind === "rat" ? "class-base"
            : (o.kind === "shard" ? "buff-parts" : (o.kind === "mod" ? ("mod-" + o.mod) : null)));
-  var ic = (typeof iconImg === "function") ? iconImg(icId) : null;
+  var ic = null;
+  if (o.kind === "book"){
+    ic = (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["skill-" + o.skill]) : null;
+  } else if (icId){
+    ic = (typeof iconImg === "function") ? iconImg(icId) : null;
+  }
   var icS = 28, icx = x + 10, icy = y + (h - icS) / 2;
   if (ic){
     ctx.save(); ctx.imageSmoothingEnabled = false;
