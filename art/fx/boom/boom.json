@@ -1,0 +1,17 @@
+{
+ "frameSize": [
+  198,
+  144
+ ],
+ "cols": 8,
+ "rows": 2,
+ "frames": 14,
+ "fps": 15.0,
+ "pivot": [
+  105,
+  100
+ ],
+ "loop": false,
+ "source": "explosions/small-explosion",
+ "license": "MIT \u00b7 patch-gg/pixelfx"
+}

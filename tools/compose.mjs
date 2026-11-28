@@ -55,6 +55,35 @@ try {
   if (e.code !== 'ENOENT') throw e
 }
 
+/* 特效贴图：art/fx/<name>/*.webp + json（pixelfx · MIT）以 data URL 注入 */
+let fxArt = ''
+try {
+  const { readdir, readFile } = await import('node:fs/promises')
+  const fxRoot = join(root, 'art', 'fx')
+  const dirs = (await readdir(fxRoot, { withFileTypes: true })).filter((d) => d.isDirectory())
+  const artEntries = []
+  const metaEntries = []
+  for (const d of dirs) {
+    const name = d.name
+    const webp = join(fxRoot, name, name + '.webp')
+    const jsonPath = join(fxRoot, name, name + '.json')
+    let b64, meta
+    try {
+      b64 = (await readFile(webp)).toString('base64')
+      meta = JSON.parse((await readFile(jsonPath, 'utf8')))
+    } catch (e) { continue }
+    artEntries.push(`  ${JSON.stringify(name)}: 'data:image/webp;base64,${b64}'`)
+    metaEntries.push(`  ${JSON.stringify(name)}: ${JSON.stringify(meta)}`)
+  }
+  if (artEntries.length) {
+    fxArt = '/* 战斗特效贴图（构建时从 art/fx 注入，pixelfx · MIT） */\n'
+      + `window.FX_ART = {\n${artEntries.join(',\n')}\n};\n\n`
+      + `window.FX_META = {\n${metaEntries.join(',\n')}\n};\n\n`
+  }
+} catch (e) {
+  if (e.code !== 'ENOENT') throw e
+}
+
 /* 像素字体：tools/_font/pixel.woff2（subset 后的 12px 点阵字体），BASE64 注入 */
 let pixelFont = ''
 try {
@@ -121,6 +150,7 @@ const composed = versionTag + pixelFont + unitFrames
   + shop
   + '\n'
   + unitArt
+  + fxArt
   + '})();\n'
 
 const current = await read('game.js')

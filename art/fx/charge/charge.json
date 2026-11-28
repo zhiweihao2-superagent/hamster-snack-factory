@@ -1,0 +1,17 @@
+{
+ "frameSize": [
+  102,
+  84
+ ],
+ "cols": 8,
+ "rows": 2,
+ "frames": 14,
+ "fps": 15.0,
+ "pivot": [
+  44,
+  78
+ ],
+ "loop": true,
+ "source": "arcane/spell-charge",
+ "license": "MIT \u00b7 patch-gg/pixelfx"
+}

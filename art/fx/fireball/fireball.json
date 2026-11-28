@@ -1,0 +1,17 @@
+{
+ "frameSize": [
+  120,
+  56
+ ],
+ "cols": 8,
+ "rows": 3,
+ "frames": 18,
+ "fps": 15.0,
+ "pivot": [
+  96,
+  28
+ ],
+ "loop": true,
+ "source": "fire/fireball",
+ "license": "MIT \u00b7 patch-gg/pixelfx"
+}

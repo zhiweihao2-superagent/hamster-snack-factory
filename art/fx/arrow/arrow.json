@@ -1,0 +1,17 @@
+{
+ "frameSize": [
+  98,
+  22
+ ],
+ "cols": 8,
+ "rows": 2,
+ "frames": 9,
+ "fps": 15.0,
+ "pivot": [
+  90,
+  12
+ ],
+ "loop": true,
+ "source": "projectiles/arrow",
+ "license": "MIT \u00b7 patch-gg/pixelfx"
+}

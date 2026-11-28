@@ -1,0 +1,17 @@
+{
+ "frameSize": [
+  146,
+  54
+ ],
+ "cols": 8,
+ "rows": 2,
+ "frames": 12,
+ "fps": 15.0,
+ "pivot": [
+  131,
+  27
+ ],
+ "loop": true,
+ "source": "ice/ice-lance",
+ "license": "MIT \u00b7 patch-gg/pixelfx"
+}

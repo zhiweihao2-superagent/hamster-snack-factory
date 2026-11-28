@@ -1,0 +1,17 @@
+{
+ "frameSize": [
+  130,
+  119
+ ],
+ "cols": 8,
+ "rows": 4,
+ "frames": 26,
+ "fps": 15.0,
+ "pivot": [
+  65,
+  106
+ ],
+ "loop": false,
+ "source": "ice/snowflake-burst",
+ "license": "MIT \u00b7 patch-gg/pixelfx"
+}

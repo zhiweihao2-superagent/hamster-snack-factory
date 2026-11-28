@@ -1,0 +1,17 @@
+{
+ "frameSize": [
+  58,
+  86
+ ],
+ "cols": 8,
+ "rows": 3,
+ "frames": 24,
+ "fps": 15.0,
+ "pivot": [
+  29,
+  74
+ ],
+ "loop": false,
+ "source": "holy/heal",
+ "license": "MIT \u00b7 patch-gg/pixelfx"
+}

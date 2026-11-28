@@ -1,0 +1,17 @@
+{
+ "frameSize": [
+  226,
+  102
+ ],
+ "cols": 8,
+ "rows": 4,
+ "frames": 28,
+ "fps": 15.0,
+ "pivot": [
+  24,
+  80
+ ],
+ "loop": false,
+ "source": "lightning/chain-lightning",
+ "license": "MIT \u00b7 patch-gg/pixelfx"
+}

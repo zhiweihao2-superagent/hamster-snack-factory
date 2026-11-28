@@ -1,0 +1,17 @@
+{
+ "frameSize": [
+  123,
+  74
+ ],
+ "cols": 8,
+ "rows": 1,
+ "frames": 8,
+ "fps": 15.0,
+ "pivot": [
+  36,
+  58
+ ],
+ "loop": false,
+ "source": "impacts/hit-spark",
+ "license": "MIT \u00b7 patch-gg/pixelfx"
+}

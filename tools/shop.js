@@ -2758,7 +2758,7 @@ function drawRatStats(x, y, w){
       var hasIc3 = drawSkillIcon(sk3[k3].id, cx3 + 7, sy3 - 9, 14);
       txt(label3, cx3 + (hasIc3 ? 16 : 0), sy3, Math.max(9, Math.round(W * 0.023)),
           d3.kind === 'mag' ? '#8fb8ff' : (d3.kind === 'buff' ? '#79c98a' : '#ffb37a'), 'left');
-      cx3 += (hasIc3 ? 16 : 0) + Math.max(36, label3.length * 13);
+      cx3 += (hasIc3 ? 16 : 0) + label3.length * 10 + 10;
       if (cx3 > x + w - 30) break;
     }
     if (sk3.length > 3){
@@ -3065,15 +3065,10 @@ function buyOffer(idx){
   } else if (o.kind === 'shard'){
     addShard(o.amount || 2);
   } else {
-    if (SHOP.rats.length >= 6){ sfx('invalid'); return; }
-    SHOP.rats.push({ line: 'none', tier: 1, mod: '', talents: [] });
-    // 买了白板鼠：编队有空位就直接补上，省得玩家以为没买到
-    var newIdx = SHOP.rats.length - 1;
-    if (squadOnCount() < squadSlots() && squadLineCount('none') < maxSameLine('none')){
-      var slot = squadFirstEmpty();
-      if (slot >= 0) SHOP.squad[slot] = newIdx;
-    }
-    SHOP.sel = newIdx;
+    /* 买到的仓鼠一样先进仓鼠盒，由玩家自己决定要不要进队 */
+    var newRat = { line: "none", tier: 1, mod: "", talents: [] };
+    if (boxAdd(newRat) < 0){ sfx("invalid"); return; }
+    pushLog("新仓鼠已放入仓鼠盒");
   }
   SHOP.coins -= o.price;
   o.sold = true;

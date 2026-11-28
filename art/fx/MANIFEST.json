@@ -1,0 +1,155 @@
+{
+ "arrow": {
+  "frameSize": [
+   98,
+   22
+  ],
+  "cols": 8,
+  "rows": 2,
+  "frames": 9,
+  "fps": 15.0,
+  "pivot": [
+   90,
+   12
+  ],
+  "loop": true,
+  "source": "projectiles/arrow",
+  "license": "MIT \u00b7 patch-gg/pixelfx"
+ },
+ "hit": {
+  "frameSize": [
+   123,
+   74
+  ],
+  "cols": 8,
+  "rows": 1,
+  "frames": 8,
+  "fps": 15.0,
+  "pivot": [
+   36,
+   58
+  ],
+  "loop": false,
+  "source": "impacts/hit-spark",
+  "license": "MIT \u00b7 patch-gg/pixelfx"
+ },
+ "chain": {
+  "frameSize": [
+   226,
+   102
+  ],
+  "cols": 8,
+  "rows": 4,
+  "frames": 28,
+  "fps": 15.0,
+  "pivot": [
+   24,
+   80
+  ],
+  "loop": false,
+  "source": "lightning/chain-lightning",
+  "license": "MIT \u00b7 patch-gg/pixelfx"
+ },
+ "charge": {
+  "frameSize": [
+   102,
+   84
+  ],
+  "cols": 8,
+  "rows": 2,
+  "frames": 14,
+  "fps": 15.0,
+  "pivot": [
+   44,
+   78
+  ],
+  "loop": true,
+  "source": "arcane/spell-charge",
+  "license": "MIT \u00b7 patch-gg/pixelfx"
+ },
+ "fireball": {
+  "frameSize": [
+   120,
+   56
+  ],
+  "cols": 8,
+  "rows": 3,
+  "frames": 18,
+  "fps": 15.0,
+  "pivot": [
+   96,
+   28
+  ],
+  "loop": true,
+  "source": "fire/fireball",
+  "license": "MIT \u00b7 patch-gg/pixelfx"
+ },
+ "frost": {
+  "frameSize": [
+   130,
+   119
+  ],
+  "cols": 8,
+  "rows": 4,
+  "frames": 26,
+  "fps": 15.0,
+  "pivot": [
+   65,
+   106
+  ],
+  "loop": false,
+  "source": "ice/snowflake-burst",
+  "license": "MIT \u00b7 patch-gg/pixelfx"
+ },
+ "heal": {
+  "frameSize": [
+   58,
+   86
+  ],
+  "cols": 8,
+  "rows": 3,
+  "frames": 24,
+  "fps": 15.0,
+  "pivot": [
+   29,
+   74
+  ],
+  "loop": false,
+  "source": "holy/heal",
+  "license": "MIT \u00b7 patch-gg/pixelfx"
+ },
+ "boom": {
+  "frameSize": [
+   198,
+   144
+  ],
+  "cols": 8,
+  "rows": 2,
+  "frames": 14,
+  "fps": 15.0,
+  "pivot": [
+   105,
+   100
+  ],
+  "loop": false,
+  "source": "explosions/small-explosion",
+  "license": "MIT \u00b7 patch-gg/pixelfx"
+ },
+ "lance": {
+  "frameSize": [
+   146,
+   54
+  ],
+  "cols": 8,
+  "rows": 2,
+  "frames": 12,
+  "fps": 15.0,
+  "pivot": [
+   131,
+   27
+  ],
+  "loop": true,
+  "source": "ice/ice-lance",
+  "license": "MIT \u00b7 patch-gg/pixelfx"
+ }
+}

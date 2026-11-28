@@ -948,6 +948,13 @@ function castBuffSkill(u, sk, def, lv){
   var targets = pickBuffTargets(u, n);
   if (!targets.length) return false;
 
+  /* 特效：治疗 / 护甲 */
+  if (sk.id === "tangfen"){
+    spawnFx("heal", stageXOf(u, false), stageYOf(u, false), {});
+  } else if (sk.id === "huangyou"){
+    spawnFx("heal", stageXOf(u, false), stageYOf(u, false), {});
+  }
+
   for (var i = 0; i < targets.length; i++){
     var t = targets[i];
     if (sk.id === 'huangyou'){
@@ -1000,6 +1007,67 @@ function pickSkillTargets(u, sk, n){
 }
 
 /* 放技能 */
+/* ---------- pixelfx 特效播放（atlas 由构建注入到 window.FX_ART / FX_META） ---------- */
+var FX_IMG = {};
+function fxMeta(id){ return (window.FX_META || {})[id] || null; }
+function fxAtlas(id){
+  var m = fxMeta(id);
+  if (!m) return null;
+  var e = FX_IMG[id];
+  if (!e){
+    e = new Image(); e.__ready = false;
+    e.onload = function(){ e.__ready = true; };
+    e.src = (window.FX_ART || {})[id];
+    FX_IMG[id] = e;
+  }
+  return e.__ready ? e : null;
+}
+/* 播放一个特效：x,y 是枢轴落点；给了 to 就做"从施法者飞到目标"的位移 */
+function spawnFx(id, x, y, opt){
+  if (!window.FX_ART || !window.FX_ART[id]) return;
+  R.fx = R.fx || [];
+  var o = opt || {};
+  R.fx.push({ id: id, x: x, y: y, t0: performance.now() + (o.delay || 0),
+              toX: o.toX, toY: o.toY, moveMs: o.moveMs || 0, flip: !!o.flip, scale: o.scale || 1 });
+  if (R.fx.length > 20) R.fx.shift();
+}
+window.__spawnFx = spawnFx;   /* 调试钩子 */
+function drawFxLayer(now){
+  if (!R.fx || !R.fx.length) return;
+  for (var i = R.fx.length - 1; i >= 0; i--){
+    var f = R.fx[i];
+    var m = fxMeta(f.id);
+    if (!m){ R.fx.splice(i, 1); continue; }
+    var age = now - f.t0;
+    if (age < 0) continue;
+    var durMs = m.frames / m.fps * 1000;
+    var lifeMs = Math.max(durMs, f.moveMs || 0);
+    if (age > lifeMs){ R.fx.splice(i, 1); continue; }
+    var img = fxAtlas(f.id);
+    if (!img) continue;
+    var fi = Math.floor(age / 1000 * m.fps);
+    if (fi >= m.frames) fi = m.frames - 1;
+    var px = f.x, py = f.y;
+    if (f.toX !== undefined && f.moveMs){
+      var k = Math.min(1, age / f.moveMs);
+      px = f.x + (f.toX - f.x) * k;
+      py = f.y + (f.toY - f.y) * k;
+    }
+    var fw = m.frameSize[0], fh = m.frameSize[1];
+    var sx = (fi % m.cols) * fw, sy = Math.floor(fi / m.cols) * fh;
+    var sc = f.scale || 1;
+    ctx.save();
+    ctx.imageSmoothingEnabled = false;
+    if (f.flip){
+      ctx.translate(px, py); ctx.scale(-1, 1);
+      ctx.drawImage(img, sx, sy, fw, fh, -m.pivot[0] * sc, -m.pivot[1] * sc, fw * sc, fh * sc);
+    } else {
+      ctx.drawImage(img, sx, sy, fw, fh, px - m.pivot[0] * sc, py - m.pivot[1] * sc, fw * sc, fh * sc);
+    }
+    ctx.restore();
+  }
+}
+
 function castSkill(u, sk){
   var def = skillCfg(sk.id);
   if (!def) return false;
@@ -1041,7 +1109,31 @@ function castSkill(u, sk){
   }
 
   /* 表现：技能名 + 一圈冲击环 */
-  var name = def.name || sk.id;
+  /* ---- 特效演出：起手 → 飞行 → 命中 ---- */
+  var tgt0 = targets[0];
+  var cxs = stageXOf(u, false), cys = stageYOf(u, false);
+  var txs = tgt0 ? stageXOf(tgt0, true) : cxs + 90;
+  var tys = tgt0 ? stageYOf(tgt0, true) : cys;
+  var flipX = txs >= cxs;              /* 目标在右侧就不用翻转 */
+  if (sk.id === "chuanjia"){
+    spawnFx("arrow", cxs, cys - 26, { toX: txs, toY: tys - 20, moveMs: 260, flip: flipX });
+    spawnFx("hit", txs, tys, { delay: 250 });
+  } else if (sk.id === "huoqiu"){
+    spawnFx("charge", cxs, cys - 24, {});
+    spawnFx("fireball", cxs + 10, cys - 24, { delay: 220, toX: txs, toY: tys - 18, moveMs: 300, flip: flipX });
+    spawnFx("hit", txs, tys, { delay: 500 });
+  } else if (sk.id === "shandian"){
+    spawnFx("chain", cxs, cys - 18, { flip: flipX });
+  } else if (sk.id === "bingshuang"){
+    spawnFx("charge", cxs, cys - 22, {});
+    spawnFx("frost", cxs, cys, { delay: 260 });
+  } else if (sk.id === "chongya"){
+    spawnFx("hit", txs, tys, {});
+  } else if (sk.id === "qiexiao" || sk.id === "duantou"){
+    spawnFx("hit", txs, tys, {});
+  }
+
+  var name = def.name || sk.id;  var name = def.name || sk.id;
   floatText(name, stageXOf(u, false), stageYOf(u, false) - 12, '#ffd166', false);
   var cx = stageXOf(u, false), cy = stageYOf(u, false);
   R.skillFx = R.skillFx || [];
@@ -2336,6 +2428,7 @@ function drawStage(){
 
   drawShots(now);
   drawBlastFx(now);
+  drawFxLayer(now);
 
   /* 排队条：改到舞台右下，横排，不再和敌方卡抢右边缘 */
   drawQueueRow(x + w - 12, y + h - SZ.stripH - 26);
