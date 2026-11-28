@@ -1042,7 +1042,7 @@ function castSkill(u, sk){
 
   /* 表现：技能名 + 一圈冲击环 */
   var name = def.name || sk.id;
-  skillFloat(sk.id, name, stageXOf(u, false), stageYOf(u, false) - 12, '#ffd166');
+  floatText(name, stageXOf(u, false), stageYOf(u, false) - 12, '#ffd166', false);
   var cx = stageXOf(u, false), cy = stageYOf(u, false);
   R.skillFx = R.skillFx || [];
   R.skillFx.push({ t0: performance.now(), x: cx, y: cy, dur: 320, col: def.kind === 'mag' ? '#8fb8ff' : '#ffd166' });
@@ -3217,36 +3217,18 @@ function drawUnitSprite(o, isFoe, now){
     ctx.restore();
   }
 
-  /* 技能冷却小图标：血条下面一排，冷却中盖暗罩 + 顶部一条进度 */
-  if (!isFoe && o.skills && o.skills.length && typeof artFromMap === "function"){
-    var sN = Math.min(2, o.skills.length);
-    var sIco = 15, sGap = 3;
-    var sTot = sN * sIco + (sN - 1) * sGap;
-    var sx0 = Math.round(x - sTot / 2), sy0 = Math.round(gy + 2);
-    ctx.save();
-    ctx.fillStyle = 'rgba(10,8,16,.45)';
-    ctx.fillRect(sx0 - 2, sy0 - 2, sTot + 4, sIco + 4);
-    ctx.restore();
-    for (var si = 0; si < sN; si++){
-      var sk2 = o.skills[si];
-      var img2 = artFromMap(unitArtMap(), ["skill-" + sk2.id]);
-      if (!img2) continue;
-      var ix = sx0 + si * (sIco + sGap);
+  /* 职业色脚环：一眼看出这只鼠是什么职业（不再画技能图标，避免战场信息过载） */
+  if (!isFoe && o.line && o.line !== "none"){
+    var CLS_COL = { tank: "#9fc6ff", blade: "#ffb37a", shot: "#e8ac50", hex: "#c7b6ff", care: "#79c98a" };
+    var ringCol = CLS_COL[o.line];
+    if (ringCol){
       ctx.save();
-      ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(img2, ix, sy0, sIco, sIco);
-      /* 冷却中：压暗 + 顶部剩多久的细条 */
-      var leftMs = (sk2.readyAt || 0) - now;
-      if (leftMs > 0){
-        var def2 = (typeof skillTable === "function") ? skillTable()[sk2.id] : null;
-        var lv2 = Math.min(3, Math.max(1, sk2.lv || 1));
-        var cdAll = def2 && def2.cd ? (def2.cd[lv2 - 1] || 1) : 1;
-        var ratio2 = Math.max(0, Math.min(1, leftMs / cdAll));
-        ctx.fillStyle = "rgba(10,8,16,.62)";
-        ctx.fillRect(ix, sy0, sIco, sIco * ratio2);
-        ctx.fillStyle = "rgba(255,209,102,.85)";
-        ctx.fillRect(ix, sy0 + sIco - 2, Math.round(sIco * (1 - ratio2)), 2);
-      }
+      ctx.strokeStyle = ringCol;
+      ctx.globalAlpha = 0.85;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.ellipse(x, gy + 1, s * 0.30, s * 0.10, 0, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.restore();
     }
   }
