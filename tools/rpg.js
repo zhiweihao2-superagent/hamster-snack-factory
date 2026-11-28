@@ -2737,17 +2737,37 @@ function drawIntroOverlay(){
   var now = performance.now();
   var fs = Math.max(11, Math.round(W * 0.031));
 
-  /* 其它关：开打前 5 秒倒计时，上方浮一行"本关特色" */
+  /* 其它关：开打前 5 秒倒计时 —— 本关特色做成**居中大卡**，倒计时结束就淡出消失 */
   if (R.intro){
     var left = Math.max(0, R.intro.dur - (now - R.intro.t0));
     var secs = Math.ceil(left / 1000);
-    var y = L.giftY + 2;               /* 舞台内最顶部，精灵在更下方 */
-    rr(L.pad, y, W - L.pad * 2, 20, 10);
-    ctx.fillStyle = 'rgba(20,16,28,.85)'; ctx.fill();
-    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(232,172,80,.45)'; ctx.stroke();
-    var brief = (CHAPTER.brief || '').slice(0, 14);
-    txt('本关特色 · ' + brief, L.pad + 12, y + 14, Math.max(8, fs - 3), C.amber, 'left', true);
-    txt(String(secs), W - L.pad - 12, y + 14, Math.max(9, fs - 2), C.ink, 'right', true);
+    var p2 = 1 - left / Math.max(1, R.intro.dur);        /* 0 → 1 */
+    /* 透明度：入场 300ms 淡入，退场最后 500ms 淡出 */
+    var alpha = 1;
+    if (p2 < 0.08) alpha = p2 / 0.08;
+    else if (left < 500) alpha = Math.max(0, left / 500);
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+    var bw2 = W - L.pad * 2 - 24, bh2 = 116;
+    var bx2 = L.pad + 12, by2 = L.giftY + Math.round(L.giftH * 0.32);
+    rr(bx2, by2, bw2, bh2, 16);
+    ctx.fillStyle = 'rgba(18,14,26,.92)'; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(232,172,80,.75)'; ctx.stroke();
+    /* 标题 */
+    txt('本 关 特 色', bx2 + bw2 / 2, by2 + 30, Math.round(W * 0.042), C.amber, 'center', true);
+    /* 简述：最多两行 */
+    var brief2 = CHAPTER.brief || '';
+    var fs2 = Math.max(10, Math.round(W * 0.028));
+    if (brief2.length <= 12){
+      txt(brief2, bx2 + bw2 / 2, by2 + 62, fs2, C.ink, 'center');
+    } else {
+      txt(brief2.slice(0, 12), bx2 + bw2 / 2, by2 + 58, fs2, C.ink, 'center');
+      txt(brief2.slice(12, 26), bx2 + bw2 / 2, by2 + 58 + fs2 + 4, fs2, C.ink, 'center');
+    }
+    /* 倒计时：底部一颗大数字 */
+    txt(String(secs) + 's', bx2 + bw2 / 2, by2 + bh2 - 12, Math.round(W * 0.036),
+        secs <= 1 ? '#ff8a5c' : '#ffd98a', 'center', true);
+    ctx.restore();
   }
 
   /* 教学关：第一步指位置，第二步讲资源 */
