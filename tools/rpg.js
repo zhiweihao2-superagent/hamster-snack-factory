@@ -24,7 +24,7 @@ var SZ = {
   stripH: 7,       // 底部资源条高
   ult: 44,         // 大招按钮直径
   title: 11,       // 舞台标题字号
-  float: 13,       // 伤害飘字字号
+  float: 11,       // 伤害飘字字号（13 太大，会盖住相邻精灵）
   log: 9           // 战斗日志字号
 };
 
@@ -1035,7 +1035,7 @@ function castSkill(u, sk){
 
   /* 表现：技能名 + 一圈冲击环 */
   var name = def.name || sk.id;
-  floatText(name + '!', stageXOf(u, false), stageYOf(u, false) - 18, '#ffd166', true);
+  floatText(name + '!', stageXOf(u, false), stageYOf(u, false) - 12, '#ffd166', false);
   var cx = stageXOf(u, false), cy = stageYOf(u, false);
   R.skillFx = R.skillFx || [];
   R.skillFx.push({ t0: performance.now(), x: cx, y: cy, dur: 320, col: def.kind === 'mag' ? '#8fb8ff' : '#ffd166' });
@@ -2353,7 +2353,7 @@ function drawStage(){
     var p = age / ft.max;
     ctx.save();
     ctx.globalAlpha = 1 - p * p;
-    txt(ft.text, ft.x, ft.y - 26 * p, ft.big ? SZ.float + 3 : SZ.float, ft.col, 'center', true);
+    txt(ft.text, ft.x, ft.y - 18 * p, ft.big ? SZ.float - 1 : Math.max(8, SZ.float - 3), ft.col, 'center', true);
     ctx.restore();
   }
 
@@ -3179,16 +3179,16 @@ function drawUnitSprite(o, isFoe, now){
   if (isFoe && o.type === 'crate' && o.box > 0 && !dead) drawCrateTag(x, gy, s);
 
   /* 头顶：血条 + 出手/充能条（保持矢量清晰，不做像素化） */
-  var bw = Math.max(28, Math.round(s * 0.8));
-  var bx = x - bw / 2, by = gy - s * 0.98 - 12;
-  bar(bx, by, bw, 5, o.hp / Math.max(1, o.hpMax), isFoe ? '#d96d55' : '#79c98a', 'rgba(0,0,0,.6)');
+  var bw = Math.max(24, Math.round(s * 0.72));
+  var bx = x - bw / 2, by = gy - s * 0.86 - 4;
+  bar(bx, by, bw, 3, o.hp / Math.max(1, o.hpMax), isFoe ? '#d96d55' : '#79c98a', 'rgba(0,0,0,.6)');
   if (isFoe){
     var ratio = CFG.realtime ? (o.timerMs / Math.max(1, o.chargeMs)) : (o.charge / Math.max(1, o.chargeMax));
-    bar(bx, by + 6, bw, 3, ratio, ratio > 0.72 ? '#ff8a5c' : '#e8ac50', 'rgba(0,0,0,.6)');
+    bar(bx, by + 4, bw, 2, ratio, ratio > 0.72 ? '#ff8a5c' : '#e8ac50', 'rgba(0,0,0,.6)');
   } else if (o.atkMs){
-    bar(bx, by + 6, bw, 3, o.timerMs / Math.max(1, o.atkMs), 'rgba(255,255,255,.5)', 'rgba(0,0,0,.6)');
+    bar(bx, by + 4, bw, 2, o.timerMs / Math.max(1, o.atkMs), 'rgba(255,255,255,.5)', 'rgba(0,0,0,.6)');
   } else if (o.need){
-    bar(bx, by + 6, bw, 3, o.charge / o.need, o.empowered ? '#e8ac50' : '#c7b6ff', 'rgba(0,0,0,.6)');
+    bar(bx, by + 4, bw, 2, o.charge / o.need, o.empowered ? '#e8ac50' : '#c7b6ff', 'rgba(0,0,0,.6)');
   }
 
   /* 强化就绪：脚下一圈光 */
