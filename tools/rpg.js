@@ -2289,7 +2289,7 @@ function drawStage(){
   var allyCount = 0, foeCount = 0;
   for (var ai = 0; ai < R.units.length; ai++) if (R.units[ai]) allyCount++;
   for (var fi = 0; fi < R.enemies.length; fi++) if (R.enemies[fi]) foeCount++;
-  txt('波 ' + (R.wave + 1) + '/' + R.waveTotal + ' · 我 ' + allyCount + ' / 敌 ' + foeCount,
+  txt('第 ' + (R.wave + 1) + '/' + R.waveTotal + ' 波 · 我 ' + allyCount + ' / 敌 ' + foeCount,
       x + w - 12, y + SZ.title + 6, SZ.title, C.muted, 'right', true);
 
   /* ---------- 地面：一块有纵深的"车间地板"，角色在这个矩形里两轴自由走 ---------- */
@@ -2741,12 +2741,13 @@ function drawIntroOverlay(){
   if (R.intro){
     var left = Math.max(0, R.intro.dur - (now - R.intro.t0));
     var secs = Math.ceil(left / 1000);
-    var y = L.giftY + 28;
-    rr(L.pad, y, W - L.pad * 2, 26, 13);
-    ctx.fillStyle = 'rgba(20,16,28,.78)'; ctx.fill();
+    var y = L.giftY + 2;               /* 舞台内最顶部，精灵在更下方 */
+    rr(L.pad, y, W - L.pad * 2, 20, 10);
+    ctx.fillStyle = 'rgba(20,16,28,.85)'; ctx.fill();
     ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(232,172,80,.45)'; ctx.stroke();
-    txt('本关特色 · ' + (CHAPTER.brief || ''), L.pad + 14, y + 17, fs, C.amber, 'left', true);
-    txt(String(secs), W - L.pad - 14, y + 17, fs + 2, C.ink, 'right', true);
+    var brief = (CHAPTER.brief || '').slice(0, 14);
+    txt('本关特色 · ' + brief, L.pad + 12, y + 14, Math.max(8, fs - 3), C.amber, 'left', true);
+    txt(String(secs), W - L.pad - 12, y + 14, Math.max(9, fs - 2), C.ink, 'right', true);
   }
 
   /* 教学关：第一步指位置，第二步讲资源 */
@@ -3160,14 +3161,14 @@ function drawUnitSprite(o, isFoe, now){
   /* 头顶：血条 + 出手/充能条（保持矢量清晰，不做像素化） */
   var bw = Math.max(28, Math.round(s * 0.8));
   var bx = x - bw / 2, by = gy - s * 0.98 - 12;
-  bar(bx, by, bw, 3, o.hp / Math.max(1, o.hpMax), isFoe ? '#d96d55' : '#79c98a', 'rgba(0,0,0,.5)');
+  bar(bx, by, bw, 5, o.hp / Math.max(1, o.hpMax), isFoe ? '#d96d55' : '#79c98a', 'rgba(0,0,0,.6)');
   if (isFoe){
     var ratio = CFG.realtime ? (o.timerMs / Math.max(1, o.chargeMs)) : (o.charge / Math.max(1, o.chargeMax));
-    bar(bx, by + 4, bw, 2, ratio, ratio > 0.72 ? '#ff8a5c' : '#e8ac50', 'rgba(0,0,0,.5)');
+    bar(bx, by + 6, bw, 3, ratio, ratio > 0.72 ? '#ff8a5c' : '#e8ac50', 'rgba(0,0,0,.6)');
   } else if (o.atkMs){
-    bar(bx, by + 4, bw, 2, o.timerMs / Math.max(1, o.atkMs), 'rgba(255,255,255,.45)', 'rgba(0,0,0,.5)');
+    bar(bx, by + 6, bw, 3, o.timerMs / Math.max(1, o.atkMs), 'rgba(255,255,255,.5)', 'rgba(0,0,0,.6)');
   } else if (o.need){
-    bar(bx, by + 4, bw, 2, o.charge / o.need, o.empowered ? '#e8ac50' : '#c7b6ff', 'rgba(0,0,0,.5)');
+    bar(bx, by + 6, bw, 3, o.charge / o.need, o.empowered ? '#e8ac50' : '#c7b6ff', 'rgba(0,0,0,.6)');
   }
 
   /* 强化就绪：脚下一圈光 */
