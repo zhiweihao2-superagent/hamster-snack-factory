@@ -2379,8 +2379,6 @@ function drawShop(){
   }
   mainTabBtn(pad, '队伍', 'team');
   mainTabBtn(pad + tabW + 6, '商店', 'shop');
-  txt('第 ' + SHOP.level + ' 关 · 最高 ' + SHOP.best, pad + 2 * (tabW + 6) + 6, tabY2 + 15,
-      Math.max(9, Math.round(W * 0.024)), C.muted, 'left');
 
 
 
