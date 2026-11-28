@@ -2076,7 +2076,7 @@ function drawFuseAnim(){
 
 /* 底部说明卡：把"抽 → 分解 → 洗练 → 组装"这条循环讲清楚 */
 function drawLoopTips(pad, y, w){
-  var h = 92;
+  var h = 118;
   rr(pad, y, w, h, 12);
   ctx.fillStyle = 'rgba(255,255,255,.03)'; ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.07)'; ctx.stroke();
@@ -2661,10 +2661,6 @@ function drawOfferCard(x, y, w, h, o, idx){
 
 
 function drawRatStats(x, y, w){
-  var ratIconOwner = SHOP.rats[SHOP.sel];
-  if (ratIconOwner && ratIconOwner.line && ratIconOwner.line !== 'none'){
-    drawClassIcon(ratIconOwner.line, x + 14, y + 20, 32);
-  }
   var rat = SHOP.rats[SHOP.sel];
   if (!rat) return;
   var u = makeUnit(ratId(rat), 0);
@@ -2741,6 +2737,52 @@ function drawRatStats(x, y, w){
     txt(left[i][1], x + 12 + colW - 26, ly, fs, C.ink, 'right', true);
     txt(right[i][0], x + 30 + colW, ly, fs, C.muted, 'left');
     txt(right[i][1], x + w - 12, ly, fs, C.ink, 'right', true);
+  }
+
+  /* 技能清单：选中面板也要看得到带了哪些技能（最多 3 条，带小图标） */
+  var sk3 = rat.skills || [];
+  var sy3 = y + 100;
+  txt('技能', x + 12, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'left', true);
+  if (!sk3.length){
+    txt('无（抽卡 / 组装可得）', x + 42, sy3, Math.max(9, Math.round(W * 0.023)), '#7d7396', 'left');
+  } else {
+    var cx3 = x + 42;
+    for (var k3 = 0; k3 < sk3.length && k3 < 3; k3++){
+      var d3 = skillDefs()[sk3[k3].id] || {};
+      var roman3 = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
+      var label3 = (d3.name || sk3[k3].id) + roman3[Math.min(3, Math.max(1, sk3[k3].lv || 1)) - 1];
+      var hasIc3 = drawSkillIcon(sk3[k3].id, cx3 + 7, sy3 - 3, 14);
+      txt(label3, cx3 + (hasIc3 ? 16 : 0), sy3, Math.max(9, Math.round(W * 0.023)),
+          d3.kind === 'mag' ? '#8fb8ff' : (d3.kind === 'buff' ? '#79c98a' : '#ffb37a'), 'left');
+      cx3 += (hasIc3 ? 16 : 0) + Math.max(36, label3.length * 13);
+      if (cx3 > x + w - 30) break;
+    }
+    if (sk3.length > 3){
+      txt('+' + (sk3.length - 3), x + w - 12, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'right');
+    }
+  }
+
+  /* 技能清单：选中面板也要看得到带了什么技能（最多 3 条，带小图标） */
+  var sk3 = rat.skills || [];
+  var sy3 = y + 98;
+  txt('技能', x + 12, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'left', true);
+  if (!sk3.length){
+    txt('无（抽卡 / 组装可得）', x + 44, sy3, Math.max(9, Math.round(W * 0.023)), '#7d7396', 'left');
+  } else {
+    var cx3 = x + 44;
+    for (var k3 = 0; k3 < sk3.length && k3 < 3; k3++){
+      var d3 = skillDefs()[sk3[k3].id] || {};
+      var roman3 = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
+      var label3 = (d3.name || sk3[k3].id) + roman3[Math.min(3, Math.max(1, sk3[k3].lv || 1)) - 1];
+      var hasIc3 = drawSkillIcon(sk3[k3].id, cx3 + 7, sy3 - 3, 14);
+      txt(label3, cx3 + (hasIc3 ? 16 : 0), sy3, Math.max(9, Math.round(W * 0.023)),
+          d3.kind === 'mag' ? '#8fb8ff' : (d3.kind === 'buff' ? '#79c98a' : '#ffb37a'), 'left');
+      cx3 += (hasIc3 ? 16 : 0) + Math.max(38, label3.length * 12);
+      if (cx3 > x + w - 40) break;
+    }
+    if (sk3.length > 3){
+      txt('+' + (sk3.length - 3), x + w - 12, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'right');
+    }
   }
 }
 
