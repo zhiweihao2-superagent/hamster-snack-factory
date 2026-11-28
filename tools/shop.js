@@ -86,7 +86,7 @@ function shardValueOf(rat){
   var base = (cfg.decompBase || 2) * slots + (cfg.decompPerLevel || 1) * (sum - slots);
   return Math.min(cfg.cap || 12, Math.max(1, base));
 }
-/* ---------- 仓鼠池（P2）与炼妖（P3）的核心逻辑 ---------- */
+/* ---------- 仓鼠池（P2）与组装（P3）的核心逻辑 ---------- */
 var RAT_LINES = ['tank', 'blade', 'shot', 'hex', 'care'];
 
 function gachaCfg(){
@@ -255,7 +255,7 @@ function ratGachaTen(){
   return GACHA_LAST.slice();
 }
 
-/* ---------- 炼妖：主鼠槽1 固定，其余按概率继承 ---------- */
+/* ---------- 组装：主鼠槽1 固定，其余按概率继承 ---------- */
 function fusePreview(mainIdx, subIdx){
   var a = SHOP.rats[mainIdx], b = SHOP.rats[subIdx];
   if (!a || !b || mainIdx === subIdx) return null;
@@ -1202,7 +1202,7 @@ function drawSkillBlock(x, y, w, rat){
       x + w - 12, y + 18, Math.max(8, Math.round(W * 0.023)), C.muted, 'right');
 
   if (!list.length){
-    txt('抽卡有机会携带（含魔法/增益），炼妖可以继续堆', x + 12, y + 42,
+    txt('抽卡有机会携带（含魔法/增益），组装可以继续堆', x + 12, y + 42,
         Math.max(9, Math.round(W * 0.0235)), C.muted, 'left');
     return;
   }
@@ -1345,7 +1345,7 @@ function drawRatDetail(){
   } else if ((SHOP.detailTab | 0) === 1){
     var sk = rat.skills || [];
     if (!sk.length){
-      txt("还没有技能 —— 抽卡有概率携带（物理 / 魔法 / 增益），炼妖可以继续堆",
+      txt("还没有技能 —— 抽卡有概率携带（物理 / 魔法 / 增益），组装可以继续堆",
           W / 2, cy0 + 40, Math.max(10, Math.round(W * 0.026)), C.muted, "center");
     } else {
       var rowH = 40, roman2 = ["Ⅰ", "Ⅱ", "Ⅲ"];
@@ -1432,7 +1432,7 @@ function drawRatDetail(){
     }
     rebuildUnitsIfShop(); shopSave(); sfx("tap");
   });
-  act(1, "炼妖", true, "rgba(199,182,255,.85)", function(){
+  act(1, "组装", true, "rgba(199,182,255,.85)", function(){
     SHOP.page = "fuse"; FUSE.main = idx; FUSE.sub = -1; FUSE.result = null; sfx("tap");
   });
   act(2, "分解", !onSquad && SHOP.rats.length > 1, "rgba(217,109,85,.9)", function(){
@@ -1601,8 +1601,8 @@ function drawGacha(){
   if (revealActive()){ drawGachaReveal(); return; }
   txt('抽奖', pad, 44, Math.round(W * 0.05), C.ink, 'left', true);
   gachaBackBtn(pad);
-  txt('金币 ' + SHOP.coins + ' · 碎片 ' + (SHOP.shard | 0), W - pad, 44,
-      Math.max(10, Math.round(W * 0.03)), C.amber, 'right');
+    txt('金币 ' + SHOP.coins, W - pad, 68, Math.max(10, Math.round(W * 0.029)), C.amber, 'right', true);
+  txt('碎片 ' + (SHOP.shard | 0), W - pad, 90, Math.max(12, Math.round(W * 0.033)), '#c7b6ff', 'right', true);
 
   drawGachaTabs(pad, 62);
 
@@ -1920,10 +1920,10 @@ function drawGachaReveal(){
   ctx.restore();
 }
 
-/* ================= 炼妖页（独立页面） ================= */
+/* ================= 组装页（独立页面） ================= */
 var FUSE = { main: -1, sub: -1, result: null, t0: 0 };
 
-/* 炼妖二次确认：写清"技能 8%/条、额外天赋 2.5%/条被吃，槽1 免疫" */
+/* 组装二次确认：写清"技能 8%/条、额外天赋 2.5%/条被吃，槽1 免疫" */
 function drawFuseConfirm(){
   var c = FUSE.confirm;
   var pv = fusePreview(c.main, c.sub);
@@ -1939,7 +1939,7 @@ function drawFuseConfirm(){
   ctx.fillStyle = C.panel; ctx.fill();
   ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(232,172,80,.7)'; ctx.stroke();
 
-  txt('确认炼妖', bx + 16, by + 26, Math.round(W * 0.045), C.ink, 'left', true);
+  txt('确认组装', bx + 16, by + 26, Math.round(W * 0.045), C.ink, 'left', true);
   txt('消耗 ' + pv.cost + ' 金币 · 副鼠消失', bx + 16, by + 48,
       Math.max(9, Math.round(W * 0.025)), C.muted, 'left');
 
@@ -1968,7 +1968,7 @@ function drawFuseConfirm(){
 
   rr(bx + 28 + bw2, by2, bw2, bh2, 20);
   ctx.fillStyle = C.amber; ctx.fill();
-  txt('确认炼妖', bx + 28 + bw2 + bw2 / 2, by2 + 26, Math.max(10, Math.round(W * 0.03)), '#241d2e', 'center', true);
+  txt('确认组装', bx + 28 + bw2 + bw2 / 2, by2 + 26, Math.max(10, Math.round(W * 0.03)), '#241d2e', 'center', true);
   shopHit(bx + 28 + bw2, by2, bw2, bh2, function(){
     var mainRat = SHOP.rats[c.main], subRat = SHOP.rats[c.sub];
     FUSE.confirm = null;
@@ -2031,7 +2031,7 @@ function drawFuseAnim(){
     ctx.stroke();
     ctx.restore();
     if (p > 0.5){
-      txt('炼妖成功', cx, H * 0.62, Math.round(W * 0.045), '#ffd166', 'center', true);
+      txt('组装成功', cx, H * 0.62, Math.round(W * 0.045), '#ffd166', 'center', true);
       txt(talentText(a.res), cx, H * 0.68, Math.round(W * 0.032), C.ink, 'center');
       txt(a.gotExtra ? ('继承了 ' + a.gotExtra + ' 条额外天赋') : ('没继承额外天赋，返还 ' + a.refunded + ' 碎片'),
           cx, H * 0.73, Math.max(10, Math.round(W * 0.028)), C.muted, 'center');
@@ -2043,7 +2043,7 @@ function drawFuseAnim(){
   shopHit(0, 0, W, H, function(){ FUSE.anim = null; sfx('tap'); });
 }
 
-/* 底部说明卡：把"抽 → 分解 → 洗练 → 炼妖"这条循环讲清楚 */
+/* 底部说明卡：把"抽 → 分解 → 洗练 → 组装"这条循环讲清楚 */
 function drawLoopTips(pad, y, w){
   var h = 92;
   rr(pad, y, w, h, 12);
@@ -2053,7 +2053,7 @@ function drawLoopTips(pad, y, w){
   var lines = [
     '抽到不想要的鼠 → 详情页「分解」换 2–12 碎片',
     '碎片 → 洗练天赋等级（6 碎片）或再抽一次',
-    '两只鼠 → 炼妖（30 金币），主鼠槽1 天赋固定'
+    '两只鼠 → 组装（30 金币），主鼠槽1 天赋固定'
   ];
   for (var i = 0; i < lines.length; i++){
     txt('· ' + lines[i], pad + 12, y + 40 + i * 17,
@@ -2176,7 +2176,7 @@ function drawFuse(){
   HITS = [];
   var pad = L.pad;
   ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
-  txt('炼妖', pad, 44, Math.round(W * 0.05), C.ink, 'left', true);
+  txt('组装', pad, 44, Math.round(W * 0.05), C.ink, 'left', true);
   gachaBackBtn(pad);
   txt('金币 ' + SHOP.coins + ' · 碎片 ' + (SHOP.shard | 0), W - pad, 44,
       Math.max(10, Math.round(W * 0.03)), C.amber, 'right');
@@ -2293,7 +2293,7 @@ function drawFuse(){
     var bw2 = W - pad * 2 - 24, bh2 = 40, bx2 = pad + 12, by2 = py + 282;
     rr(bx2, by2, bw2, bh2, 20);
     ctx.fillStyle = ok ? C.amber : '#241d2e'; ctx.fill();
-    txt('炼妖（' + pv.cost + ' 金币）', bx2 + bw2 / 2, by2 + 26,
+    txt('组装（' + pv.cost + ' 金币）', bx2 + bw2 / 2, by2 + 26,
         Math.max(11, Math.round(W * 0.034)), ok ? '#241d2e' : '#5b5374', 'center', true);
     shopHit(bx2, by2, bw2, bh2, function(){
       /* 二次确认：把"可能被吃"的概率写清楚再让玩家点 */
@@ -2315,7 +2315,7 @@ function drawFuse(){
   rr(pad, rlY, W - pad * 2, 96, 12);
   ctx.fillStyle = 'rgba(255,255,255,.03)'; ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.07)'; ctx.stroke();
-  txt('炼妖规则', pad + 12, rlY + 20, Math.max(10, Math.round(W * 0.028)), C.amber, 'left', true);
+  txt('组装规则', pad + 12, rlY + 20, Math.max(10, Math.round(W * 0.028)), C.amber, 'left', true);
   var rl = [
     '主鼠槽1 天赋 100% 保留（等级取两者较高）',
     '主鼠其它天赋各 55% 保留，副鼠所有天赋各 45% 保留',
@@ -2332,7 +2332,7 @@ function drawFuse(){
     rr(pad, ry, W - pad * 2, 108, 12);
     ctx.fillStyle = 'rgba(232,172,80,.12)'; ctx.fill();
     ctx.strokeStyle = C.amber; ctx.lineWidth = 2; ctx.stroke();
-    txt('炼妖结果', pad + 12, ry + 22, Math.max(10, Math.round(W * 0.03)), C.amber, 'left', true);
+    txt('组装结果', pad + 12, ry + 22, Math.max(10, Math.round(W * 0.03)), C.amber, 'left', true);
     var kt = FUSE.result.kept.map(function(t){
       return (TALENT_DEF[t.id] ? TALENT_DEF[t.id].name : t.id) + t.lv;
     }).join(' · ');
@@ -2360,7 +2360,7 @@ function drawShop(){
   if (!SHOP.mainTab) SHOP.mainTab = 'team';
   txt(SHOP.mainTab === 'shop' ? '商店' : '我的队伍', pad, hY, Math.round(W * 0.043), C.ink, 'left', true);
   txt('金币 ' + SHOP.coins, W - pad, hY, Math.round(W * 0.04), C.amber, 'right', true);
-  /* 第二行：左边小字信息，右边三枚入口（图鉴 / 抽奖 / 炼妖） */
+  /* 第二行：左边小字信息，右边三枚入口（图鉴 / 抽奖 / 组装） */
   if (window.BUILD_TAG){
     txt(window.BUILD_TAG, pad, hY + 34, Math.max(8, Math.round(W * 0.021)), '#6a6480', 'left');
   }
@@ -2379,8 +2379,8 @@ function drawShop(){
   }
   mainTabBtn(pad, '队伍', 'team');
   mainTabBtn(pad + tabW + 6, '商店', 'shop');
-  txt('碎片 ' + (SHOP.shard | 0) + ' · 最高第 ' + SHOP.best + ' 关',
-      pad + 2 * (tabW + 6) + 4, tabY2 + 15, Math.max(9, Math.round(W * 0.024)), '#c7b6ff', 'left');
+  txt('第 ' + SHOP.level + ' 关 · 最高 ' + SHOP.best, pad + 2 * (tabW + 6) + 6, tabY2 + 15,
+      Math.max(9, Math.round(W * 0.024)), C.muted, 'left');
 
 
 
@@ -2391,6 +2391,28 @@ function drawShop(){
   var cardX = pad, cardW = W - pad * 2;
   var ratsY = Math.round(H * 0.152);
   var onCount = squadOnCount();
+  /* 三个入口（组装 / 盒 / 图鉴）：和仓鼠栏标题同一行，右侧等宽排开 */
+  var boxN2 = boxList().length;
+  var toolLabels = ['组装', boxN2 ? ('盒' + boxN2) : '盒', '图鉴'];
+  var toolW2 = 52, toolGap = 6, toolH2 = 20;
+  var toolY2 = ratsY - 16;
+  for (var ti2 = 0; ti2 < 3; ti2++){
+    var tx2 = cardX + cardW - (3 - ti2) * (toolW2 + toolGap) + toolGap;
+    var hot2 = (ti2 === 1 && boxN2 > 0);
+    rr(tx2, toolY2, toolW2, toolH2, 10);
+    ctx.fillStyle = hot2 ? 'rgba(199,182,255,.24)' : C.panel2; ctx.fill();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = hot2 ? 'rgba(199,182,255,.85)' : 'rgba(199,182,255,.45)'; ctx.stroke();
+    txt(toolLabels[ti2], tx2 + toolW2 / 2, toolY2 + 14, Math.max(9, Math.round(W * 0.024)),
+        hot2 ? '#e4dcff' : '#c7b6ff', 'center', true);
+    (function(k){
+      shopHit(tx2, toolY2, toolW2, toolH2, function(){
+        if (k === 0){ SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap'); }
+        else if (k === 1){ SHOP.page = 'box'; sfx('tap'); }
+        else { SHOP.codex = true; sfx('tap'); }
+      });
+    })(ti2);
+  }
   txt('我的仓鼠 ' + SHOP.rats.length + '/' + rosterCap() + ' · 上场 ' + onCount + '/' + fieldCap(),
       pad, ratsY - 6, Math.max(9, Math.round(W * 0.025)), C.muted, 'left');
   /* 每页 6 只（3×2）；超过 6 只时用 ‹ › 翻页，保证每只都点得到 */
@@ -2447,38 +2469,20 @@ function drawShop(){
   /* 选中鼠的数值面板：把"买完到底强了多少"摊开给玩家看 */
   drawRatStats(cardX, ratsY + rows * (slotH + 8) + 10, cardW);
 
-  /* 底部工具栏：左边三个小入口（炼妖 / 仓鼠盒 / 图鉴），右边下一关 */
-  var btnH = Math.round(Math.min(46, H * 0.055));
+  /* 底部只留「下一关」 */
+  var btnH = Math.round(Math.min(48, H * 0.058));
   var by = H - btnH - Math.round(H * 0.045);
-  var nextW = Math.round(cardW * 0.40);
+  var nextW = Math.round(cardW * 0.56);
   var nx = cardX + cardW - nextW;
   rr(nx, by, nextW, btnH, btnH / 2);
   ctx.fillStyle = SHOP.advance === false ? C.panel2 : C.amber;
   ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = C.amber; ctx.stroke();
   txt(SHOP.advance === false ? '重打 ▶' : '下一关 ▶', nx + nextW / 2, by + btnH * 0.64,
-      Math.round(W * 0.036), SHOP.advance === false ? C.amber : '#241d2e', 'center', true);
+      Math.round(W * 0.038), SHOP.advance === false ? C.amber : '#241d2e', 'center', true);
   shopHit(nx, by, nextW, btnH, function(){ sfx('pick'); startNextLevel(); });
 
-  /* 三个小入口：等宽排在左边 */
-  var toolW = Math.round((nx - cardX - 24) / 3);
-  var boxN = boxList().length;
-  var tools = [
-    ['炼妖', function(){ SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap'); }, false],
-    [boxN ? ('盒' + boxN) : '盒', function(){ SHOP.page = 'box'; sfx('tap'); }, boxN > 0],
-    ['图鉴', function(){ SHOP.codex = true; sfx('tap'); }, false]
-  ];
-  for (var ti = 0; ti < tools.length; ti++){
-    var tx0 = cardX + ti * (toolW + 12);
-    var hot = tools[ti][2];
-    rr(tx0, by, toolW, btnH, btnH / 2);
-    ctx.fillStyle = hot ? 'rgba(199,182,255,.24)' : C.panel2; ctx.fill();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = hot ? 'rgba(199,182,255,.85)' : 'rgba(199,182,255,.45)'; ctx.stroke();
-    txt(tools[ti][0], tx0 + toolW / 2, by + btnH * 0.64, Math.max(10, Math.round(W * 0.028)),
-        hot ? '#e4dcff' : '#c7b6ff', 'center', true);
-    shopHit(tx0, by, toolW, btnH, tools[ti][1]);
-  }
+
 }
 
 /* 碎片兑换条：贴在摇奖机上面一行，两个按钮（道具池 / 仓鼠池） */
@@ -2785,7 +2789,7 @@ function drawRatCard(x, y, w, h, idx){
   var lineH = Math.max(12, Math.round(W * 0.031));
   var maxLines = Math.max(1, Math.floor((y + h - 12 - sy) / lineH));
   if (!sk.length){
-    txt("技能 无（抽卡 / 炼妖可带）", x + 10, sy, subFs, "#5b5374", "left");
+    txt("技能 无（抽卡 / 组装可带）", x + 10, sy, subFs, "#5b5374", "left");
   } else {
     var romanS = ["Ⅰ", "Ⅱ", "Ⅲ"];
     for (var i = 0; i < sk.length && i < maxLines; i++){
@@ -3163,7 +3167,7 @@ function drawTeamStrip(){
   }
 }
 /* 标题页显示最高关 */
-/* 调试口：抽卡 / 炼妖 的分布模拟（不写存档、不动金币） */
+/* 调试口：抽卡 / 组装 的分布模拟（不写存档、不动金币） */
 /* 调试口：抽一只（不写存档、不动金币），用于校验三档分布与技能携带 */
 window.__rollRatDebug = function(){
   var savedPity = SHOP.tier2Pity | 0;
