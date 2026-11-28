@@ -3157,27 +3157,27 @@ function drawBuffIcons(u, x, y, now){
   }
 }
 
+/* 头顶天赋：只画图标（硬化/嗜血/穿甲/余烬/复苏），最多 3 个，不写字 —— 战场要干净 */
 function drawTalentBadges(u, x, y){
   if (!u || !u.talents || !u.talents.length) return;
-  var roman = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
-  var t = u.talents[0];
-  if (!t) return;
-  var name = talentLabel(t.id);
-  var text = name.slice(0, 2) + (roman[Math.min(3, t.lv || 1) - 1] || '');
-  if (u.talents.length > 1) text += '+' + (u.talents.length - 1);
-  var fs = 7;
+  var TAL_ICON = { tank: "hardening", blade: "bloodthirst", shot: "armourpierce", hex: "ember", care: "revival" };
+  var list = u.talents.slice(0, 3);
+  var ic = 12, gap = 2;
+  var tot = list.length * ic + (list.length - 1) * gap;
+  var x0 = Math.round(x - tot / 2), y0 = Math.round(y - ic + 2);
   ctx.save();
-  ctx.font = fs + 'px sans-serif';
-  var w = Math.min(34, ctx.measureText(text).width + 6);
-  rr(x - w / 2, y - 8, w, 9, 4);
-  ctx.fillStyle = 'rgba(232,172,80,.15)';
-  ctx.fill();
-  ctx.lineWidth = 0.7;
-  ctx.strokeStyle = 'rgba(232,172,80,.5)';
-  ctx.stroke();
-  txt(text, x, y - 1, fs, '#ffd98a', 'center');
+  ctx.fillStyle = "rgba(10,8,16,.45)";
+  ctx.fillRect(x0 - 2, y0 - 2, tot + 4, ic + 4);
+  ctx.imageSmoothingEnabled = false;
+  for (var i = 0; i < list.length; i++){
+    var key = TAL_ICON[list[i].id];
+    var img = key && (typeof artFromMap === "function") ? artFromMap(unitArtMap(), ["talent-" + key]) : null;
+    if (img) ctx.drawImage(img, x0 + i * (ic + gap), y0, ic, ic);
+  }
   ctx.restore();
 }
+
+
 function drawUnitSprite(o, isFoe, now){
   var gy = unitY(o);                       /* 脚底就在地面上的 (x, y) */
   var s = STAGE2.sprite * depthScale(gy);  /* 越靠下（越近）越大 */
@@ -3215,22 +3215,6 @@ function drawUnitSprite(o, isFoe, now){
     ctx.lineWidth = 1.6;
     ctx.beginPath(); ctx.ellipse(x, gy + 1, s * 0.32, s * 0.1, 0, 0, Math.PI * 2); ctx.stroke();
     ctx.restore();
-  }
-
-  /* 职业色脚环：一眼看出这只鼠是什么职业（不再画技能图标，避免战场信息过载） */
-  if (!isFoe && o.line && o.line !== "none"){
-    var CLS_COL = { tank: "#9fc6ff", blade: "#ffb37a", shot: "#e8ac50", hex: "#c7b6ff", care: "#79c98a" };
-    var ringCol = CLS_COL[o.line];
-    if (ringCol){
-      ctx.save();
-      ctx.strokeStyle = ringCol;
-      ctx.globalAlpha = 0.85;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.ellipse(x, gy + 1, s * 0.30, s * 0.10, 0, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
-    }
   }
 
   if (!isFoe) drawTalentBadges(o, x, by - 6);
