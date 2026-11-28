@@ -890,7 +890,7 @@ function drawCodexTalents(pad){
 
 function drawCodexSkills(pad){
   var ids = Object.keys(skillTable());
-  var top = 66, rowH = 44, gap = 6;
+  var top = 98, rowH = 46, gap = 6;
   var shown = Math.min(ids.length, 11);
   for (var i = 0; i < shown; i++){
     var id = ids[i];
@@ -903,17 +903,21 @@ function drawCodexSkills(pad){
       : (d.kind === 'buff' ? 'rgba(121,201,138,.35)' : 'rgba(255,179,122,.35)');
     ctx.stroke();
     var col = d.kind === 'mag' ? '#8fb8ff' : (d.kind === 'buff' ? '#79c98a' : '#ffb37a');
-    txt(d.name || id, pad + 10, y + 17, Math.max(10, Math.round(W * 0.028)), col, 'left', true);
-    txt(skillKindLabel(d.kind), pad + W - pad * 2 - 10, y + 17,
+    /* 技能图标（codex2 出的 11 张）+ 名称 */
+    var hasIc = drawSkillIcon(id, pad + 22, y + 23, 26);
+    var tx = pad + (hasIc ? 40 : 10);
+    txt(d.name || id, tx, y + 19, Math.max(10, Math.round(W * 0.028)), col, 'left', true);
+    txt(skillKindLabel(d.kind), pad + W - pad * 2 - 10, y + 19,
         Math.max(8, Math.round(W * 0.022)), C.muted, 'right');
-    var t = (d.targets || []).join(' / ');
-    var c = (d.cd || []).map(function(v){ return Math.round(v / 1000) + 's'; }).join(' / ');
-    txt('目标 ' + t + ' · 冷却 ' + c, pad + 10, y + 34,
+    var t2 = (d.targets || []).join(' / ');
+    var c2 = (d.cd || []).map(function(v){ return Math.round(v / 1000) + 's'; }).join(' / ');
+    txt('目标 ' + t2 + ' · 冷却 ' + c2, tx, y + 36,
         Math.max(8, Math.round(W * 0.022)), '#8f86a6', 'left');
-    txt(d.desc || '', pad + W - pad * 2 - 10, y + 34,
-        Math.max(8, Math.round(W * 0.021)), '#7d7396', 'right');
+    txt(d.desc || '', pad + W - pad * 2 - 10, y + 36,
+        Math.max(8, Math.round(W * 0.021)), '#8f86a6', 'right');
   }
 }
+
 
 function drawCodex(){
   HITS = [];
