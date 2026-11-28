@@ -253,6 +253,13 @@ function shakeOffset(now){
 
 function pushLog(text){ R.log.push(text); if (R.log.length > 40) R.log.shift(); }
 
+/* 技能飘字：图标 + 名字（图标由 drawStage 渲染，这里是数据） */
+function skillFloat(id, name, x, y, col){
+  R.floats.push({ text: name, icon: id, x: x, y: y, t0: performance.now(),
+                  max: 820, col: col || '#ffd166', big: false, kind: 'skill' });
+  if (R.floats.length > 24) R.floats.shift();
+}
+
 function floatText(text, x, y, col, big, kind){
   R.floats.push({ text: text, x: x, y: y, t0: performance.now(), max: 760, col: col || C.ink, big: !!big, kind: kind || '' });
   if (R.floats.length > 24) R.floats.shift();
@@ -1035,7 +1042,7 @@ function castSkill(u, sk){
 
   /* 表现：技能名 + 一圈冲击环 */
   var name = def.name || sk.id;
-  floatText(name + '!', stageXOf(u, false), stageYOf(u, false) - 12, '#ffd166', false);
+  skillFloat(sk.id, name, stageXOf(u, false), stageYOf(u, false) - 12, '#ffd166');
   var cx = stageXOf(u, false), cy = stageYOf(u, false);
   R.skillFx = R.skillFx || [];
   R.skillFx.push({ t0: performance.now(), x: cx, y: cy, dur: 320, col: def.kind === 'mag' ? '#8fb8ff' : '#ffd166' });
@@ -2353,6 +2360,16 @@ function drawStage(){
     var p = age / ft.max;
     ctx.save();
     ctx.globalAlpha = 1 - p * p;
+    var fy = ft.y - 18 * p;
+    if (ft.icon && ft.kind === 'skill'){
+      var ic2 = (typeof unitFrameImg === 'function') ? null : null;
+      var simg = (typeof artFromMap === 'function') ? artFromMap(unitArtMap(), ['skill-' + ft.icon]) : null;
+      if (simg){
+        var isz2 = 16;
+        ctx.drawImage(simg, Math.round(ft.x - isz2 / 2), Math.round(fy - isz2 - 2), isz2, isz2);
+        fy += 9;
+      }
+    }
     txt(ft.text, ft.x, ft.y - 18 * p, ft.big ? SZ.float - 1 : Math.max(8, SZ.float - 3), ft.col, 'center', true);
     ctx.restore();
   }
@@ -3198,6 +3215,40 @@ function drawUnitSprite(o, isFoe, now){
     ctx.lineWidth = 1.6;
     ctx.beginPath(); ctx.ellipse(x, gy + 1, s * 0.32, s * 0.1, 0, 0, Math.PI * 2); ctx.stroke();
     ctx.restore();
+  }
+
+  /* 技能冷却小图标：血条下面一排，冷却中盖暗罩 + 顶部一条进度 */
+  if (!isFoe && o.skills && o.skills.length && typeof artFromMap === "function"){
+    var sN = Math.min(2, o.skills.length);
+    var sIco = 15, sGap = 3;
+    var sTot = sN * sIco + (sN - 1) * sGap;
+    var sx0 = Math.round(x - sTot / 2), sy0 = Math.round(gy + 2);
+    ctx.save();
+    ctx.fillStyle = 'rgba(10,8,16,.45)';
+    ctx.fillRect(sx0 - 2, sy0 - 2, sTot + 4, sIco + 4);
+    ctx.restore();
+    for (var si = 0; si < sN; si++){
+      var sk2 = o.skills[si];
+      var img2 = artFromMap(unitArtMap(), ["skill-" + sk2.id]);
+      if (!img2) continue;
+      var ix = sx0 + si * (sIco + sGap);
+      ctx.save();
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(img2, ix, sy0, sIco, sIco);
+      /* 冷却中：压暗 + 顶部剩多久的细条 */
+      var leftMs = (sk2.readyAt || 0) - now;
+      if (leftMs > 0){
+        var def2 = (typeof skillTable === "function") ? skillTable()[sk2.id] : null;
+        var lv2 = Math.min(3, Math.max(1, sk2.lv || 1));
+        var cdAll = def2 && def2.cd ? (def2.cd[lv2 - 1] || 1) : 1;
+        var ratio2 = Math.max(0, Math.min(1, leftMs / cdAll));
+        ctx.fillStyle = "rgba(10,8,16,.62)";
+        ctx.fillRect(ix, sy0, sIco, sIco * ratio2);
+        ctx.fillStyle = "rgba(255,209,102,.85)";
+        ctx.fillRect(ix, sy0 + sIco - 2, Math.round(sIco * (1 - ratio2)), 2);
+      }
+      ctx.restore();
+    }
   }
 
   if (!isFoe) drawTalentBadges(o, x, by - 6);
