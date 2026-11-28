@@ -1164,6 +1164,32 @@
       "eatTalent": 0.025,
       "refundIfNone": 3
     },
-    "minSep": 0.82
+    "minSep": 0.82,
+    "bookPrice": 45,
+    "skillBooks": {
+      "tank": [
+        "huangyou",
+        "chongya"
+      ],
+      "blade": [
+        "chongya",
+        "qiexiao",
+        "duantou"
+      ],
+      "shot": [
+        "chuanjia",
+        "qiexiao"
+      ],
+      "hex": [
+        "huoqiu",
+        "bingshuang",
+        "shandian"
+      ],
+      "care": [
+        "tangfen",
+        "xingyun",
+        "jiaban"
+      ]
+    }
   }
 }

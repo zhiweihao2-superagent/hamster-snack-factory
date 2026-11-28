@@ -696,7 +696,14 @@ function rollOffers(){
     { kind: 'gear', line: g.line, tier: g.tier, price: g.price, sold: false },
     { kind: 'gear', line: g2.line, tier: g2.tier, price: g2.price, sold: false },
     { kind: 'shard', amount: 2, price: 10, sold: false },
-    { kind: 'shard', amount: 5, price: 22, sold: false },
+    (function(){
+      var pr = (RULES && RULES.skillBooks) || {};
+      var lines = Object.keys(pr);
+      var ln = lines[Math.floor(Math.random() * lines.length)] || 'blade';
+      var pool = pr[ln] || ['chongya'];
+      var sid = pool[Math.floor(Math.random() * pool.length)];
+      return { kind: 'book', line: ln, skill: sid, price: (RULES.bookPrice | 0) || 45, sold: false };
+    })(),
     { kind: 'rat', price: 35, sold: false }
   ];
 }
@@ -704,6 +711,7 @@ function rollOffers(){
 function offerTitle(o){
   if (o.kind === 'gear') return (LINE_NAME[o.line] || '') + (TIER_LABEL[o.tier] || '') + '证';
   if (o.kind === 'shard') return '碎片包 ×' + (o.amount || 2);
+  if (o.kind === 'book') return '《' + skillName(o.skill) + '》技能书';
   return '新仓鼠（白板）';
 }
 
@@ -715,6 +723,7 @@ function offerDesc(o){
     return '转职为 ' + nm;
   }
   if (o.kind === 'shard') return '拆零件拆出来的碎片，攒着能换抽卡';
+  if (o.kind === 'book') return (LINE_NAME[o.line] || '') + '专属 · 只能给本职业学';
   return '白板仓鼠，可再买证转职';
 }
 
@@ -1393,6 +1402,52 @@ function drawRatDetail(){
         txt(d2.desc || "", W - pad - 10, yy + 22, Math.max(8, Math.round(W * 0.021)), "#8f86a6", "right");
       }
     }
+    /* ---- 技能书：只能学本职业的，跨职业不给学 ---- */
+    var cy2 = cy0 + Math.min(sk.length, 6) * 40 + 6;
+    var pool = ((RULES && RULES.skillBooks) || {})[rat.line] || [];
+    var known = {};
+    for (var kk = 0; kk < sk.length; kk++) known[sk[kk].id] = 1;
+    var learn = [];
+    for (var pp = 0; pp < pool.length; pp++){ if (!known[pool[pp]]) learn.push(pool[pp]); }
+    if (rat.line === "none"){
+      txt("白板仓鼠没有职业，先用转职证转职，才能学技能书", W / 2, cy2 + 16,
+          Math.max(9, Math.round(W * 0.024)), "#8f86a6", "center");
+    } else if (!learn.length){
+      txt("本职业的技能都学会了", W / 2, cy2 + 16, Math.max(9, Math.round(W * 0.024)), "#8f86a6", "center");
+    } else {
+      txt("技能书 · " + (LINE_NAME[rat.line] || rat.line) + "专属", pad, cy2,
+          Math.max(9, Math.round(W * 0.024)), C.muted, "left", true);
+      for (var lb = 0; lb < learn.length && lb < 3; lb++){
+        var sid2 = learn[lb], d4 = skillDefs()[sid2] || {};
+        var brow = cy2 + 10 + lb * 34;
+        if (brow > H - 210) break;
+        rr(pad, brow, W - pad * 2, 30, 9);
+        ctx.fillStyle = "rgba(199,182,255,.12)"; ctx.fill();
+        ctx.lineWidth = 1; ctx.strokeStyle = "rgba(199,182,255,.5)"; ctx.stroke();
+        var hasIc4 = drawSkillIcon(sid2, pad + 17, brow + 15, 16);
+        txt((d4.name || sid2) + " " + (roman2[0]), pad + (hasIc4 ? 34 : 10), brow + 19,
+            Math.max(10, Math.round(W * 0.025)), "#c7b6ff", "left", true);
+        var haveN = (SHOP.books && SHOP.books[sid2]) | 0;
+        var canLearn = haveN > 0;
+        var bw4 = 58, bx4 = W - pad - bw4 - 8;
+        rr(bx4, brow + 4, bw4, 22, 11);
+        ctx.fillStyle = canLearn ? C.amber : "#241d2e"; ctx.fill();
+        txt(canLearn ? ("学习 ×" + haveN) : "缺技能书", bx4 + bw4 / 2, brow + 19,
+            Math.max(9, Math.round(W * 0.023)), canLearn ? "#241d2e" : "#7d7396", "center", true);
+        (function(sid3, can3){
+          shopHit(bx4, brow + 4, bw4, 22, function(){
+            if (!can3){ sfx("invalid"); return; }
+            if (!SHOP.books[sid3]){ sfx("invalid"); return; }
+            SHOP.books[sid3]--;
+            rat.skills = rat.skills || [];
+            rat.skills.push({ id: sid3, lv: 1 });
+            pushLog("学会了《" + skillName(sid3) + "》");
+            shopSave(); rebuildUnitsIfShop(); sfx("pick");
+          });
+        })(sid2, canLearn);
+      }
+    }
+
   } else if ((SHOP.detailTab | 0) === 2){
     var opts = gearOptionsFor(rat);
     txt("背包共 " + gearCountAll() + " 张证", pad, cy0 + 4,
@@ -2645,15 +2700,67 @@ function drawRatStats(x, y, w){
   if (!rat) return;
   var u = makeUnit(ratId(rat), 0);
   applyMod(u, rat.mod);
-  var h = 92;
+
+  var h = 132, pad = 12;
   rr(x, y, w, h, 10);
   ctx.fillStyle = 'rgba(0,0,0,.16)'; ctx.fill();
-  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.05)'; ctx.stroke();
+  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.06)'; ctx.stroke();
 
-  var fs = Math.max(9, Math.round(W * 0.027));
-  txt('选中：' + u.name + '（' + ratLineLabel(rat) + '）', x + 12, y + 20,
-      Math.max(10, Math.round(W * 0.031)), C.ink, 'left', true);
+  /* ---- 第一行：标题 + 右侧三个按钮（等宽等距，不再挤在一起） ---- */
+  var onField = SHOP.squad.indexOf(SHOP.sel) >= 0;
+  var btH = 22, btGap = 6, btW = 56;
+  var btY = y + 8;
+  var btX3 = x + w - pad - btW;              /* 详情 */
+  var btX2 = btX3 - btGap - btW;             /* 分解 */
+  var btX1 = btX2 - btGap - btW;             /* 存盒 */
+  var titleMax = btX1 - (x + pad) - 8;
 
+  txt(String(u.name || "仓鼠").slice(0, 8), x + pad, y + 24, Math.max(11, Math.round(W * 0.031)),
+      C.ink, 'left', true);
+  txt(ratLineLabel(rat), x + pad + Math.min(titleMax, 96), y + 24,
+      Math.max(9, Math.round(W * 0.024)), C.muted, 'left');
+
+  function panelBtn(bx, label, enabled, tone, onTap){
+    rr(bx, btY, btW, btH, 11);
+    ctx.fillStyle = enabled ? tone.fill : '#241d2e';
+    ctx.fill();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = enabled ? tone.line : '#332b45';
+    ctx.stroke();
+    txt(label, bx + btW / 2, btY + 15, Math.max(8, Math.round(W * 0.023)),
+        enabled ? tone.text : '#7d7396', 'center', true);
+    shopHit(bx, btY, btW, btH, onTap);
+  }
+
+  var canBox = !onField && SHOP.rats.length > 1 && boxList().length < boxCap();
+  panelBtn(btX1, '存盒', canBox, { fill: 'rgba(121,201,138,.18)', line: 'rgba(121,201,138,.8)', text: '#a6e4b6' }, function(){
+    if (!canBox){ sfx("invalid"); return; }
+    var mv = SHOP.rats.splice(SHOP.sel, 1)[0];
+    boxList().push(mv);
+    SHOP.squad = (SHOP.squad || []).filter(function(ix){ return ix !== SHOP.sel; })
+      .map(function(ix){ return ix > SHOP.sel ? ix - 1 : ix; });
+    SHOP.sel = Math.min(SHOP.sel, SHOP.rats.length - 1);
+    shopSave(); sfx("tap");
+  });
+
+  var dShard = (typeof shardValueOf === "function") ? shardValueOf(rat) : 0;
+  var armed = SHOP.decompArm === (rat.line + rat.tier + SHOP.sel);
+  var canDec = !onField && SHOP.rats.length > 1;
+  panelBtn(btX2, armed ? '确认分解' : ('分解 ' + dShard), canDec,
+    { fill: armed ? 'rgba(217,109,85,.35)' : 'rgba(217,109,85,.14)', line: 'rgba(217,109,85,.8)', text: '#f0a08c' },
+    function(){
+      if (!canDec){ sfx("invalid"); return; }
+      if (!armed){ SHOP.decompArm = rat.line + rat.tier + SHOP.sel; sfx("tap"); return; }
+      SHOP.decompArm = null;
+      decompRat(SHOP.sel);
+    });
+
+  panelBtn(btX3, '详情', true, { fill: 'rgba(199,182,255,.18)', line: 'rgba(199,182,255,.7)', text: '#c7b6ff' }, function(){
+    SHOP.detail = SHOP.sel; clearFresh(SHOP.sel); SHOP.page = "rat"; sfx("tap");
+  });
+
+  /* ---- 数值两列 ---- */
+  var fs = Math.max(9, Math.round(W * 0.025));
   var c1 = u.eats === 'parts' ? '零件' : (u.eats === 'energy' ? '能量' : null);
   var left = [
     ['出手间隔', u.atkMs ? (u.atkMs / 1000).toFixed(1) + ' s' : '不攻击'],
@@ -2667,130 +2774,44 @@ function drawRatStats(x, y, w){
       var ts = rat.talents || [];
       if (!ts.length) return '无';
       var roman = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
-      return ts.map(function(t){ return (TALENT_DEF[t.id] ? TALENT_DEF[t.id].name : t.id) + roman[(t.lv || 1) - 1]; }).join(' ');
+      return ts.map(function(t){ return (TALENT_DEF[t.id] ? TALENT_DEF[t.id].name : t.id) + roman[(t.lv || 1) - 1]; }).join(" ");
     })()]
   ];
-  /* 详情入口：打开梦幻西游式的数据面板 */
-  var dtbw = 52, dtbh = 20, dtbx = x + w - dtbw - 10, dtby = y + 8;
-  rr(dtbx, dtby, dtbw, dtbh, 10);
-  ctx.fillStyle = 'rgba(199,182,255,.16)'; ctx.fill();
-  ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(199,182,255,.6)'; ctx.stroke();
-  txt('详情', dtbx + dtbw / 2, dtby + 14, Math.max(8, Math.round(W * 0.024)), '#c7b6ff', 'center', true);
-  shopHit(dtbx, dtby, dtbw, dtbh, function(){
-    SHOP.detail = SHOP.sel;
-    clearFresh(SHOP.sel);
-    SHOP.page = 'rat';
-    sfx('tap');
-  });
-
-  /* 存盒：把这只鼠移进仓鼠盒（腾出仓鼠栏的位置） */
-  var kbw = 46, kbh = 20, kbx = x + w - kbw - 68 - 54, kby = y + 8;
-  var onField = SHOP.squad.indexOf(SHOP.sel) >= 0;
-  var canBox = !onField && SHOP.rats.length > 1 && boxList().length < boxCap();
-  rr(kbx, kby, kbw, kbh, 10);
-  ctx.fillStyle = canBox ? 'rgba(121,201,138,.16)' : '#241d2e';
-  ctx.fill();
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = canBox ? 'rgba(121,201,138,.75)' : '#332b45';
-  ctx.stroke();
-  txt('存盒', kbx + kbw / 2, kby + 15, Math.max(8, Math.round(W * 0.024)),
-      canBox ? '#a6e4b6' : '#7d7396', 'center', true);
-  shopHit(kbx, kby, kbw, kbh, function(){
-    if (!canBox){ sfx("invalid"); return; }
-    var mv = SHOP.rats.splice(SHOP.sel, 1)[0];
-    boxList().push(mv);
-    /* 上场编号要跟着挪 */
-    SHOP.squad = (SHOP.squad || []).filter(function(ix){ return ix !== SHOP.sel; })
-      .map(function(ix){ return ix > SHOP.sel ? ix - 1 : ix; });
-    SHOP.sel = Math.min(SHOP.sel, SHOP.rats.length - 1);
-    shopSave();
-    sfx("tap");
-  });
-
-  /* 分解按钮：选中鼠且不在场上时可用（点两次确认） */
-  var dShard = (typeof shardValueOf === 'function') ? shardValueOf(rat) : 0;
-  var onField = SHOP.squad.indexOf(SHOP.sel) >= 0;
-  var dbw = 62, dbh = 20, dbx = x + w - dbw - 68, dby = y + 8;
-  var armed = SHOP.decompArm === (rat.line + rat.tier + SHOP.sel);
-  var canDec = !onField && SHOP.rats.length > 1;
-  rr(dbx, dby, dbw, dbh, 11);
-  ctx.fillStyle = canDec ? (armed ? 'rgba(217,109,85,.35)' : 'rgba(217,109,85,.14)') : '#241d2e';
-  ctx.fill();
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = canDec ? 'rgba(217,109,85,.8)' : '#332b45';
-  ctx.stroke();
-  txt(armed ? '确认分解' : ('分 ' + dShard + '碎'), dbx + dbw / 2, dby + 15,
-      Math.max(8, Math.round(W * 0.024)), canDec ? '#ff9d8a' : '#7d7396', 'center', true);
-  shopHit(dbx, dby, dbw, dbh, function(){
-    if (!canDec){ sfx('invalid'); return; }
-    var key = rat.line + rat.tier + SHOP.sel;
-    if (SHOP.decompArm !== key){
-      SHOP.decompArm = key;
-      sfx('tap');
-      return;
-    }
-    SHOP.decompArm = '';
-    var gain = decompRat(SHOP.sel);
-    if (gain > 0) floatText('碎片 +' + gain, W / 2, Math.round(H * 0.42), '#c7b6ff', true);
-  });
-
-  var colW = Math.round((w - 34) / 2);
-  for (var i = 0; i < left.length; i++){
-    var ly = y + 42 + i * 17;
-    txt(left[i][0], x + 12, ly, fs, C.muted, 'left');
-    txt(left[i][1], x + 12 + colW - 26, ly, fs, C.ink, 'right', true);
-    txt(right[i][0], x + 30 + colW, ly, fs, C.muted, 'left');
-    txt(right[i][1], x + w - 12, ly, fs, C.ink, 'right', true);
+  var midX = x + Math.round(w * 0.52);
+  for (var i = 0; i < 3; i++){
+    var ly = y + 50 + i * 18;
+    txt(left[i][0], x + pad, ly, fs, C.muted, 'left');
+    txt(left[i][1], midX - 14, ly, fs, C.ink, 'right', true);
+    txt(right[i][0], midX, ly, fs, C.muted, 'left');
+    txt(right[i][1], x + w - pad, ly, fs, C.ink, 'right', true);
   }
 
-  /* 技能清单：选中面板也要看得到带了哪些技能（最多 3 条，带小图标） */
+  /* ---- 技能清单（面板内，一行放得下就一行） ---- */
   var sk3 = rat.skills || [];
-  var sy3 = y + 106;
-  txt('技能', x + 12, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'left', true);
+  var sy3 = y + 112;
+  txt('技能', x + pad, sy3, Math.max(9, Math.round(W * 0.024)), C.muted, 'left', true);
   if (!sk3.length){
-    txt('无（抽卡 / 组装可得）', x + 42, sy3, Math.max(9, Math.round(W * 0.023)), '#7d7396', 'left');
+    txt('无（抽卡 / 组装可得）', x + pad + 34, sy3, Math.max(9, Math.round(W * 0.023)), '#7d7396', 'left');
   } else {
-    var cx3 = x + 42;
-    for (var k3 = 0; k3 < sk3.length && k3 < 3; k3++){
+    var cx3 = x + pad + 34;
+    var roman3 = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
+    for (var k3 = 0; k3 < sk3.length; k3++){
       var d3 = skillDefs()[sk3[k3].id] || {};
-      var roman3 = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
       var label3 = (d3.name || sk3[k3].id) + roman3[Math.min(3, Math.max(1, sk3[k3].lv || 1)) - 1];
+      var need3 = 16 + label3.length * 10 + 10;
+      if (cx3 + need3 > x + w - pad + 4) break;
       var hasIc3 = drawSkillIcon(sk3[k3].id, cx3 + 7, sy3 - 9, 14);
-      txt(label3, cx3 + (hasIc3 ? 16 : 0), sy3, Math.max(9, Math.round(W * 0.023)),
+      txt(label3, cx3 + (hasIc3 ? 16 : 0), sy3, Math.max(8, Math.round(W * 0.022)),
           d3.kind === 'mag' ? '#8fb8ff' : (d3.kind === 'buff' ? '#79c98a' : '#ffb37a'), 'left');
-      cx3 += (hasIc3 ? 16 : 0) + label3.length * 10 + 10;
-      if (cx3 > x + w - 30) break;
+      cx3 += need3;
     }
-    if (sk3.length > 3){
-      txt('+' + (sk3.length - 3), x + w - 12, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'right');
-    }
-  }
-
-  /* 技能清单：选中面板也要看得到带了什么技能（最多 3 条，带小图标） */
-  var sk3 = rat.skills || [];
-  var sy3 = y + 98;
-  txt('技能', x + 12, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'left', true);
-  if (!sk3.length){
-    txt('无（抽卡 / 组装可得）', x + 44, sy3, Math.max(9, Math.round(W * 0.023)), '#7d7396', 'left');
-  } else {
-    var cx3 = x + 44;
-    for (var k3 = 0; k3 < sk3.length && k3 < 3; k3++){
-      var d3 = skillDefs()[sk3[k3].id] || {};
-      var roman3 = ['Ⅰ', 'Ⅱ', 'Ⅲ'];
-      var label3 = (d3.name || sk3[k3].id) + roman3[Math.min(3, Math.max(1, sk3[k3].lv || 1)) - 1];
-      var hasIc3 = drawSkillIcon(sk3[k3].id, cx3 + 7, sy3 - 3, 14);
-      txt(label3, cx3 + (hasIc3 ? 16 : 0), sy3, Math.max(9, Math.round(W * 0.023)),
-          d3.kind === 'mag' ? '#8fb8ff' : (d3.kind === 'buff' ? '#79c98a' : '#ffb37a'), 'left');
-      cx3 += (hasIc3 ? 16 : 0) + Math.max(38, label3.length * 12);
-      if (cx3 > x + w - 40) break;
-    }
-    if (sk3.length > 3){
-      txt('+' + (sk3.length - 3), x + w - 12, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'right');
+    if (k3 < sk3.length){
+      txt('+' + (sk3.length - k3), x + w - pad, sy3, Math.max(9, Math.round(W * 0.023)), C.muted, 'right');
     }
   }
 }
 
-/* 仓鼠"价值"速览：天赋等级和 + 技能等级和，右上角显示成 ★N */
+
 function ratScore(rat){
   if (!rat) return 0;
   var n = 0;
@@ -3062,6 +3083,10 @@ function buyOffer(idx){
     ensureTalentSlot1(rat);
     var lostSk2 = promoteRat(rat);
     if (lostSk2) pushLog('转职失去 ' + skillName(lostSk2.id));
+  } else if (o.kind === 'book'){
+    SHOP.books = SHOP.books || {};
+    SHOP.books[o.skill] = (SHOP.books[o.skill] | 0) + 1;
+    pushLog("买到《" + (skillName(o.skill)) + "》技能书");
   } else if (o.kind === 'shard'){
     addShard(o.amount || 2);
   } else {
