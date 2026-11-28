@@ -2364,53 +2364,56 @@ function drawShop(){
   if (window.BUILD_TAG){
     txt(window.BUILD_TAG, pad, hY + 34, Math.max(8, Math.round(W * 0.021)), '#6a6480', 'left');
   }
-  /* 主页面签：队伍 / 商店 */
-  var tabW = 58, tabH = 22, tabY2 = hY + 12;
-  function mainTabBtn(x, label, key){
-    var on = (SHOP.mainTab === key);
-    rr(x, tabY2, tabW, tabH, 11);
-    ctx.fillStyle = on ? C.amber : C.panel2; ctx.fill();
-    ctx.lineWidth = 1; ctx.strokeStyle = on ? C.amber : C.line; ctx.stroke();
-    txt(label, x + tabW / 2, tabY2 + 15, Math.max(9, Math.round(W * 0.025)),
-        on ? '#241d2e' : C.ink, 'center', true);
-    shopHit(x, tabY2, tabW, tabH, function(){
-      if (SHOP.mainTab !== key){ SHOP.mainTab = key; sfx('tap'); }
-    });
+  
+
+
+
+  /* 顶部五个按钮一行对齐：队伍 / 商店 / 组装 / 盒 / 图鉴 */
+  var barN = 5, barGap = 6, barH2 = 26;
+  var barX = pad, barY = hY + 12;
+  var barW = Math.floor((W - pad * 2 - barGap * (barN - 1)) / barN);
+  var boxN2 = boxList().length;
+  var barItems = [
+    { label: '队伍', kind: 'tab', key: 'team' },
+    { label: '商店', kind: 'tab', key: 'shop' },
+    { label: '组装', kind: 'page', page: 'fuse' },
+    { label: boxN2 ? ('盒' + boxN2) : '盒', kind: 'page', page: 'box', hot: boxN2 > 0 },
+    { label: '图鉴', kind: 'page', page: 'codex' }
+  ];
+  for (var bi = 0; bi < barItems.length; bi++){
+    var it = barItems[bi];
+    var bxx = barX + bi * (barW + barGap);
+    var active = (it.kind === 'tab' && SHOP.mainTab === it.key);
+    rr(bxx, barY, barW, barH2, 13);
+    ctx.fillStyle = active ? C.amber : (it.hot ? 'rgba(199,182,255,.24)' : C.panel2);
+    ctx.fill();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = active ? C.amber : (it.hot ? 'rgba(199,182,255,.85)' : 'rgba(199,182,255,.35)');
+    ctx.stroke();
+    txt(it.label, bxx + barW / 2, barY + 18, Math.max(9, Math.round(W * 0.026)),
+        active ? '#241d2e' : (it.hot ? '#e4dcff' : '#c7b6ff'), 'center', true);
+    (function(item){
+      shopHit(bxx, barY, barW, barH2, function(){
+        if (item.kind === 'tab'){
+          if (SHOP.mainTab !== item.key){ SHOP.mainTab = item.key; sfx('tap'); }
+        } else if (item.page === 'fuse'){
+          SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap');
+        } else if (item.page === 'box'){
+          SHOP.page = 'box'; sfx('tap');
+        } else {
+          SHOP.codex = true; sfx('tap');
+        }
+      });
+    })(it);
   }
-  mainTabBtn(pad, '队伍', 'team');
-  mainTabBtn(pad + tabW + 6, '商店', 'shop');
-
-
 
   /* 商店页整块交给 drawStorePage，队伍页不画货架 */
   if (SHOP.mainTab === 'shop'){ drawStorePage(pad); return; }
 
 
   var cardX = pad, cardW = W - pad * 2;
-  var ratsY = Math.round(H * 0.152);
+  var ratsY = Math.round(H * 0.148);
   var onCount = squadOnCount();
-  /* 三个入口（组装 / 盒 / 图鉴）：和仓鼠栏标题同一行，右侧等宽排开 */
-  var boxN2 = boxList().length;
-  var toolLabels = ['组装', boxN2 ? ('盒' + boxN2) : '盒', '图鉴'];
-  var toolW2 = 52, toolGap = 6, toolH2 = 20;
-  var toolY2 = ratsY - 16;
-  for (var ti2 = 0; ti2 < 3; ti2++){
-    var tx2 = cardX + cardW - (3 - ti2) * (toolW2 + toolGap) + toolGap;
-    var hot2 = (ti2 === 1 && boxN2 > 0);
-    rr(tx2, toolY2, toolW2, toolH2, 10);
-    ctx.fillStyle = hot2 ? 'rgba(199,182,255,.24)' : C.panel2; ctx.fill();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = hot2 ? 'rgba(199,182,255,.85)' : 'rgba(199,182,255,.45)'; ctx.stroke();
-    txt(toolLabels[ti2], tx2 + toolW2 / 2, toolY2 + 14, Math.max(9, Math.round(W * 0.024)),
-        hot2 ? '#e4dcff' : '#c7b6ff', 'center', true);
-    (function(k){
-      shopHit(tx2, toolY2, toolW2, toolH2, function(){
-        if (k === 0){ SHOP.page = 'fuse'; FUSE.result = null; FUSE.main = -1; FUSE.sub = -1; sfx('tap'); }
-        else if (k === 1){ SHOP.page = 'box'; sfx('tap'); }
-        else { SHOP.codex = true; sfx('tap'); }
-      });
-    })(ti2);
-  }
   txt('我的仓鼠 ' + SHOP.rats.length + '/' + rosterCap() + ' · 上场 ' + onCount + '/' + fieldCap(),
       pad, ratsY - 6, Math.max(9, Math.round(W * 0.025)), C.muted, 'left');
   /* 每页 6 只（3×2）；超过 6 只时用 ‹ › 翻页，保证每只都点得到 */
