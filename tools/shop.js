@@ -950,6 +950,13 @@ function drawCodex(){
     drawCodexSkills(pad);
       return;
   }
+  /* 收集进度：队伍 + 仓鼠盒里出现过的「线-阶」 */
+  var owned = {};
+  (SHOP.rats || []).forEach(function(r){ owned[(r.line || "none") + "-" + (r.tier || 1)] = 1; });
+  (boxList() || []).forEach(function(r){ owned[(r.line || "none") + "-" + (r.tier || 1)] = 1; });
+  var ownedN = 0, totalN = 0;
+  for (var oi = 0; oi < 5; oi++){ for (var ot = 2; ot <= 4; ot++){ totalN++; if (owned[["tank","blade","shot","hex","care"][oi] + "-" + ot]) ownedN++; } }
+  txt('已收集 ' + ownedN + '/' + totalN + ' 形态', W - pad, 76, Math.max(9, Math.round(W * 0.024)), '#8f86a6', 'right');
   var rows = codexRows();
   var top = 62, gapX = 5, gapY = 8;
   var cw = Math.round((W - pad * 2 - gapX * 3) / 4), chh = 98;
@@ -969,6 +976,12 @@ function drawCodex(){
       txt(cell.name, x + cw / 2, y + 54, 9, C.ink, 'center', true);
       txt(cell.weapon || '—', x + cw / 2, y + 66, 8, C.muted, 'center');
       txt('HP ' + cell.hp + ' · ' + cell.atk, x + cw / 2, y + 80, 8, '#8f86a6', 'center');
+      if (owned[cell.line + '-' + cell.tier]){
+        var bw3 = 30, bh3 = 12, bx3 = x + cw - bw3 - 4, by3 = y + 4;
+        rr(bx3, by3, bw3, bh3, 6);
+        ctx.fillStyle = 'rgba(121,201,138,.85)'; ctx.fill();
+        txt('已有', bx3 + bw3 / 2, by3 + 9, 8, '#12301c', 'center', true);
+      }
     }
     txt(rows[r].label, pad - 2, top + r * (chh + gapY) - 2, 8, '#8f86a6', 'left');
   }
@@ -2090,8 +2103,15 @@ function drawBoxPage(){
       pad, 58, Math.max(9, Math.round(W * 0.024)), C.muted, 'left');
 
   if (!box.length){
-    txt('盒子是空的 —— 仓鼠栏满了之后抽到的鼠会进这里', W / 2, H * 0.42,
-        Math.max(10, Math.round(W * 0.028)), C.muted, 'center');
+    txt('盒子里还没有仓鼠', W / 2, H * 0.36,
+        Math.max(13, Math.round(W * 0.034)), C.ink, 'center', true);
+    txt('抽卡得到的仓鼠会先进这里，再手动搬进「我的队伍」', W / 2, H * 0.36 + 28,
+        Math.max(9, Math.round(W * 0.024)), C.muted, 'center');
+    var gbW = 180, gbH = 46, gbX = (W - gbW) / 2, gbY = H * 0.36 + 56;
+    rr(gbX, gbY, gbW, gbH, 23);
+    ctx.fillStyle = C.amber; ctx.fill();
+    txt('去抽卡 →', W / 2, gbY + 30, Math.max(11, Math.round(W * 0.031)), '#241d2e', 'center', true);
+    shopHit(gbX, gbY, gbW, gbH, function(){ SHOP.page = 'gacha'; sfx('tap'); });
     return;
   }
 
@@ -2155,7 +2175,7 @@ function drawBoxPage(){
   ctx.fillStyle = 'rgba(255,255,255,.03)'; ctx.fill();
   ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,.07)'; ctx.stroke();
   if (BOX.sel < 0 || !box[BOX.sel]){
-    txt('点一只仓鼠查看操作', W / 2, oy + 44, Math.max(10, Math.round(W * 0.028)), C.muted, 'center');
+    txt('↑ 先点上面的仓鼠，再选「取出 / 分解」', W / 2, oy + 52, Math.max(10, Math.round(W * 0.027)), C.ink, 'center', true);
     return;
   }
   var cur = box[BOX.sel];
@@ -2196,11 +2216,25 @@ function drawFuse(){
       Math.max(10, Math.round(W * 0.03)), C.amber, 'right');
 
   var top = 64;
-  txt('点一只当主鼠（槽1 天赋固定保留）', pad, top, Math.max(9, Math.round(W * 0.026)), C.muted, 'left');
+  /* ①②③ 步骤条：现在该点哪一步，一眼看得见 */
+  var stepY = top - 2, stepW = Math.floor((W - pad * 2 - 12) / 3);
+  var stepNames = ['①选主鼠', '②选副鼠', '③确认组装'];
+  var activeStep = (FUSE.main < 0) ? 0 : (FUSE.sub < 0 ? 1 : 2);
+  for (var si = 0; si < 3; si++){
+    var sx = pad + si * (stepW + 6);
+    var on = si === activeStep;
+    rr(sx, stepY, stepW, 24, 12);
+    ctx.fillStyle = on ? 'rgba(232,172,80,.22)' : C.panel2; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = on ? C.amber : 'rgba(255,255,255,.08)'; ctx.stroke();
+    txt(stepNames[si], sx + stepW / 2, stepY + 16, Math.max(9, Math.round(W * 0.024)),
+        on ? '#ffd98a' : '#8f86a6', 'center', true);
+  }
+  txt('代价：30 金币 · 副鼠消失 · 技能 8%/条、额外天赋 2.5%/条可能被吃（槽1 免疫）',
+      pad, stepY + 38, Math.max(8, Math.round(W * 0.022)), '#8f86a6', 'left');
   var cw = Math.round((W - pad * 2 - 12) / 3), chh = 74;
   for (var i = 0; i < SHOP.rats.length && i < 6; i++){
     var r = SHOP.rats[i];
-    var cx = pad + (i % 3) * (cw + 6), cy = top + 12 + Math.floor(i / 3) * (chh + 6);
+    var cx = pad + (i % 3) * (cw + 6), cy = top + 48 + Math.floor(i / 3) * (chh + 6);
     var isMain = FUSE.main === i, isSub = FUSE.sub === i;
     rr(cx, cy, cw, chh, 10);
     ctx.fillStyle = isMain ? 'rgba(232,172,80,.18)' : (isSub ? 'rgba(159,198,255,.16)' : C.panel);
@@ -2241,7 +2275,7 @@ function drawFuse(){
 
   /* 预览 */
   var pv = (FUSE.main >= 0 && FUSE.sub >= 0) ? fusePreview(FUSE.main, FUSE.sub) : null;
-  var py = top + 172;
+  var py = top + 232;
   rr(pad, py, W - pad * 2, pv ? 340 : 150, 12);
   ctx.fillStyle = C.panel; ctx.fill();
   ctx.strokeStyle = 'rgba(232,172,80,.3)'; ctx.lineWidth = 1; ctx.stroke();
